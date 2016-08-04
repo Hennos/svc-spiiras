@@ -1,23 +1,22 @@
 doctype html
 html(lang="ru")
-    head
-        //-mixin pageTitle(titleOfPage)
-                title= titleOfPage
-        //-mixin pageKeyWords(keywords)
-            -if(!keywords)
-                meta(name="keywords" content= keywords)
-        title SVC
-        meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
-        meta(http-equiv="X-UA-Compatible" content="IE=edge")
-        meta(name="viewport" content="width=device-width, initial-scale=1")
+  head
+    //-mixin pageTitle(titleOfPage)
+            title= titleOfPage
+    //-mixin pageKeyWords(keywords)
+        -if(!keywords)
+            meta(name="keywords" content= keywords)
+    title SVC
+    meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    meta(http-equiv="X-UA-Compatible" content="IE=edge")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
 
+    //link(href="images/favicon.ico" rel="shortcut icon" type="image/x-icon")
+    link(href="assets/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet")
+    link(rel="stylesheet" href="css/style.css" type="text/css")
 
-        //link(href="images/favicon.ico" rel="shortcut icon" type="image/x-icon")
-        link(href="assets/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet")
-        link(rel="stylesheet" href="css/style.css" type="text/css")
-
-        block head
-    body(class="page-#{title}")
-        include header
-        block content
-        block additional_scripts
+    block head
+  body(class="page-#{title}")
+    include header
+    block content
+    block additional_scripts

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {componentsVisibilityToggles} from '../constants/visibility'
-
+import {appComponentsTogglesKey} from '../constants/visibility'
 
 let UserSettings = () => (
   <form className="userSettings">
@@ -12,19 +12,13 @@ let UserSettings = () => (
   </form>
 );
 
-
-
-
-
-
-
 const mapStateCustomSettings = (state, ownProps) => {
   return {
-    visible: state.componentsVisibilityFilter.get(componentsVisibilityToggles.peopleArea)
-
+    visible: state.componentsVisibilityFilter
+      .get(appComponentsTogglesKey)
+      .get(componentsVisibilityToggles.peopleArea)
   };
 };
-
 
 People = connect(mapStateCustomSettings)(UserSettings);
 

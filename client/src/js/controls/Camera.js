@@ -42,7 +42,7 @@ class Camera {
   }
 
 
-  createToggleDispatcher () {
+  createToggleDispatcher() {
     let that = this;
     return function (dispatch) {
       return that.toggleCamera(dispatch)

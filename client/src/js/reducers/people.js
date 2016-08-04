@@ -1,20 +1,12 @@
-import Immutable from 'immutable';
 import {Events, people} from '../constants/people'
+import {state as initialState} from '../states/people'
 
-
-const peopleReducer = (state = Immutable.Map([
-  [people.valueInputSearchPeople, ''],
-  [people.newSearchedPeople, []]
-]), action) => {
-
+const peopleReducer = (state = initialState, action) => {
   switch (action.type) {
-
     case Events.changeValueInputSearchPeople:
       return state.set(people.valueInputSearchPeople, action.value);
-
-    case Events.newSearchedPeople:
+    case Events.changePeople:
           return state.set(people.newSearchedPeople, action.people);
-
     default:
       return state;
   }

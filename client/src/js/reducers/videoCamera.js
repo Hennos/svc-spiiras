@@ -1,14 +1,8 @@
-import Immutable from 'immutable';
 import {TOGGLE_VIDEO_CAMERA_STATE, VIDEO_CAMERA_LOADING} from  '../constants/videoCamera';
 import {Parameters} from  '../constants/videoCamera';
+import {state as initialState} from '../states/videoCamera'
 
-
-const videoCameraComponent = (state = Immutable.Map([
-  [Parameters.isWorking, false],
-  [Parameters.visible, true],
-  [Parameters.isLoading, false]
-
-]), action) => {
+const videoCameraComponent = (state = initialState, action) => {
   switch (action.type) {
     case VIDEO_CAMERA_LOADING:
       console.log(VIDEO_CAMERA_LOADING);
@@ -19,7 +13,6 @@ const videoCameraComponent = (state = Immutable.Map([
         ctx.set(Parameters.isLoading, false)
           .set(Parameters.isWorking, !state.get(Parameters.isWorking))
       });
-
     default:
       return state;
   }

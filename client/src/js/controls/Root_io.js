@@ -1,24 +1,22 @@
-import {Events, user as storeUserProperties} from '../constants/user';
+import {Events as EventsUser, user as storeUserProperties} from '../constants/user';
+import {Events as EventsPeople, people as storePeopleProperties} from '../constants/people'
 import io from 'socket.io-client';
 import {setUserProperties} from  '../actions/user';
+import {newSearchedPeople} from '../actions/people'
 
 // const for switch store states
 const searchPeopleInputValue = 'SearchPeopleInputValue';
 
-
 class Root {
 
-
   constructor(address, store) {
-
-
-
     this.store = store;
 
     this.connection = io(address, {reconnection: false});
-    this.connection.on(Events.connected, this.afterConnection.bind(this));
-    this.connection.on(Events.disconnected, this.afterDisconnection);
-    this.connection.on(Events.newUserData, this.newUserData.bind(this));
+    this.connection.on(EventsUser.connected, this.afterConnection.bind(this));
+    this.connection.on(EventsUser.disconnected, this.afterDisconnection);
+    this.connection.on(EventsUser.newUserData, this.newUserData.bind(this));
+    this.connection.on(EventsPeople.changePeople, this.newSearchPeople.bind(this));
 
     this.storeUnsubscriber = store.subscribe(() => {
       this.storeHandlerChanges(store.getState());
@@ -36,34 +34,33 @@ class Root {
   }
 
   getUserData() {
-    console.log('emited');
-    this.connection.emit(Events.getUserData)
+    console.log('emitted');
+    console.log(EventsUser.getUserData);
+    this.connection.emit(EventsUser.getUserData)
   }
 
   newUserData(user) {
     this.store.dispatch(setUserProperties(JSON.parse(user)));
-    //console.log(user);
+  }
+
+  newSearchPeople(people) {
+    this.store.dispatch(newSearchedPeople(JSON.parse(people)));
   }
 
   storeHandlerChanges(state) {
     this.oldInputSearchPeopleValue = this.newInputSearchPeopleValue;
     this.newInputSearchPeopleValue = this.selectStoreState(state, searchPeopleInputValue);
 
-
     if (this.oldInputSearchPeopleValue !== this.newInputSearchPeopleValue)
-      this.connection.emit(Events.changeValueInputSearchPeople, this.newInputSearchPeopleValue);
-
+      this.connection.emit(EventsPeople.changeValueInputSearchPeople, this.newInputSearchPeopleValue);
   }
 
   selectStoreState(state, name) {
-
     switch (name) {
       case searchPeopleInputValue:
-        return state.user.get(storeUserProperties.valueInputSearchPeople);
+        return state.people.get(storePeopleProperties.valueInputSearchPeople);
     }
   }
-
-
 }
 
 export default Root;

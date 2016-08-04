@@ -12,34 +12,34 @@ var _ = require('underscore');
 
 mongooseConnection.on('error', function (err) {
 
-    console.error('Database connection failed.', err);
-    throw err;
+  console.error('Database connection failed.', err);
+  throw err;
 });
 
 mongooseConnection.on('open', function (cb) {
-    console.info('Database connection established.');
+  console.info('Database connection established.');
 
 
-/*    User.find({}, 'username', function (err, docs) {
-        var _ids = _.pluck(docs, '_id');
-        var names = _.pluck(docs, 'username');
+  /*    User.find({}, 'username', function (err, docs) {
+   var _ids = _.pluck(docs, '_id');
+   var names = _.pluck(docs, 'username');
 
-        console.log(names);
+   console.log(names);
 
 
 
-        _.each(names, function (name) {
+   _.each(names, function (name) {
 
-            var allNames = _.without(names, name);
+   var allNames = _.without(names, name);
 
-            User.update({username:name}, {$set:{friends:_ids}}, function(err){
-                if(err)
-                    console.error(err);
-            });
+   User.update({username:name}, {$set:{friends:_ids}}, function(err){
+   if(err)
+   console.error(err);
+   });
 
-        });
+   });
 
-    });*/
+   });*/
 
 });
 

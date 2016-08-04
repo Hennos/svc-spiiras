@@ -1,16 +1,17 @@
 import React, { PropTypes }  from 'react';
 import {toggleVisibilityAppComponent} from  '../actions/visibility';
+import {toggleVisibilitySideMenu} from '../actions/visibility';
 import {connect} from 'react-redux';
 import {componentsVisibilityToggles} from '../constants/visibility'
+import {sideMenuToggleKey} from '../constants/visibility'
 
 const sideMenu = {
-
 
   button_menu_wrapper: [
     {
       buttonState: 'off',
       image: 'fa fa-bars',
-      name: componentsVisibilityToggles.sideMenu
+      name: sideMenuToggleKey
     }
   ],
 
@@ -50,20 +51,18 @@ const sideMenu = {
   ]
 };
 
-
 const SideMenuButton = ({onClick, buttonState, image, name}) =>(
   <div className={"button " + buttonState} onClick={onClick}>
     <p className={image}></p>
   </div>
 );
 
-
 let SideMenu = ({onButtonClick, buttonsBlocks, visible}) => (
 
-  <div className='side-menu_wrapper'  style={{
+  <div className='side-menu_wrapper' style={{
                 height: visible ? '100%':'auto' }}>
 
-    <div className='button-menu_wrapper block' >
+    <div className='button-menu_wrapper block'>
       {sideMenu.button_menu_wrapper.map(button =>
         <SideMenuButton
           key={button.name} {...button} onClick={() => {onButtonClick(button.name)}}
@@ -89,27 +88,26 @@ let SideMenu = ({onButtonClick, buttonsBlocks, visible}) => (
       )}
     </div>
 
-
   </div>
 );
 
 const mapStateSideMenuProps = (state, ownProps) => {
-
-  return{
-    visible : state.componentsVisibilityFilter.get(componentsVisibilityToggles.sideMenu)
+  return {
+    visible: state.componentsVisibilityFilter.get(sideMenuToggleKey)
   };
 };
 
 const mapDispatchToSideMenuProps = (dispatch) => {
   return {
     onButtonClick: (name)=> {
-      dispatch(toggleVisibilityAppComponent(name));
+      if (name != sideMenuToggleKey) {
+        dispatch(toggleVisibilityAppComponent(name));
+      } else {
+        dispatch(toggleVisibilitySideMenu(name));
+      }
     }
   };
 };
-
-
-
 
 SideMenu = connect(mapStateSideMenuProps, mapDispatchToSideMenuProps)(SideMenu);
 export default SideMenu;

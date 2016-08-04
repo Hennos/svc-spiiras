@@ -1,19 +1,20 @@
 extends layout
-block content
-    div.loginPasswordWrapper
-        h3 Введите данные для регистрации
-        form(role='form', action="/registration",method="post", autocomplete="off")
-            p Имя пользователя:
-            input(type='text', name="username", placeholder='Имя пользователя', autocomplete="off", value="", required)
-            p Почта:
-            input(type='text', name="email", placeholder='Электронная почта', autocomplete="off", value="", required)
-            p Пароль:
-            input(type='password', name="password", placeholder='Пароль', autocomplete="off", value="", required)
 
-            if(info)
-               .infoBlock
-                  p= info
-            button(type='submit').button
-                p Отправить
-            //div.button
-            //    a(href="/registration") Войти
+block content
+  div.loginPasswordWrapper
+    h3 Введите данные для регистрации
+    form(role='form', action="/registration",method="post", autocomplete="off")
+      p Имя пользователя:
+      input(type='text', name="username", placeholder='Имя пользователя', autocomplete="off", value="", required)
+      p Почта:
+      input(type='text', name="email", placeholder='Электронная почта', autocomplete="off", value="", required)
+      p Пароль:
+      input(type='password', name="password", placeholder='Пароль', autocomplete="off", value="", required)
+
+      if(info)
+        .infoBlock
+          p= info
+      button(type='submit').button
+        p Отправить
+      //div.button
+      //    a(href="/registration") Войти

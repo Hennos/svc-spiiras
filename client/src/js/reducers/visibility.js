@@ -1,21 +1,22 @@
-import Immutable from 'immutable';
 import {TOGGLE_COMPONENT_VISIBILITY} from '../constants/visibility'
-import {componentsVisibilityToggles} from '../constants/visibility'
+import {TOGGLE_SIDE_MENU_VISIBILITY} from '../constants/visibility'
+import {sideMenuToggleKey} from '../constants/visibility'
+import {appComponentsTogglesKey} from '../constants/visibility'
+import {state as initialState} from '../states/visibility'
 
-
-const componentsVisibilityFilter = (state = Immutable.Map([
-  [componentsVisibilityToggles.sideMenu, true],
-  [componentsVisibilityToggles.videoCamera, false],
-  [componentsVisibilityToggles.chatArea, false],
-  [componentsVisibilityToggles.peopleArea, true],
-  [componentsVisibilityToggles.userPreferences, false],
-  [componentsVisibilityToggles.commonPreferences, false],
-  [componentsVisibilityToggles.cameraAudioPreferences, false]
-
-]), action) => {
+const componentsVisibilityFilter = function (state = initialState, action) {
   switch (action.type) {
     case TOGGLE_COMPONENT_VISIBILITY:
-      return state.set(action.id, !state.get(action.id));
+      let newAppComponentsMap =
+        state
+          .get(appComponentsTogglesKey)
+          .map(() => {
+            return false;
+          })
+          .set(action.id, true);
+      return state.set(appComponentsTogglesKey, newAppComponentsMap);
+    case TOGGLE_SIDE_MENU_VISIBILITY:
+      return state.set(sideMenuToggleKey, !state.get(sideMenuToggleKey));
     default:
       return state;
   }

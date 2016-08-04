@@ -1,11 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {componentsVisibilityToggles} from '../constants/visibility'
+import {appComponentsTogglesKey} from '../constants/visibility'
 import {user} from '../constants/user'
 import {people} from '../constants/people'
 import {setInputSearchPeopleValue} from  '../actions/people'
-
-
 
 let Man = ({image, username, firstName, lastName, place}) => (
   <div className="man_wrapper">
@@ -20,7 +19,9 @@ let Man = ({image, username, firstName, lastName, place}) => (
       <ul className="name_place">
         <li className="name">
           <div className="username">{username + '\n'}</div>
-          <div className="allName"> {(lastName != undefined)? lastName: '' } {(firstName != undefined)? firstName: ''} </div>
+          <div className="allName">
+            {(lastName != undefined) ? lastName : '' } {(firstName != undefined) ? firstName : ''}
+          </div>
 
         </li>
         <li className="place">{place}</li>
@@ -51,7 +52,6 @@ let Man = ({image, username, firstName, lastName, place}) => (
 
     </div>
   </div>
-
 );
 
 const PeoplesArea = ({people, title}) =>(
@@ -69,8 +69,6 @@ let People = ({visible, friends, inputValueChange, people}) => (
     <div className="button-close-component_wrapper">
       <p className="button fa fa-times-circle"></p>
     </div>
-
-
 
     <div className="search-area_wrapper">
       <div className="name_wrapper">
@@ -95,7 +93,7 @@ let People = ({visible, friends, inputValueChange, people}) => (
         <div className="module_wrapper">
           <div className="info_block">
             {people.length > 0 ?
-              <PeoplesArea people={people} title="Найденные пользователи" />
+              <PeoplesArea people={people} title="Найденные пользователи"/>
               :
               <PeoplesArea people={people} title="Нет найденных пользователей"/>
             }
@@ -106,26 +104,23 @@ let People = ({visible, friends, inputValueChange, people}) => (
   </div>
 );
 
-
 const mapDispatchPeoplesProps = (dispatch) => {
   return {
     inputValueChange: (event)=> {
-
       dispatch(setInputSearchPeopleValue(event.target.value));
     }
-
   };
 };
-
 
 const mapStatePeoplesProps = (state, ownProps) => {
   return {
-    visible: state.componentsVisibilityFilter.get(componentsVisibilityToggles.peopleArea),
+    visible: state.componentsVisibilityFilter
+      .get(appComponentsTogglesKey)
+      .get(componentsVisibilityToggles.peopleArea),
     friends: state.user.get(user.friends),
-    people:state.people.get(people.newSearchedPeople)
+    people: state.people.get(people.newSearchedPeople)
   };
 };
-
 
 People = connect(mapStatePeoplesProps, mapDispatchPeoplesProps)(People);
 

@@ -6,9 +6,9 @@ export const Events = {
 };
 
 export const user = {
-  username:'username',
-  friends:'friends',
-  place:'place',
-  firstName:'firstName',
-  lastName:'lastName'
+  username: 'username',
+  friends: 'friends',
+  place: 'place',
+  firstName: 'firstName',
+  lastName: 'lastName'
 };

@@ -9,7 +9,6 @@ const Reducers = combineReducers({
   videoCameraComponent,
   user,
   people
-
 });
 
 export default Reducers;
