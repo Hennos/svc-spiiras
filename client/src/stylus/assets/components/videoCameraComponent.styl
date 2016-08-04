@@ -1,0 +1,51 @@
+.video-camera-component_wrapper
+  margin-left auto
+  width 40%
+  background main_light_grey_color
+  text-align center
+
+
+
+  .video_wrapper
+    width auto
+    padding 2em 1.5em
+    border-bottom 2px solid main_middle_grey_color
+
+    video, canvas
+      display block
+      background-color main_white_color
+      width 320px
+      height 240px
+      margin 0 auto
+
+  .controls_wrapper
+    display inline-block
+    margin 0 auto
+    text-align center
+    .video-camera_toggle-button, .video-camera_spinner-area
+
+      margin 0 auto
+      padding 0.5em 0
+      .text, .image
+        display block
+        padding 0.2em 0
+      .text
+        font-size 1.3em
+        color main_dark_grey_color
+      .image
+        font-size 1.6em
+      .image.on
+        color main_green_color
+      .image.off
+        color main_red_color
+
+    .video-camera_toggle-button
+      cursor pointer
+      &:hover, &:active
+        .image, .text
+          color main_cyan_color
+    .video-camera_spinner-area
+      .image, .text
+        color main_cyan_color
+
+

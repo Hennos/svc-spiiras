@@ -1,0 +1,27 @@
+{
+  "port": 3002,
+  "database": {
+    "host": "mongodb://localhost",
+    "name": "svc",
+    "options": {
+      "server": {
+        "socketOptions": {
+          "keepAlive": 1
+        }
+      }
+    }
+  },
+  "session": {
+    "secret": "svc_key_session",
+    "key": "mongo_sessions",
+    "cookie": {
+      "path": "/",
+      "httpOnly": true,
+      "maxAge": null
+    }
+  },
+  "socket":{
+    "port":3003
+  }
+
+}

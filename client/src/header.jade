@@ -1,0 +1,15 @@
+div.header
+   nav.navigation
+         ul.links
+            if (!userEnabled)
+               li.linkWrapper
+                     a(href="/login") Вход
+               li.linkWrapper
+                     a(href="/registration") Регистрация
+            if (userEnabled)
+               if(title == 'index')
+                li.linkWrapper
+                  a(href="/chat") Видеочат
+               li.linkWrapper
+                     a(href="/logout") Выход
+

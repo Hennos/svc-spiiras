@@ -1,0 +1,141 @@
+{
+  "name": "gulp-template",
+  "version": "1.0.0",
+  "description": "Project template for gulp.js",
+  "author": "Riku Rouvila <riku.rouvila@leonidasoy.fi>",
+  "license": "MIT",
+  "main": "gulpfile.js",
+  "scripts": {
+    "start": "gulp",
+    "build": "rmdir client/public && gulp build",
+    "lint": "eslint src",
+    "test": "mocha src/**/__tests__/*.js --compilers js:babel-core/register --require test/test-helper"
+  },
+  "keywords": [
+    "gulp",
+    "template"
+  ],
+  "dependencies": {
+    "browser-sync": "^2.11.1",
+    "immutable": "^3.7.6",
+    "jeet": "^6.1.2",
+    "lodash": "^3.10.1",
+    "nib": "^1.1.0",
+    "react": "^0.14.5",
+    "react-dom": "^0.14.5",
+    "react-redux": "^4.0.6",
+    "redux": "^3.0.5",
+    "rupture": "^0.6.1",
+    "socket.io": "^1.4.5"
+  },
+  "build": {
+    "source": "./src",
+    "destination": [
+      "../server/public",
+      "../server/views"
+    ],
+    "scripts": {
+      "source": "./src/js/main.js",
+      "destination": "./public/js/",
+      "extensions": [],
+      "filename": "bundle.js",
+      "watch": "./src/js/**/**/*.js"
+    },
+    "templates": {
+      "source": "./src/*.jade",
+      "watch": "./src/*.jade",
+      "destination": "./public/",
+      "revision": "./public/**/*.html"
+    },
+    "styles": {
+      "source": "./src/stylus/**/*.styl",
+      "watch": "./src/stylus/**/*.styl",
+      "destination": "./public/css/",
+      "filename": "style.css",
+      "browserVersions": [
+        "last 2 versions",
+        "Chrome 34",
+        "Firefox 28",
+        "iOS 7",
+        "safari 7",
+        "safari 8",
+        "IE 8",
+        "IE 9",
+        "IE 10",
+        "IE 11"
+      ]
+    },
+    "assets": {
+      "source": "./src/assets/**/*.*",
+      "watch": "./src/assets/**/*.*",
+      "destination": "./public/"
+    },
+    "inject": {
+      "resources": [
+        "./public/**/*.css",
+        "./public/**/*.js"
+      ]
+    },
+    "server": {
+      "scripts": "../server/public/js",
+      "styles": "../server/public/css",
+      "views": "../server/views",
+      "assets": "../server/public/assets",
+      "port": "3001"
+    }
+  },
+  "devDependencies": {
+    "babel": "^6.3.26",
+    "babel-core": "^6.3.26",
+    "babel-eslint": "^4.1.6",
+    "babel-plugin-react-transform": "^2.0.0",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-react": "^6.3.13",
+    "babel-register": "^6.5.1",
+    "babelify": "^7.2.0",
+    "browser-sync": "^2.11.1",
+    "browserify": "^12.0.1",
+    "chai": "^3.4.1",
+    "envify": "^3.4.0",
+    "eslint": "^1.10.3",
+    "eslint-config-airbnb": "0.0.9",
+    "eslint-plugin-react": "^3.14.0",
+    "exorcist": "^0.4.0",
+    "gulp": "^3.9.0",
+    "gulp-autoprefixer": "^1.0.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-duration": "0.0.0",
+    "gulp-inject": "^3.0.0",
+    "gulp-jade": "^0.9.0",
+    "gulp-livereload": "^3.8.1",
+    "gulp-nodemon": "^2.0.6",
+    "gulp-replace": "^0.5.4",
+    "gulp-rev": "^4.0.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-streamify": "0.0.5",
+    "gulp-stylus": "^2.0.7",
+    "gulp-uglify": "^1.0.2",
+    "gulp-util": "^3.0.7",
+    "gulp-watch": "^4.3.5",
+    "jsdom": "^5.6.1",
+    "livereactload": "^2.1.0",
+    "mocha": "^2.3.4",
+    "node-notifier": "^4.4.0",
+    "react-proxy": "^1.1.2",
+    "redux-devtools": "^2.1.5",
+    "rimraf": "^2.5.0",
+    "vinyl-source-stream": "^1.0.0",
+    "vinyl-transform": "^1.0.0",
+    "watchify": "^3.6.1"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "babelify"
+      ],
+      [
+        "envify"
+      ]
+    ]
+  }
+}
