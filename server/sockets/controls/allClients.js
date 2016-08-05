@@ -1,4 +1,5 @@
 var _ = require('lodash');
+
 var Events = {
   connected: 'connection',
   disconnect: 'disconnect',
@@ -43,12 +44,7 @@ function Root(io) {
           username: 1
         }, function (err, docs) {
           if (err) throw err;
-          socket.emit(Events.changePeople, JSON.stringify(
-            docs.map(function (searched) {
-              var keys = ['username', 'firstName', 'lastName', 'place', 'image'];
-              return _.pick(searched, keys);
-            })
-          ));
+          socket.emit(Events.changePeople, JSON.stringify(docs));
         });
       } else {
         socket.emit(Events.changePeople, '[]');
