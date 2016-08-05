@@ -6,6 +6,7 @@ import {newSearchedPeople} from '../actions/people'
 
 // const for switch store states
 const searchPeopleInputValue = 'SearchPeopleInputValue';
+const currentUsername = 'CurrentUsername';
 
 class Root {
 
@@ -50,17 +51,28 @@ class Root {
   storeHandlerChanges(state) {
     this.oldInputSearchPeopleValue = this.newInputSearchPeopleValue;
     this.newInputSearchPeopleValue = this.selectStoreState(state, searchPeopleInputValue);
+    this.currentUsername = this.selectStoreState(state, currentUsername);
 
-    if (this.oldInputSearchPeopleValue !== this.newInputSearchPeopleValue)
-      this.connection.emit(EventsPeople.changeValueInputSearchPeople, this.newInputSearchPeopleValue);
+    if (this.oldInputSearchPeopleValue !== this.newInputSearchPeopleValue) {
+      let data = {
+        user: this.currentUsername,
+        input: this.newInputSearchPeopleValue
+      };
+      data = JSON.stringify(data);
+
+      this.connection.emit(EventsPeople.changeValueInputSearchPeople, data);
+    }
   }
 
   selectStoreState(state, name) {
     switch (name) {
+      case currentUsername:
+        return state.user.get(storeUserProperties.username);
       case searchPeopleInputValue:
         return state.people.get(storePeopleProperties.valueInputSearchPeople);
     }
   }
+
 }
 
 export default Root;
