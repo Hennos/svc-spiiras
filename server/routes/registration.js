@@ -3,14 +3,12 @@ var passport = require('passport');
 var User = require('../mongoose/models/user');
 var router = express.Router();
 
-
 /* GET registration page. */
 router.get('/', function (req, res, next) {
   if (req.isAuthenticated())
     res.redirect('/index');
   else
     res.render('registration', {title: 'registration'});
-
 
 });
 
@@ -35,13 +33,11 @@ router.post('/', function (req, res) {
           info: "Извините, данная электронная почта уже занята. Попробуйте другую."
         });
 
-
       return res.render("registration", {title: 'registration', info: "Извините, ошибка сервера. Попробуйте позже."});
     }
     console.log(req.body.email, req.body.username, req.body.password);
 
-    res.redirect('login');
-
+    res.redirect('/login');
 
   });
 });
