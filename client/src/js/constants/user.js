@@ -10,5 +10,6 @@ export const user = {
   friends: 'friends',
   place: 'place',
   firstName: 'firstName',
+  image: 'image',
   lastName: 'lastName'
 };

@@ -6,6 +6,6 @@ export const state = Immutable.Map([
   [user.place, ''],
   [user.firstName, ''],
   [user.lastName, ''],
-  [user.image, undefined],
+  [user.image, null],
   [user.friends, []]
 ]);
