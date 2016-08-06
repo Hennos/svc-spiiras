@@ -46,12 +46,10 @@ class Root {
   }
 
   newSearchPeople(people) {
-    console.dir(people);
     this.store.dispatch(newSearchedPeople(JSON.parse(people)));
   }
 
   storeHandlerChanges(state) {
-    console.log(state);
     this.oldInputSearchPeopleValue = this.newInputSearchPeopleValue;
     this.newInputSearchPeopleValue = this.selectStoreState(state, searchPeopleInputValue);
     this.currentUsername = this.selectStoreState(state, currentUsername);
@@ -63,7 +61,6 @@ class Root {
         friends: this.currentFriends,
         input: this.newInputSearchPeopleValue
       };
-      console.dir(data);
       data = JSON.stringify(data);
 
       this.connection.emit(EventsPeople.changeValueInputSearchPeople, data);
