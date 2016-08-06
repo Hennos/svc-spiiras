@@ -7,6 +7,7 @@ import {newSearchedPeople} from '../actions/people'
 // const for switch store states
 const searchPeopleInputValue = 'SearchPeopleInputValue';
 const currentUsername = 'CurrentUsername';
+const currentFriends = 'CurrentFriends';
 
 class Root {
 
@@ -45,19 +46,24 @@ class Root {
   }
 
   newSearchPeople(people) {
+    console.dir(people);
     this.store.dispatch(newSearchedPeople(JSON.parse(people)));
   }
 
   storeHandlerChanges(state) {
+    console.log(state);
     this.oldInputSearchPeopleValue = this.newInputSearchPeopleValue;
     this.newInputSearchPeopleValue = this.selectStoreState(state, searchPeopleInputValue);
     this.currentUsername = this.selectStoreState(state, currentUsername);
+    this.currentFriends = this.selectStoreState(state, currentFriends);
 
     if (this.oldInputSearchPeopleValue !== this.newInputSearchPeopleValue) {
       let data = {
-        user: this.currentUsername,
+        username: this.currentUsername,
+        friends: this.currentFriends,
         input: this.newInputSearchPeopleValue
       };
+      console.dir(data);
       data = JSON.stringify(data);
 
       this.connection.emit(EventsPeople.changeValueInputSearchPeople, data);
@@ -68,6 +74,8 @@ class Root {
     switch (name) {
       case currentUsername:
         return state.user.get(storeUserProperties.username);
+      case currentFriends:
+        return state.user.get(storeUserProperties.friends);
       case searchPeopleInputValue:
         return state.people.get(storePeopleProperties.valueInputSearchPeople);
     }

@@ -33,13 +33,16 @@ function Root(io) {
       socket.emit(Events.newUserData, JSON.stringify(_.pick(socket.request.user, ['username', 'friends'])));
     });
 
-    socket.on(Events.changeValueInputSearchPeople, function (package) {
-      var data = JSON.parse(package);
+    socket.on(Events.changeValueInputSearchPeople, function (pack) {
+      var data = JSON.parse(pack);
+      console.dir(data);
       if (data.input != '') {
-        userModule.find({username: {
-          $regex: new RegExp('^' + data.input + '.*', 'i'),
-          $ne: data.user
-        }}, {
+        userModule.find({
+          username: {
+            $regex: new RegExp('^' + data.input + '.*', 'i'),
+            $nin: data.friends.concat(data.username)
+          }
+        }, {
           _id: 0,
           username: 1
         }, function (err, docs) {
