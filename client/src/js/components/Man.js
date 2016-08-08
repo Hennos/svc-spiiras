@@ -23,7 +23,6 @@ class Man extends React.Component {
           </div>
 
           <ul className="name_place">
-
             <li className="name">
               <div className="username">{username + '\n'}</div>
               <div className="allName">{
@@ -32,7 +31,6 @@ class Man extends React.Component {
               </div>
             </li>
             <li className="place">{place}</li>
-
           </ul>
 
           <ul className="buttons_wrapper">

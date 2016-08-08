@@ -20,17 +20,23 @@ root.on('disconnect', function () {
   console.log('disconnect')
 });*/
 
-const App = () => (
-  <div>
-    <SideMenu/>
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-    <div className="wrapper_components">
-      <VideoCameraComponent/>
-      <PeoplesComponent/>
-    </div>
-
-  </div>
-);
+  render() {
+    return (
+      <div>
+        <SideMenu/>
+        <div className="wrapper_components">
+          <VideoCameraComponent/>
+          <PeoplesComponent/>
+        </div>
+      </div>
+    );
+  }
+}
 
 let store = createStore(Reducers,
   applyMiddleware(thunk));
@@ -39,7 +45,7 @@ let root_io = new Root_io('http://localhost:3003', store);
 
 ReactDom.render(
   <Provider store={store}>
-    <App />
+    <App/>
   </Provider>,
   document.getElementById('app')
 );

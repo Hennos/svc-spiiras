@@ -8,54 +8,71 @@ import {setInputSearchPeopleValue} from  '../actions/people'
 
 import Man from './Man'
 
-const PeoplesArea = ({people, title, type}) =>(
-  <div className="module_wrapper">
-    <div className="info_block">
-      <p>{title}</p>
-    </div>
-    {people.map(man =>
-      <Man
-        key={man.username}
-        type={type}
-        {...man}
-      />)}
-  </div>
-);
+class PeopleArea extends React.Component {
+  constructor(props) {
+    super(props);
+  }
 
-let People = ({visible, friends, inputValueChange, people}) => (
-  <div className={(visible ? "" : "display_none") + " friends-component_wrapper"}>
-    <div className="button-close-component_wrapper">
-      <p className="button fa fa-times-circle"></p>
-    </div>
+  render() {
+    const {people, title, type} = this.props;
+    return (
+      <div className="module_wrapper">
+        <div className="info_block">
+          <p>{title}</p>
+        </div>
+        {people.map(man =>
+          <Man
+            key={man.username}
+            type={type}
+            {...man}
+          />)}
+      </div>
+    );
+  }
+}
 
-    <div className="search-area_wrapper">
-      <div className="name_wrapper">
-        <div className="name">
-          <p>Поиск</p>
+class People extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const {visible, friends, inputValueChange, people} = this.props;
+    return (
+      <div className={(visible ? "" : "display_none") + " friends-component_wrapper"}>
+        <div className="button-close-component_wrapper">
+          <p className="button fa fa-times-circle"></p>
+        </div>
+
+        <div className="search-area_wrapper">
+          <div className="name_wrapper">
+            <div className="name">
+              <p>Поиск</p>
+            </div>
+          </div>
+          <div className="search_wrapper">
+            <input type="text" name="search-area" onChange={inputValueChange}/>
+          </div>
+        </div>
+
+        <div className="people-area_wrapper">
+          <div className="people_wrapper">
+            {friends.length > 0 ?
+              <PeopleArea people={friends} title="Друзья" type="friend"/>
+              :
+              <PeopleArea people={friends} title="У вас пока нет ни одного друга"/>
+            }
+            {people.length > 0 ?
+              <PeopleArea people={people} title="Найденные пользователи" type="other"/>
+              :
+              <PeopleArea people={people} title="Нет найденных пользователей"/>
+            }
+          </div>
         </div>
       </div>
-      <div className="search_wrapper">
-        <input type="text" name="search-area" onChange={inputValueChange}/>
-      </div>
-    </div>
-
-    <div className="people-area_wrapper">
-      <div className="people_wrapper">
-            {friends.length > 0 ?
-              <PeoplesArea people={friends} title="Друзья" type="friend"/>
-              :
-              <PeoplesArea people={friends} title="У вас пока нет ни одного друга"/>
-            }
-
-            {people.length > 0 ?
-              <PeoplesArea people={people} title="Найденные пользователи" type="other"/>
-              :
-              <PeoplesArea people={people} title="Нет найденных пользователей"/>
-            }
-      </div>
-    </div>
-  </div>
-);
+    );
+  }
+}
 
 const mapDispatchPeoplesProps = (dispatch) => {
   return {
@@ -75,6 +92,4 @@ const mapStatePeoplesProps = (state, ownProps) => {
   };
 };
 
-People = connect(mapStatePeoplesProps, mapDispatchPeoplesProps)(People);
-
-export default People;
+export default connect(mapStatePeoplesProps, mapDispatchPeoplesProps)(People);
