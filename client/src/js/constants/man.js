@@ -1,4 +1,4 @@
-
- /* Created by user on 08.08.2016.
- *
-*/
+export const typeMan = {
+  friend: 'friend',
+  other: 'other'
+};
