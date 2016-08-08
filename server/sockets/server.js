@@ -7,17 +7,13 @@ var passportSocketIo = require("passport.socketio");
 var cookieParser = require('cookie-parser');
 var port = nconf.get('socket').port;
 
-
 var createIOServer = function (app, sessionStore) {
-
   var server = require('http').createServer(app);
   var io = require("socket.io")(server);
-
 
   server.listen(port);
   server.on('error', onError);
   server.on('listening', onListening);
-
 
   io.use(passportSocketIo.authorize({
     cookieParser: cookieParser,       // the same middleware you registrer in express
@@ -28,29 +24,23 @@ var createIOServer = function (app, sessionStore) {
     fail: onAuthorizeFail     // *optional* callback on fail/error - read more below
   }));
 
-
   var clients = require('./controls/allClients')(io);
   //var friendsControl = require('./controls/friends')(io);
-
 
   function onAuthorizeSuccess(data, accept) {
     accept();
   }
 
   function onAuthorizeFail(data, message, error, accept) {
-
-    if (error)
-      throw new Error(message);
+    if (error) throw new Error(message);
     console.error('failed authorize to socket.io:', message);
 
     // If you use socket.io@1.X the callback looks different
     // If you don't want to accept the connection
-    if (error)
-      accept(new Error(message));
+    if (error) accept(new Error(message));
     // this error will be sent to the user as a special error-package
     // see: http://socket.io/docs/client-api/#socket > error-object
   }
-
 
   /**
    * Event listener for HTTP server "error" event.
@@ -91,7 +81,6 @@ var createIOServer = function (app, sessionStore) {
       : 'port ' + addr.port;
     console.info('Socket server listening on ' + bind);
   }
-
 
   return io;
 };

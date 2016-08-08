@@ -6,7 +6,6 @@ import {Parameters} from  '../constants/videoCamera';
 import {loadVideoCamera, toggleVideoCameraState} from '../actions/videoCamera';
 import Camera from '../controls/Camera'
 
-
 let cameraParametrs = {
   videoID: 'camera-video',
   constraints: {
@@ -19,9 +18,7 @@ let cameraParametrs = {
   }
 };
 
-
 let camera = new Camera(cameraParametrs);
-
 
 /*const cameraOnDispatcher = ()=> {
  return function (dispatch) {
@@ -29,14 +26,11 @@ let camera = new Camera(cameraParametrs);
  };
  };*/
 
-
 const ButtonOnOff = ({isWorking, onClick})=>(
 
   <div className="video-camera_toggle-button" onClick={onClick}>
     <p className="text">{isWorking ? "Off" : "On"}</p>
-    <p className={"image fa fa-power-off "+(() => {
-                  return isWorking ? "off":"on";
-        })()}></p>
+    <p className={"image fa fa-power-off " + (isWorking ? "off":"on")}></p>
   </div>
 );
 
@@ -48,8 +42,7 @@ const LoadingArea = ()=> (
 );
 
 let VideoCameraComponent = ({isWorking, visible, onButtonCameraClick, isLoading}) => (
-  <div className="video-camera-component_wrapper" style={{
-                display: visible ? 'block':'none' }}>
+  <div className="video-camera-component_wrapper" style={{display: visible ? 'block':'none' }}>
 
     <div className="video_wrapper">
       <video id="camera-video"></video>

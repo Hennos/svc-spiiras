@@ -13,11 +13,11 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', passport.authenticate('local', {
-  successRedirect: '/chat',
-  failureRedirect: '/',
-  failureFlash: false
-}));
-
+    successRedirect: '/chat',
+    failureRedirect: '/',
+    failureFlash: false
+  })
+);
 
 module.exports = router;
 

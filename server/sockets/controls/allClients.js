@@ -9,8 +9,8 @@ var Events = {
   changePeople: "NEW:SEARCH_PEOPLE:PEOPLE",
   changeValueInputSearchPeople: "NEW:SEARCH_PEOPLE:VALUE"
 };
-var userModule = require('../../mongoose/models/user');
 
+var userModule = require('../../mongoose/models/user');
 
 function Root(io) {
   var clients = [];

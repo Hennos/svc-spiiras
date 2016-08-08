@@ -3,10 +3,7 @@ import {toggleVideoCameraState} from '../actions/videoCamera'
 'use strict';
 
 class Camera {
-
   constructor({videoID, constraints}) {
-
-
     // for old browsers
     if (navigator.mediaDevices === undefined) {
       navigator.mediaDevices = {};
@@ -22,7 +19,6 @@ class Camera {
   }
 
   promisifiedOldGUM(constraints, successCallback, errorCallback) {
-
     // First get ahold of getUserMedia, if present
     let getUserMedia = (navigator.getUserMedia ||
     navigator.webkitGetUserMedia ||
@@ -38,9 +34,7 @@ class Camera {
     return new Promise(function (successCallback, errorCallback) {
       getUserMedia.call(navigator, constraints, successCallback, errorCallback);
     });
-
   }
-
 
   createToggleDispatcher() {
     let that = this;
@@ -50,14 +44,13 @@ class Camera {
   }
 
   toggleCamera(dispatch) {
-
     if (!this.stream) {
       return navigator.mediaDevices.getUserMedia(this.constraints).then(
         stream => {
           let videoTracks = stream.getVideoTracks();
-          if (!this.videoArea)
+          if (!this.videoArea) {
             this.videoArea = document.getElementById(this.videoID);
-
+          }
 
           console.log('Using video device: ' + videoTracks[0].label);
           stream.onended = ()=> console.log('Stream ended');
@@ -69,7 +62,6 @@ class Camera {
           };
 
           if (dispatch) dispatch(toggleVideoCameraState());
-
         },
         error => console.log(error)
       );
@@ -80,9 +72,7 @@ class Camera {
       this.stream = null;
       if (dispatch) dispatch(toggleVideoCameraState());
     }
-
   }
-
 }
 
 export default Camera;

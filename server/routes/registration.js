@@ -5,11 +5,12 @@ var router = express.Router();
 
 /* GET registration page. */
 router.get('/', function (req, res, next) {
-  if (req.isAuthenticated())
+  if (req.isAuthenticated()) {
     res.redirect('/index');
-  else
+  }
+  else {
     res.render('registration', {title: 'registration'});
-
+  }
 });
 
 router.post('/', function (req, res) {
@@ -21,23 +22,23 @@ router.post('/', function (req, res) {
     if (error) {
       console.error(error);
 
-      if (error.name === 'UserExistsError')
+      if (error.name === 'UserExistsError') {
         return res.render("registration", {
           title: 'registration',
           info: "Извините, данное имя пользователя уже занято. Попробуйте другое."
         });
-      if (error.name === 'MongoError' && error.code === 11000)
+      }
+      if (error.name === 'MongoError' && error.code === 11000) {
         return res.render("registration", {
           title: 'registration',
           info: "Извините, данная электронная почта уже занята. Попробуйте другую."
         });
+      }
 
       return res.render("registration", {title: 'registration', info: "Извините, ошибка сервера. Попробуйте позже."});
     }
-    console.log(req.body.email, req.body.username, req.body.password);
 
     res.redirect('/login');
-
   });
 });
 

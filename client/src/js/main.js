@@ -30,7 +30,6 @@ const App = () => (
     </div>
 
   </div>
-
 );
 
 let store = createStore(Reducers,

@@ -9,7 +9,7 @@ class Man extends React.Component {
   }
 
   render() {
-    const {addToFriends, removeFromFriends, image, username, firstName, lastName, place, type} = this.props;
+    const {image, username, firstName, lastName, place, type} = this.props;
     return (
       <div className="man_wrapper">
         <div className="man">

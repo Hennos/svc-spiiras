@@ -41,7 +41,6 @@ let People = ({visible, friends, inputValueChange, people}) => (
 
     <div className="people-area_wrapper">
       <div className="people_wrapper">
-
             {friends.length > 0 ?
               <PeoplesArea people={friends} title="Друзья" type="friend"/>
               :
@@ -53,7 +52,6 @@ let People = ({visible, friends, inputValueChange, people}) => (
               :
               <PeoplesArea people={people} title="Нет найденных пользователей"/>
             }
-
       </div>
     </div>
   </div>

@@ -8,11 +8,11 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 //configs
 var nconf = require('nconf');
-nconf.argv()
+nconf
+  .argv()
   .env()
   .file({file: './config/config.json'});
 var flash = require('connect-flash');
-
 
 // routes
 var routes = require('./routes/index');
@@ -21,7 +21,6 @@ var login = require('./routes/login');
 var registration = require('./routes/registration');
 var chat = require('./routes/chat');
 var logout = require('./routes/logout');
-
 
 //passport
 var passport = require('passport');
@@ -48,9 +47,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(cookieParser());
 
-
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 // session and passport
 var sessionsStore = new MongoStore({mongooseConnection: mongooseConnection});
@@ -63,7 +60,6 @@ app.use(expressSession({
   saveUninitialized: false
 }));
 
-
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
@@ -74,11 +70,7 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
-/**
- * Create socket.io server
- */
-
+// Create socket.io server
 var ioServer = require('./sockets/server')(app, sessionsStore);
 
 // routes
@@ -128,6 +120,5 @@ app.use(function (err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

@@ -7,7 +7,6 @@ function Friends(io) {
         //console.log(socket.request.user);
         //console.log(data);
       });
-
     });
   return friends;
 }
