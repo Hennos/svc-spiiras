@@ -4,6 +4,7 @@ var Events = {
   connected: 'connection',
   disconnect: 'disconnect',
   getUserData: "GET:USER:DATA",
+  updateUserFriends: "UPDATE:USER:FRIENDS",
   newUserData: "NEW:USER:DATA",
   changePeople: "NEW:SEARCH_PEOPLE:PEOPLE",
   changeValueInputSearchPeople: "NEW:SEARCH_PEOPLE:VALUE"
@@ -30,24 +31,34 @@ function Root(io) {
     });
 
     socket.on(Events.getUserData, function () {
-      socket.emit(Events.newUserData, JSON.stringify(_.pick(socket.request.user, ['username', 'friends'])));
+      socket.emit(Events.newUserData, JSON.stringify(_.pick(socket.request.user, [
+        'username',
+        'friends'
+      ])));
+    });
+
+    socket.on(Events.updateUserFriends, function () {
+      console.log("Сработало");
+      socket.emit(Events.newUserData, JSON.stringify(_.pick(socket.request.user, [
+        'username',
+        'friends'
+      ])));
     });
 
     socket.on(Events.changeValueInputSearchPeople, function (pack) {
+      console.log(pack);
       var data = JSON.parse(pack);
       if (data.input != '') {
         userModule.find({
-          username: {
-            $regex: new RegExp('^' + data.input + '.*', 'i'),
-            $nin: data.friends.concat(data.username)
-          }
-        }, {
-          _id: 0,
-          username: 1
-        }, function (err, docs) {
-          if (err) throw err;
-          socket.emit(Events.changePeople, JSON.stringify(docs));
-        });
+            username: {
+              $regex: new RegExp('^' + data.input + '.*', 'i'),
+              $nin: data.friends.concat(data.username)
+            }
+          }, {_id: 0, username: 1},
+          function (err, docs) {
+            if (err) throw err;
+            socket.emit(Events.changePeople, JSON.stringify(docs));
+          });
       } else {
         socket.emit(Events.changePeople, '[]');
       }

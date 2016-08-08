@@ -5,12 +5,18 @@ import {appComponentsTogglesKey} from '../constants/visibility'
 import {user} from '../constants/user'
 import {people} from '../constants/people'
 import {setInputSearchPeopleValue} from  '../actions/people'
+import {setUserProperties} from '../actions/user'
 
-let Man = ({image, username, firstName, lastName, place}) => (
+const typeMan = {
+  friend: 'friend',
+  other: 'other'
+};
+
+let Man = ({addToFriends, removeFromFriends, image, username, firstName, lastName, place, type}) => (
   <div className="man_wrapper">
     <div className="man">
       <div className="img_place">
-        {image != undefined ?
+        {(image != null) ?
           <img src={image} alt="Нет изображения"/>
           :
           <p className="fa fa-question-circle" aria-hidden="true"></p>
@@ -20,9 +26,8 @@ let Man = ({image, username, firstName, lastName, place}) => (
         <li className="name">
           <div className="username">{username + '\n'}</div>
           <div className="allName">
-            {(lastName != undefined) ? lastName : '' } {(firstName != undefined) ? firstName : ''}
+            {(lastName != null) ? lastName : ''} {(firstName != null) ? firstName : ''}
           </div>
-
         </li>
         <li className="place">{place}</li>
       </ul>
@@ -35,12 +40,12 @@ let Man = ({image, username, firstName, lastName, place}) => (
         </li>
         <li className="button_wrapper">
           <div className="button">
-            <p className="fa fa-plus-circle"></p>
+            <p className="fa fa-plus-circle" onClick={addToFriends}></p>
           </div>
         </li>
         <li className="button_wrapper">
           <div className="button">
-            <p className="fa fa-minus-circle"></p>
+            <p className="fa fa-minus-circle" onClick={removeFromFriends}></p>
           </div>
         </li>
         <li className="button_wrapper">
@@ -54,18 +59,35 @@ let Man = ({image, username, firstName, lastName, place}) => (
   </div>
 );
 
-const PeoplesArea = ({people, title}) =>(
+const mapEventHandlerProps = (dispatch) => {
+  return {
+    addToFriends: () => {
+      console.log(this);
+    },
+    removeFromFriends: () => {
+      console.log(this);
+    }
+  }
+};
+
+Man = connect(mapEventHandlerProps)(Man);
+
+const PeoplesArea = ({people, title, type}) =>(
   <div className="module_wrapper">
     <div className="info_block">
       <p>{title}</p>
     </div>
-    {people.map(friend => <Man key={friend.username} {...friend}/>)}
+    {people.map(man =>
+      <Man
+        key={man.username}
+        type={type}
+        {...man}
+      />)}
   </div>
 );
 
 let People = ({visible, friends, inputValueChange, people}) => (
-  <div className="friends-component_wrapper" style={{
-                display: visible ? 'block':'none' }}>
+  <div className={(visible ? "" : "display_none") + " friends-component_wrapper"}>
     <div className="button-close-component_wrapper">
       <p className="button fa fa-times-circle"></p>
     </div>
@@ -84,21 +106,18 @@ let People = ({visible, friends, inputValueChange, people}) => (
     <div className="people-area_wrapper">
       <div className="people_wrapper">
 
-        {friends.length > 0 ?
-          <PeoplesArea people={friends} title="Друзья"/>
-          :
-          <PeoplesArea people={friends} title="У вас пока нет ни одного друга"/>
-        }
+            {friends.length > 0 ?
+              <PeoplesArea people={friends} title="Друзья" type="friend"/>
+              :
+              <PeoplesArea people={friends} title="У вас пока нет ни одного друга"/>
+            }
 
-        <div className="module_wrapper">
-          <div className="info_block">
             {people.length > 0 ?
-              <PeoplesArea people={people} title="Найденные пользователи"/>
+              <PeoplesArea people={people} title="Найденные пользователи" type="other"/>
               :
               <PeoplesArea people={people} title="Нет найденных пользователей"/>
             }
-          </div>
-        </div>
+
       </div>
     </div>
   </div>

@@ -3,6 +3,7 @@ import {Events as EventsPeople, people as storePeopleProperties} from '../consta
 import io from 'socket.io-client';
 import {setUserProperties} from  '../actions/user';
 import {newSearchedPeople} from '../actions/people'
+import _ from 'lodash'
 
 // const for switch store states
 const searchPeopleInputValue = 'SearchPeopleInputValue';
@@ -23,7 +24,6 @@ class Root {
     this.storeUnsubscriber = store.subscribe(() => {
       this.storeHandlerChanges(store.getState());
     })
-
   }
 
   afterConnection() {
@@ -53,17 +53,24 @@ class Root {
     this.oldInputSearchPeopleValue = this.newInputSearchPeopleValue;
     this.newInputSearchPeopleValue = this.selectStoreState(state, searchPeopleInputValue);
     this.currentUsername = this.selectStoreState(state, currentUsername);
-    this.currentFriends = this.selectStoreState(state, currentFriends);
+    this.oldUserFriends = this.newUserFriends;
+    this.newUserFriends = this.selectStoreState(state, currentFriends);
 
     if (this.oldInputSearchPeopleValue !== this.newInputSearchPeopleValue) {
       let data = {
         username: this.currentUsername,
-        friends: this.currentFriends,
+        friends: this.newUserFriends,
         input: this.newInputSearchPeopleValue
       };
       data = JSON.stringify(data);
 
+      console.log(data);
       this.connection.emit(EventsPeople.changeValueInputSearchPeople, data);
+    } else if (!(_.isEqual(this.oldUserFriends, this.newUserFriends))) {
+      let data = this.newUserFriends;
+      data = JSON.stringify(data);
+
+      this.connection.emit(EventsUser.updateUserFriends, data);
     }
   }
 
