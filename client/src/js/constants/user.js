@@ -2,6 +2,7 @@ export const Events = {
   connected: 'connect',
   disconnected: 'disconnect',
   getUserData: "GET:USER:DATA",
+  updateUserFriends: "UPDATE:USER:FRIENDS",
   newUserData: "NEW:USER:DATA"
 };
 

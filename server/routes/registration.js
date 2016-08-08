@@ -19,7 +19,6 @@ router.post('/', function (req, res) {
     username: req.body.username
   }), req.body.password, function (error, account) {
     if (error) {
-
       console.error(error);
 
       if (error.name === 'UserExistsError')

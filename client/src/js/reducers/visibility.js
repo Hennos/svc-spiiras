@@ -3,7 +3,7 @@ import {TOGGLE_SIDE_MENU_VISIBILITY} from '../constants/visibility'
 import {sideMenuToggleKey} from '../constants/visibility'
 import {appComponentsTogglesKey} from '../constants/visibility'
 import {state as initialState} from '../states/visibility'
-
+// Вместо toggle на false по всем элементам хранить текущий активный и по action-у toggle-ить с новым
 const componentsVisibilityFilter = function (state = initialState, action) {
   switch (action.type) {
     case TOGGLE_COMPONENT_VISIBILITY:

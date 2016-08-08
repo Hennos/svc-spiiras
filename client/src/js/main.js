@@ -4,7 +4,6 @@ import { Provider } from 'react-redux';
 import ReactDom from 'react-dom';
 import thunk from 'redux-thunk';
 
-
 import SideMenu from './components/SideMenu';
 import VideoCameraComponent from './components/VideoCamera';
 import PeoplesComponent from './components/People';
@@ -20,7 +19,6 @@ root.on('connect', function () {
 root.on('disconnect', function () {
   console.log('disconnect')
 });*/
-
 
 const App = () => (
   <div>
