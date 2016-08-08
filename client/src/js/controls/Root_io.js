@@ -64,7 +64,6 @@ class Root {
       };
       data = JSON.stringify(data);
 
-      console.log(data);
       this.connection.emit(EventsPeople.changeValueInputSearchPeople, data);
     } else if (!(_.isEqual(this.oldUserFriends, this.newUserFriends))) {
       let data = this.newUserFriends;

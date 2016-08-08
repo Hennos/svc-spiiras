@@ -46,7 +46,6 @@ function Root(io) {
     });
 
     socket.on(Events.changeValueInputSearchPeople, function (pack) {
-      console.log(pack);
       var data = JSON.parse(pack);
       if (data.input != '') {
         userModule.find({

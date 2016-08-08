@@ -3,52 +3,71 @@ import {connect} from 'react-redux';
 import {typeMan} from '../constants/man'
 import {setUserProperties} from '../actions/user'
 
-let Man = ({addToFriends, removeFromFriends, image, username, firstName, lastName, place, type}) => (
-  <div className="man_wrapper">
-    <div className="man">
-      <div className="img_place">
-        {(image != null) ?
-          <img src={image} alt="Нет изображения"/>
-          :
-          <p className="fa fa-question-circle" aria-hidden="true"></p>
-        }
+class Man extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    const {addToFriends, removeFromFriends, image, username, firstName, lastName, place, type} = this.props;
+    return (
+      <div className="man_wrapper">
+        <div className="man">
+
+          <div className="img_place">{
+            (image != null) ?
+              <img src={image} alt="Нет изображения"/>
+              :
+              <p className="fa fa-question-circle" aria-hidden="true"></p>
+          }
+          </div>
+
+          <ul className="name_place">
+
+            <li className="name">
+              <div className="username">{username + '\n'}</div>
+              <div className="allName">{
+                (lastName != null) ? lastName : ''} {(firstName != null) ? firstName : ''
+              }
+              </div>
+            </li>
+            <li className="place">{place}</li>
+
+          </ul>
+
+          <ul className="buttons_wrapper">
+            {Man.createPushButton("fa fa-phone")}
+            {this.createFriendTogglingButton(type)}
+            {Man.createPushButton("fa fa-search")}
+          </ul>
+
+        </div>
       </div>
-      <ul className="name_place">
-        <li className="name">
-          <div className="username">{username + '\n'}</div>
-          <div className="allName">
-            {(lastName != null) ? lastName : ''} {(firstName != null) ? firstName : ''}
-          </div>
-        </li>
-        <li className="place">{place}</li>
-      </ul>
-      <ul className="buttons_wrapper">
+    );
+  };
 
-        <li className="button_wrapper">
-          <div className="button">
-            <p className="fa fa-phone"></p>
-          </div>
-        </li>
-        <li className="button_wrapper">
-          <div className="button">
-            <p className="fa fa-plus-circle" onClick={addToFriends}></p>
-          </div>
-        </li>
-        <li className="button_wrapper">
-          <div className="button">
-            <p className="fa fa-minus-circle" onClick={removeFromFriends}></p>
-          </div>
-        </li>
-        <li className="button_wrapper">
-          <div className="button">
-            <p className="fa fa-search"></p>
-          </div>
-        </li>
-      </ul>
+  createFriendTogglingButton = (type) => {
+    if (type == "friend") {
+      return Man.createPushButton("fa fa-minus-circle", this.props.removeFromFriends);
+    } else {
+      return Man.createPushButton("fa fa-plus-circle", this.props.addToFriends);
+    }
+  };
 
-    </div>
-  </div>
-);
+  static createPushButton = (className = "default-button", eventHandler = null) => {
+    return (
+      <li className="button_wrapper">
+        <div className="button">{
+          (!eventHandler) ?
+            <p className={className}></p>
+            :
+            <p className={className} onClick={eventHandler}></p>
+        }
+        </div>
+      </li>
+    )
+  };
+}
 
 const mapEventHandlerProps = (dispatch) => {
   return {
@@ -61,6 +80,4 @@ const mapEventHandlerProps = (dispatch) => {
   }
 };
 
-Man = connect(mapEventHandlerProps)(Man);
-
-export default Man;
+export default connect(mapEventHandlerProps)(Man);
