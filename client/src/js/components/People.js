@@ -6,30 +6,7 @@ import {user} from '../constants/user'
 import {people} from '../constants/people'
 import {setInputSearchPeopleValue} from  '../actions/people'
 
-import Man from './Man'
-
-class PeopleArea extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const {people, title, type} = this.props;
-    return (
-      <div className="module_wrapper">
-        <div className="info_block">
-          <p>{title}</p>
-        </div>
-        {people.map(man =>
-          <Man
-            key={man.username}
-            type={type}
-            {...man}
-          />)}
-      </div>
-    );
-  }
-}
+import PeopleArea from './PeopleArea'
 
 class People extends React.Component {
   constructor(props) {
