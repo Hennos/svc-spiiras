@@ -1,4 +1,4 @@
-export const typeMan = {
+export const manType = {
   friend: 'friend',
   other: 'other'
 };

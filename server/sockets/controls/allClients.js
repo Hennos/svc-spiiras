@@ -48,10 +48,12 @@ function Root(io) {
     socket.on(Events.changeValueInputSearchPeople, function (pack) {
       var data = JSON.parse(pack);
       if (data.input != '') {
+        const regexPattern = new RegExp('^' + data.input + '.*', 'i');
+        const ninPattern = data.friends.concat(data.username);
         userModule.find({
             username: {
-              $regex: new RegExp('^' + data.input + '.*', 'i'),
-              $nin: data.friends.concat(data.username)
+              $regex: regexPattern,
+              $nin: ninPattern
             }
           }, {_id: 0, username: 1},
           function (err, docs) {

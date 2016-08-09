@@ -7,16 +7,16 @@ export const setUserProperties = (user) => {
   }
 };
 
-export const addFriendToUser = (friendName) => {
+export const addFriendToUser = (friend) => {
   return {
     type: Events.addFriendToUser,
-    friendName
+    friend
   }
 };
 
-export const removeFriendFromUser = (friendName) => {
+export const removeFriendFromUser = (friend) => {
   return {
     type: Events.removeFriendFromUser,
-    friendName
+    friend
   }
 };

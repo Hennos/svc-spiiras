@@ -5,18 +5,21 @@ import {state as initialState} from '../states/user'
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case Events.newUserData:
-      action.user.friends = Immutable.Set(action.user.friends);
-      return state.merge(Immutable.Map(action.user));
+      let updatedUser = action.user;
+      updatedUser.friends = Immutable.Set(action.user.friends);
+      return state.merge(Immutable.Map(updatedUser));
     case Events.addFriendToUser:
       const friendsWithAdding = state
         .get(userFields.friends)
-        .add({username: action.friendName});
+        .add(action.friend);
       return state.set(userFields.friends, friendsWithAdding);
     case Events.removeFriendFromUser:
-      const friendsWithRemoving = state
+      const friendsWithoutRemoving = state
         .get(userFields.friends)
-        .delete({username: action.friendName});
-      return state.set(userFields.friends, friendsWithRemoving);
+        .filterNot((friend) => {
+          return Object.is(friend.username, action.friend.username)
+        });
+      return state.set(userFields.friends, friendsWithoutRemoving);
     default:
       return state;
   }

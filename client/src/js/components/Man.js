@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {typeMan} from '../constants/man'
+import _ from 'lodash'
+import {manType} from '../constants/man'
+import {user as userFields} from '../constants/user'
 import {addFriendToUser, removeFriendFromUser} from '../actions/user'
 
 class Man extends React.Component {
@@ -47,17 +49,21 @@ class Man extends React.Component {
   createFriendTogglingButton = (type) => {
     if (type == "friend") {
       return Man.createPushButton("fa fa-minus-circle", this.removeFromFriends);
-    } else {
+    } else if (type == "other") {
       return Man.createPushButton("fa fa-plus-circle", this.addToFriends);
     }
   };
 
   addToFriends = () => {
-    this.props.dispatch(addFriendToUser(this.props.username));
+    this.props.dispatch(addFriendToUser(
+      _.pick(this.props, Object.keys(userFields))
+    ));
   };
 
   removeFromFriends = () => {
-    this.props.dispatch(removeFriendFromUser(this.props.username));
+    this.props.dispatch(removeFriendFromUser(
+      _.pick(this.props, Object.keys(userFields))
+    ));
   };
 
   static createPushButton = (className = "default-button", eventHandler = null) => {

@@ -3,7 +3,6 @@ import {Events as EventsPeople, people as storePeopleProperties} from '../consta
 import io from 'socket.io-client';
 import {setUserProperties} from  '../actions/user';
 import {newSearchedPeople} from '../actions/people'
-import _ from 'lodash'
 
 // const for switch store states
 const searchPeopleInputValue = 'SearchPeopleInputValue';
@@ -64,7 +63,7 @@ class Root {
       data = JSON.stringify(data);
 
       this.connection.emit(EventsPeople.changeValueInputSearchPeople, data);
-    } else if (!(_.isEqual(this.oldUserFriends, this.newUserFriends))) {
+    } else if (!(Object.is(this.oldUserFriends, this.newUserFriends))) {
       let data = this.newUserFriends;
       data = JSON.stringify(data);
 
@@ -79,7 +78,9 @@ class Root {
           .get(storeUserProperties.username);
       case currentFriends:
         return state.user
-          .get(storeUserProperties.friends);
+          .get(storeUserProperties.friends)
+          .toArray()
+          .map((friend) => friend.username);
       case searchPeopleInputValue:
         return state.people
           .get(storePeopleProperties.valueInputSearchPeople);
