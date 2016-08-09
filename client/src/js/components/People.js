@@ -2,8 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {componentsVisibilityToggles} from '../constants/visibility'
 import {appComponentsTogglesKey} from '../constants/visibility'
-import {user} from '../constants/user'
-import {people} from '../constants/people'
+import {user as userFields} from '../constants/user'
+import {people as peopleAction} from '../constants/people'
 import {setInputSearchPeopleValue} from  '../actions/people'
 
 import PeopleArea from './PeopleArea'
@@ -65,9 +65,10 @@ const mapStatePeoplesProps = (state, ownProps) => {
       .get(appComponentsTogglesKey)
       .get(componentsVisibilityToggles.peopleArea),
     friends: state.user
-      .get(user.friends),
+      .get(userFields.friends)
+      .toArray(),
     people: state.people
-      .get(people.newSearchedPeople)
+      .get(peopleAction.newSearchedPeople)
   };
 };
 
