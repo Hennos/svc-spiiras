@@ -1,7 +1,8 @@
-import {Events as EventsUser, user as storeUserProperties} from '../constants/user';
+import {Events as EventsUser, user as storeUserProperties} from '../constants/user'
 import {Events as EventsPeople, people as storePeopleProperties} from '../constants/people'
-import io from 'socket.io-client';
-import {setUserProperties} from  '../actions/user';
+import io from 'socket.io-client'
+import _ from 'lodash'
+import {setUserProperties} from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
 
 // const for switch store states
@@ -54,20 +55,18 @@ class Root {
     this.oldUserFriends = this.newUserFriends;
     this.newUserFriends = this.selectStoreState(state, currentFriends);
 
+    let data = {
+      username: this.currentUsername,
+      friends: this.newUserFriends,
+      input: this.newInputSearchPeopleValue
+    };
+
     if (this.oldInputSearchPeopleValue !== this.newInputSearchPeopleValue) {
-      let data = {
-        username: this.currentUsername,
-        friends: this.newUserFriends,
-        input: this.newInputSearchPeopleValue
-      };
-      data = JSON.stringify(data);
-
-      this.connection.emit(EventsPeople.changeValueInputSearchPeople, data);
-    } else if (!(Object.is(this.oldUserFriends, this.newUserFriends))) {
-      let data = this.newUserFriends;
-      data = JSON.stringify(data);
-
-      this.connection.emit(EventsUser.updateUserFriends, data);
+      this.connection.emit(EventsPeople.changePatternSearchPeople, JSON.stringify(data));
+    }
+    else if (this.oldUserFriends.length !== this.newUserFriends.length) {
+      this.connection.emit(EventsUser.updateUserFriends, JSON.stringify(data.friends));
+      this.connection.emit(EventsPeople.changePatternSearchPeople, JSON.stringify(data));
     }
   }
 

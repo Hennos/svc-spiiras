@@ -7,7 +7,7 @@ var Events = {
   updateUserFriends: "UPDATE:USER:FRIENDS",
   newUserData: "NEW:USER:DATA",
   changePeople: "NEW:SEARCH_PEOPLE:PEOPLE",
-  changeValueInputSearchPeople: "NEW:SEARCH_PEOPLE:VALUE"
+  changePatternSearchPeople: "NEW:SEARCH_PEOPLE:VALUE"
 };
 
 var userModule = require('../../mongoose/models/user');
@@ -20,8 +20,9 @@ function Root(io) {
     console.log("this work");
     _(clients).forEach(function (client) {
       console.log(client.request.user.username === socket.request.user.username);
-      if (client.request.user.username === socket.request.user.username)
+      if (client.request.user.username === socket.request.user.username) {
         client.disconnect(true);
+      }
     });
 
     clients.push(socket);
@@ -31,21 +32,19 @@ function Root(io) {
     });
 
     socket.on(Events.getUserData, function () {
-      socket.emit(Events.newUserData, JSON.stringify(_.pick(socket.request.user, [
-        'username',
-        'friends'
-      ])));
+      socket.emit(Events.newUserData, JSON.stringify(
+        _.pick(socket.request.user, [
+          'username',
+          'friends'
+        ]))
+      );
     });
 
-/*    socket.on(Events.updateUserFriends, function () {
+    socket.on(Events.updateUserFriends, function () {
       console.log("Сработало");
-      socket.emit(Events.newUserData, JSON.stringify(_.pick(socket.request.user, [
-        'username',
-        'friends'
-      ])));
-    });*/
+    });
 
-    socket.on(Events.changeValueInputSearchPeople, function (pack) {
+    socket.on(Events.changePatternSearchPeople, function (pack) {
       var data = JSON.parse(pack);
       if (data.input != '') {
         const regexPattern = new RegExp('^' + data.input + '.*', 'i');
