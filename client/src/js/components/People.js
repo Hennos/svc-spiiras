@@ -64,8 +64,10 @@ const mapStatePeoplesProps = (state, ownProps) => {
     visible: state.componentsVisibilityFilter
       .get(appComponentsTogglesKey)
       .get(componentsVisibilityToggles.peopleArea),
-    friends: state.user.get(user.friends),
-    people: state.people.get(people.newSearchedPeople)
+    friends: state.user
+      .get(user.friends),
+    people: state.people
+      .get(people.newSearchedPeople)
   };
 };
 

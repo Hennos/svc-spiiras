@@ -76,11 +76,14 @@ class Root {
   selectStoreState(state, name) {
     switch (name) {
       case currentUsername:
-        return state.user.get(storeUserProperties.username);
+        return state.user
+          .get(storeUserProperties.username);
       case currentFriends:
-        return state.user.get(storeUserProperties.friends);
+        return state.user
+          .get(storeUserProperties.friends);
       case searchPeopleInputValue:
-        return state.people.get(storePeopleProperties.valueInputSearchPeople);
+        return state.people
+          .get(storePeopleProperties.valueInputSearchPeople);
     }
   }
 

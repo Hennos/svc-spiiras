@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {typeMan} from '../constants/man'
-import {setUserProperties} from '../actions/user'
+import {addFriendToUser, removeFriendFromUser} from '../actions/user'
 
 class Man extends React.Component {
   constructor(props) {
@@ -46,10 +46,18 @@ class Man extends React.Component {
 
   createFriendTogglingButton = (type) => {
     if (type == "friend") {
-      return Man.createPushButton("fa fa-minus-circle", this.props.removeFromFriends);
+      return Man.createPushButton("fa fa-minus-circle", this.removeFromFriends);
     } else {
-      return Man.createPushButton("fa fa-plus-circle", this.props.addToFriends);
+      return Man.createPushButton("fa fa-plus-circle", this.addToFriends);
     }
+  };
+
+  addToFriends = () => {
+    this.props.dispatch(addFriendToUser(this.props.username));
+  };
+
+  removeFromFriends = () => {
+    this.props.dispatch(removeFriendFromUser(this.props.username));
   };
 
   static createPushButton = (className = "default-button", eventHandler = null) => {
@@ -67,15 +75,8 @@ class Man extends React.Component {
   };
 }
 
-const mapEventHandlerProps = (dispatch) => {
-  return {
-    addToFriends: () => {
-      console.log(this);
-    },
-    removeFromFriends: () => {
-      console.log(this);
-    }
-  }
+const mapDispatchPeoplesProps = (dispatch) => {
+  return {};
 };
 
-export default connect(mapEventHandlerProps)(Man);
+export default connect(mapDispatchPeoplesProps)(Man);

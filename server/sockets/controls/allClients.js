@@ -4,7 +4,8 @@ var Events = {
   connected: 'connection',
   disconnect: 'disconnect',
   getUserData: "GET:USER:DATA",
-  updateUserFriends: "UPDATE:USER:FRIENDS",
+  addFriendToUser: "ADD:FRIEND:TO:USER",
+  removeFriendFromUser: "REMOVE:FRIEND:FROM:USER",
   newUserData: "NEW:USER:DATA",
   changePeople: "NEW:SEARCH_PEOPLE:PEOPLE",
   changeValueInputSearchPeople: "NEW:SEARCH_PEOPLE:VALUE"
