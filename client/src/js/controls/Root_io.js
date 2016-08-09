@@ -16,37 +16,37 @@ class Root {
     this.store = store;
 
     this.connection = io(address, {reconnection: false});
-    this.connection.on(EventsUser.connected, this.afterConnection.bind(this));
+    this.connection.on(EventsUser.connected, this.afterConnection);
     this.connection.on(EventsUser.disconnected, this.afterDisconnection);
-    this.connection.on(EventsUser.newUserData, this.newUserData.bind(this));
-    this.connection.on(EventsPeople.changePeople, this.newSearchPeople.bind(this));
+    this.connection.on(EventsUser.newUserData, this.newUserData);
+    this.connection.on(EventsPeople.changePeople, this.newSearchPeople);
 
     this.storeUnsubscriber = store.subscribe(() => {
       this.storeHandlerChanges(store.getState());
     })
   }
 
-  afterConnection() {
+  afterConnection = () => {
     console.log('connected');
     this.getUserData();
-  }
+  };
 
-  afterDisconnection() {
+  afterDisconnection = () => {
     console.log('disconnect')
-  }
+  };
+
+  newUserData = (user) => {
+    this.store.dispatch(setUserProperties(JSON.parse(user)));
+  };
+
+  newSearchPeople = (people) => {
+    this.store.dispatch(newSearchedPeople(JSON.parse(people)));
+  };
 
   getUserData() {
     console.log('emitted');
     console.log(EventsUser.getUserData);
     this.connection.emit(EventsUser.getUserData)
-  }
-
-  newUserData(user) {
-    this.store.dispatch(setUserProperties(JSON.parse(user)));
-  }
-
-  newSearchPeople(people) {
-    this.store.dispatch(newSearchedPeople(JSON.parse(people)));
   }
 
   storeHandlerChanges(state) {
