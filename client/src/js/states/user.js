@@ -7,5 +7,5 @@ export const state = Immutable.Map([
   [user.firstName, null],
   [user.lastName, null],
   [user.image, null],
-  [user.friends, Immutable.List()]
+  [user.friends, Immutable.Set()]
 ]);

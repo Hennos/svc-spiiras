@@ -6,7 +6,7 @@ const peopleReducer = (state = initialState, action) => {
     case Events.changeValueInputSearchPeople:
       return state.set(people.valueInputSearchPeople, action.value);
     case Events.changePeople:
-          return state.set(people.newSearchedPeople, action.people);
+      return state.set(people.newSearchedPeople, action.people);
     default:
       return state;
   }

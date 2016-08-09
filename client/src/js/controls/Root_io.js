@@ -11,7 +11,6 @@ const currentUsername = 'CurrentUsername';
 const currentFriends = 'CurrentFriends';
 
 class Root {
-
   constructor(address, store) {
     this.store = store;
 
@@ -86,7 +85,6 @@ class Root {
           .get(storePeopleProperties.valueInputSearchPeople);
     }
   }
-
 }
 
 export default Root;

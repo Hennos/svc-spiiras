@@ -4,8 +4,7 @@ var Events = {
   connected: 'connection',
   disconnect: 'disconnect',
   getUserData: "GET:USER:DATA",
-  addFriendToUser: "ADD:FRIEND:TO:USER",
-  removeFriendFromUser: "REMOVE:FRIEND:FROM:USER",
+  updateUserFriends: "UPDATE:USER:FRIENDS",
   newUserData: "NEW:USER:DATA",
   changePeople: "NEW:SEARCH_PEOPLE:PEOPLE",
   changeValueInputSearchPeople: "NEW:SEARCH_PEOPLE:VALUE"
@@ -38,13 +37,13 @@ function Root(io) {
       ])));
     });
 
-    socket.on(Events.updateUserFriends, function () {
+/*    socket.on(Events.updateUserFriends, function () {
       console.log("Сработало");
       socket.emit(Events.newUserData, JSON.stringify(_.pick(socket.request.user, [
         'username',
         'friends'
       ])));
-    });
+    });*/
 
     socket.on(Events.changeValueInputSearchPeople, function (pack) {
       var data = JSON.parse(pack);
