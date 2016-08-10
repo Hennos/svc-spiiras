@@ -4,7 +4,6 @@ export const Events = {
   getUserData: "GET:USER:DATA",
   addFriendToUser: "ADD:FRIEND:TO:USER",
   removeFriendFromUser: "REMOVE:FRIEND:FROM:USER",
-  updateUserFriends: "UPDATE:USER:FRIENDS",
   newUserData: "NEW:USER:DATA"
 };
 
@@ -16,3 +15,5 @@ export const user = {
   image: 'image',
   lastName: 'lastName'
 };
+
+export const updatedUserFriend = 'updatedUserFriend';
