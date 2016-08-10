@@ -58,7 +58,10 @@ class Root {
   emitFriendsEvent(userName, friendName, type) {
     this.connection.emit(
       type,
-      JSON.stringify({userName, friendName})
+      JSON.stringify({
+        username: userName,
+        friend: friendName
+      })
     );
   }
 

@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var eachSeries = require('async/eachSeries');
 
 var Events = {
   connected: 'connection',
@@ -20,7 +21,6 @@ function Root(io) {
   io.on(Events.connected, function (socket) {
     console.log("this work");
     _(clients).forEach(function (client) {
-      console.log(client.request.user.username === socket.request.user.username);
       if (client.request.user.username === socket.request.user.username) {
         client.disconnect(true);
       }
@@ -33,20 +33,55 @@ function Root(io) {
     });
 
     socket.on(Events.getUserData, function () {
-      socket.emit(Events.newUserData, JSON.stringify(
-        _.pick(socket.request.user, [
-          'username',
-          'friends'
-        ]))
+      var data = _.pick(socket.request.user, [
+        'username',
+        'friends'
+      ]);
+
+      var friends = [];
+      eachSeries(
+        data.friends,
+        function (friend, callback) {
+          userModel.findById(friend, function (err, found) {
+            if (err) return callback(err);
+            friends.push(
+              _.pick(found, ['username'])
+            );
+            callback();
+          })
+        },
+        function (err) {
+          if (err) throw err;
+          data.friends = friends;
+          socket.emit(Events.newUserData, JSON.stringify(data));
+        }
       );
     });
 
     socket.on(Events.addFriendToUser, function (pack) {
-      console.log(pack);
+      var data = JSON.parse(pack);
+      userModel.findOne({username: data.username}, function (err, user) {
+        if (err) throw err;
+        userModel.findOne({username: data.friend}, function (err, friend) {
+          if (err) throw err;
+          user.friends.push(friend._id);
+          user.save();
+        })
+      });
     });
 
     socket.on(Events.removeFriendFromUser, function (pack) {
-      console.log(pack);
+      var data = JSON.parse(pack);
+      userModel.findOne({username: data.username}, function (err, user) {
+        if (err) throw err;
+        userModel.findOne({username: data.friend}, function (err, friend) {
+          if (err) throw err;
+          user.friends = _.filter(user.friends, function (iterFriend) {
+            return !(_.isEqual(iterFriend, friend._id));
+          });
+          user.save();
+        })
+      });
     });
 
     socket.on(Events.changePatternSearchPeople, function (pack) {
