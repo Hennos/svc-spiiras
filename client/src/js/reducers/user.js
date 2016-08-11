@@ -1,5 +1,5 @@
 import Immutable from 'immutable';
-import {Events, user as userFields, updatedUserFriend} from '../constants/user'
+import {Events, user as userFields, userRequest} from '../constants/user'
 import {state as initialState} from '../states/user'
 
 const userReducer = (state = initialState, action) => {
@@ -17,28 +17,20 @@ const userReducer = (state = initialState, action) => {
 
 function handleUpdateUserAction(state, action) {
   let updatedUser = action.user;
-  updatedUser.friends = Immutable.Set(action.user.friends);
+  updatedUser[userFields.friends] = Immutable.Set(updatedUser[userFields.friends]);
+  updatedUser[userRequest.addingFriend] = null;
+  updatedUser[userRequest.removingFriend] = null;
   return state.merge(Immutable.Map(updatedUser));
 }
 
 function handleAddFriendAction(state, action) {
-  const friendsWithAdding = state
-    .get(userFields.friends)
-    .add(action.friend);
   return state
-    .set(userFields.friends, friendsWithAdding)
-    .set(updatedUserFriend, action.friend.username);
+    .set(userRequest.addingFriend, action.friend[userFields.username]);
 }
 
 function handleRemoveFriendAction(state, action) {
-  const friendsWithoutRemoving = state
-    .get(userFields.friends)
-    .filterNot((friend) => {
-      return Object.is(friend.username, action.friend.username)
-    });
   return state
-    .set(userFields.friends, friendsWithoutRemoving)
-    .set(updatedUserFriend, action.friend.username);
+    .set(userRequest.removingFriend, action.friend[userFields.username]);
 }
 
 export default userReducer;

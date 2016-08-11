@@ -16,4 +16,7 @@ export const user = {
   lastName: 'lastName'
 };
 
-export const updatedUserFriend = 'updatedUserFriend';
+export const userRequest = {
+  addingFriend: 'addingFriend',
+  removingFriend: 'removingFriend'
+};
