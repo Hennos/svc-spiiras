@@ -48,7 +48,6 @@ class Root {
   };
 
   removedFriendOnServer = (friend) => {
-    console.log(friend);
     this.store.dispatch(removeFriendFromUserOnServer(friend));
   };
 

@@ -17,10 +17,6 @@ class People extends React.Component {
     const {visible, friends, inputValueChange, people} = this.props;
     return (
       <div className={(visible ? "" : "display_none") + " friends-component_wrapper"}>
-        <div className="button-close-component_wrapper">
-          <p className="button fa fa-times-circle"></p>
-        </div>
-
         <div className="search-area_wrapper">
           <div className="name_wrapper">
             <div className="name">
