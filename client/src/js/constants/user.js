@@ -2,8 +2,10 @@ export const Events = {
   connected: 'connect',
   disconnected: 'disconnect',
   getUserData: "GET:USER:DATA",
-  addFriendToUser: "ADD:FRIEND:TO:USER",
-  removeFriendFromUser: "REMOVE:FRIEND:FROM:USER",
+  addFriendToUserOnServer: "ADD:FRIEND:TO:USER:SERVER",
+  removeFriendFromUserOnServer: "REMOVE:FRIEND:FROM:USER:SERVER",
+  addFriendToUserOnClient: "ADD:FRIEND:TO:USER:CLIENT",
+  removeFriendFromUserOnClient: "REMOVE:FRIEND:FROM:USER:CLIENT",
   newUserData: "NEW:USER:DATA"
 };
 
@@ -16,7 +18,7 @@ export const user = {
   lastName: 'lastName'
 };
 
-export const userRequest = {
+export const userRequests = {
   addingFriend: 'addingFriend',
   removingFriend: 'removingFriend'
 };

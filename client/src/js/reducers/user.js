@@ -1,15 +1,19 @@
 import Immutable from 'immutable';
-import {Events, user as userFields, userRequest} from '../constants/user'
+import {Events, user as userFields, userRequests} from '../constants/user'
 import {state as initialState} from '../states/user'
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case Events.newUserData:
       return handleUpdateUserAction(state, action);
-    case Events.addFriendToUser:
-      return handleAddFriendAction(state, action);
-    case Events.removeFriendFromUser:
-      return handleRemoveFriendAction(state, action);
+    case Events.addFriendToUserOnClient:
+      return handleAddingFriendActionOnClient(state, action);
+    case Events.removeFriendFromUserOnClient:
+      return handleRemovingFriendActionOnClient(state, action);
+    case Events.addFriendToUserOnServer:
+      return handleAddingFriendActionOnServer(state, action);
+    case Events.removeFriendFromUserOnServer:
+      return handleRemovingFriendActionOnServer(state,action);
     default:
       return state;
   }
@@ -18,19 +22,37 @@ const userReducer = (state = initialState, action) => {
 function handleUpdateUserAction(state, action) {
   let updatedUser = action.user;
   updatedUser[userFields.friends] = Immutable.Set(updatedUser[userFields.friends]);
-  updatedUser[userRequest.addingFriend] = null;
-  updatedUser[userRequest.removingFriend] = null;
   return state.merge(Immutable.Map(updatedUser));
 }
 
-function handleAddFriendAction(state, action) {
+function handleAddingFriendActionOnServer(state, action) {
+  let updatedFriends = state
+    .get(userFields.friends)
+    .add(action.friend);
   return state
-    .set(userRequest.addingFriend, action.friend[userFields.username]);
+    .set(userFields.friends, updatedFriends)
+    .set(userRequests.addingFriend, null);
 }
 
-function handleRemoveFriendAction(state, action) {
+function handleRemovingFriendActionOnServer(state, action) {
+  let updatedFriends = state
+    .get(userFields.friends)
+    .filter((friend) => {
+      return friend.username !== action.friend.username;
+    });
   return state
-    .set(userRequest.removingFriend, action.friend[userFields.username]);
+    .set(userFields.friends, updatedFriends)
+    .set(userRequests.removingFriend, null);
+}
+
+function handleAddingFriendActionOnClient(state, action) {
+  return state
+    .set(userRequests.addingFriend, action.friendName);
+}
+
+function handleRemovingFriendActionOnClient(state, action) {
+  return state
+    .set(userRequests.removingFriend, action.friendName);
 }
 
 export default userReducer;

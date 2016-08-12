@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash'
 import {manType} from '../constants/man'
 import {user as userFields} from '../constants/user'
-import {addFriendToUser, removeFriendFromUser} from '../actions/user'
+import {addFriendToUserOnClient, removeFriendFromUserOnClient} from '../actions/user'
 
 class Man extends React.Component {
   constructor(props) {
@@ -55,15 +55,11 @@ class Man extends React.Component {
   };
 
   addToFriends = () => {
-    this.props.dispatch(addFriendToUser(
-      _.pick(this.props, Object.keys(userFields))
-    ));
+    this.props.dispatch(addFriendToUserOnClient(this.props.username));
   };
 
   removeFromFriends = () => {
-    this.props.dispatch(removeFriendFromUser(
-      _.pick(this.props, Object.keys(userFields))
-    ));
+    this.props.dispatch(removeFriendFromUserOnClient(this.props.username));
   };
 
   static createPushButton = (className = "default-button", eventHandler = null) => {
@@ -82,7 +78,9 @@ class Man extends React.Component {
 }
 
 const mapDispatchPeoplesProps = (dispatch) => {
-  return {};
+  return {
+    dispatch
+  };
 };
 
 export default connect(mapDispatchPeoplesProps)(Man);

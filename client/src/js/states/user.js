@@ -1,13 +1,13 @@
 import Immutable from 'immutable'
-import {user as userField, userRequest} from '../constants/user'
+import {user as userFields, userRequests} from '../constants/user'
 
 export const state = Immutable.Map([
-  [userField.username, null],
-  [userField.place, null],
-  [userField.firstName, null],
-  [userField.lastName, null],
-  [userField.image, null],
-  [userField.friends, Immutable.Set()],
-  [userRequest.addingFriend, null],
-  [userRequest.removingFriend, null]
+  [userFields.username, null],
+  [userFields.place, null],
+  [userFields.firstName, null],
+  [userFields.lastName, null],
+  [userFields.image, null],
+  [userFields.friends, Immutable.Set()],
+  [userRequests.addingFriend, null],
+  [userRequests.removingFriend, null]
 ]);

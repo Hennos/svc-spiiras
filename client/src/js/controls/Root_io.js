@@ -1,24 +1,28 @@
-import {Events as EventsUser, user as storeUserProperties, updatedUserFriend} from '../constants/user'
-import {Events as EventsPeople, people as storePeopleProperties} from '../constants/people'
+import {Events as EventsUser, user as userFields, userRequests} from '../constants/user'
+import {Events as EventsPeople, people as peopleProperties} from '../constants/people'
 import io from 'socket.io-client'
 import _ from 'lodash'
 import {setUserProperties} from  '../actions/user'
+import {addFriendToUserOnServer} from  '../actions/user'
+import {removeFriendFromUserOnServer} from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
 
 // const for switch store states
 const searchPeopleInputValue = 'SearchPeopleInputValue';
-const currentUsername = 'CurrentUsername';
-const currentFriends = 'CurrentFriends';
-const updatedFriend = 'UpdatedFriend';
+const addingFriend = 'AddingFriend';
+const removingFriend = 'RemovingFriend';
 
 class Root {
   constructor(address, store) {
     this.store = store;
 
     this.connection = io(address, {reconnection: false});
+
     this.connection.on(EventsUser.connected, this.afterConnection);
     this.connection.on(EventsUser.disconnected, this.afterDisconnection);
     this.connection.on(EventsUser.newUserData, this.newUserData);
+    this.connection.on(EventsUser.addFriendToUserOnServer, this.addedFriendOnServer);
+    this.connection.on(EventsUser.removeFriendFromUserOnServer, this.removedFriendOnServer);
     this.connection.on(EventsPeople.changePeople, this.newSearchPeople);
 
     this.storeUnsubscriber = store.subscribe(() => {
@@ -39,12 +43,20 @@ class Root {
     this.store.dispatch(setUserProperties(JSON.parse(user)));
   };
 
+  addedFriendOnServer = (friend) => {
+    this.store.dispatch(addFriendToUserOnServer(friend));
+  };
+
+  removedFriendOnServer = (friend) => {
+    console.log(friend);
+    this.store.dispatch(removeFriendFromUserOnServer(friend));
+  };
+
   newSearchPeople = (people) => {
     this.store.dispatch(newSearchedPeople(JSON.parse(people)));
   };
 
   getUserData() {
-    console.log('emitted');
     this.connection.emit(EventsUser.getUserData)
   }
 
@@ -55,61 +67,46 @@ class Root {
     );
   }
 
-  emitFriendsEvent(userName, friendName, type) {
+  emitFriendsEvent(type, friendName) {
     this.connection.emit(
       type,
-      JSON.stringify({
-        username: userName,
-        friend: friendName
-      })
+      JSON.stringify(friendName)
     );
   }
 
   storeHandlerChanges(state) {
     this.oldInputSearchPeopleValue = this.newInputSearchPeopleValue;
     this.newInputSearchPeopleValue = this.selectStoreState(state, searchPeopleInputValue);
-    this.oldUserFriends = this.newUserFriends;
-    this.newUserFriends = this.selectStoreState(state, currentFriends);
-    this.currentUsername = this.selectStoreState(state, currentUsername);
 
-    let data = {
-      username: this.currentUsername,
-      friends: this.newUserFriends,
-      input: this.newInputSearchPeopleValue
-    };
-
+    const input = this.newInputSearchPeopleValue;
     if (this.oldInputSearchPeopleValue !== this.newInputSearchPeopleValue) {
-      this.emitChangeInputValueEvent(data);
+      this.emitChangeInputValueEvent(input);
     }
     else {
-      let friendName = this.selectStoreState(state, updatedFriend);
-      if (this.oldUserFriends.length < this.newUserFriends.length) {
-        this.emitFriendsEvent(this.currentUsername, friendName, EventsUser.addFriendToUser);
-        this.emitChangeInputValueEvent(data);
+      if (this.selectStoreState(state, addingFriend)) {
+        const nameAddingFriend = this.selectStoreState(state, addingFriend);
+        this.emitFriendsEvent(EventsUser.addFriendToUserOnClient, nameAddingFriend);
+        this.emitChangeInputValueEvent(input);
       }
-      else if (this.oldUserFriends.length > this.newUserFriends.length) {
-        this.emitFriendsEvent(this.currentUsername, friendName, EventsUser.removeFriendFromUser);
-        this.emitChangeInputValueEvent(data);
+      else if (this.selectStoreState(state, removingFriend)) {
+        const nameRemovingFriend = this.selectStoreState(state, removingFriend);
+        this.emitFriendsEvent(EventsUser.removeFriendFromUserOnClient, nameRemovingFriend);
+        this.emitChangeInputValueEvent(input);
       }
     }
   }
 
   selectStoreState(state, name) {
     switch (name) {
-      case currentUsername:
+      case addingFriend:
         return state.user
-          .get(storeUserProperties.username);
-      case currentFriends:
+          .get(userRequests.addingFriend);
+      case removingFriend:
         return state.user
-          .get(storeUserProperties.friends)
-          .toArray()
-          .map((friend) => friend.username);
-      case updatedFriend:
-        return state.user
-          .get(updatedUserFriend);
+          .get(userRequests.removingFriend);
       case searchPeopleInputValue:
         return state.people
-          .get(storePeopleProperties.valueInputSearchPeople);
+          .get(peopleProperties.valueInputSearchPeople);
     }
   }
 }

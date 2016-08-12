@@ -5,8 +5,10 @@ var Events = {
   connected: 'connection',
   disconnect: 'disconnect',
   getUserData: "GET:USER:DATA",
-  addFriendToUser: "ADD:FRIEND:TO:USER",
-  removeFriendFromUser: "REMOVE:FRIEND:FROM:USER",
+  addFriendToUserOnServer: "ADD:FRIEND:TO:USER:SERVER",
+  removeFriendFromUserOnServer: "REMOVE:FRIEND:FROM:USER:SERVER",
+  addFriendToUserOnClient: "ADD:FRIEND:TO:USER:CLIENT",
+  removeFriendFromUserOnClient: "REMOVE:FRIEND:FROM:USER:CLIENT",
   newUserData: "NEW:USER:DATA",
   changePeople: "NEW:SEARCH_PEOPLE:PEOPLE",
   changePatternSearchPeople: "NEW:SEARCH_PEOPLE:VALUE"
@@ -33,14 +35,14 @@ function Root(io) {
     });
 
     socket.on(Events.getUserData, function () {
-      var data = _.pick(socket.request.user, [
+      var user = _.pick(socket.request.user, [
         'username',
         'friends'
       ]);
 
       var friends = [];
       eachSeries(
-        data.friends,
+        user.friends,
         function (friend, callback) {
           userModel.findById(friend, function (err, found) {
             if (err) return callback(err);
@@ -52,54 +54,66 @@ function Root(io) {
         },
         function (err) {
           if (err) throw err;
-          data.friends = friends;
-          socket.emit(Events.newUserData, JSON.stringify(data));
+          user.friends = friends;
+          socket.emit(Events.newUserData, JSON.stringify(user));
         }
       );
     });
 
-    socket.on(Events.addFriendToUser, function (pack) {
-      var data = JSON.parse(pack);
-      userModel.findOne({username: data.username}, function (err, user) {
-        if (err) throw err;
-        userModel.findOne({username: data.friend}, function (err, friend) {
+    socket.on(Events.addFriendToUserOnClient, function (pack) {
+      var friendName = JSON.parse(pack);
+      var user = socket.request.user;
+      userModel.findOne(
+        {username: friendName},
+        function (err, friend) {
           if (err) throw err;
           user.friends.push(friend._id);
-          user.save();
-        })
-      });
+          user.save(function (err) {
+            if (err) throw err;
+            socket.emit(Events.addFriendToUserOnServer, _.pick(friend, ['username']));
+          });
+        }
+      )
     });
 
-    socket.on(Events.removeFriendFromUser, function (pack) {
-      var data = JSON.parse(pack);
-      userModel.findOne({username: data.username}, function (err, user) {
-        if (err) throw err;
-        userModel.findOne({username: data.friend}, function (err, friend) {
+    socket.on(Events.removeFriendFromUserOnClient, function (pack) {
+      var friendName = JSON.parse(pack);
+      var user = socket.request.user;
+      userModel.findOne(
+        {username: friendName},
+        {username: 1},
+        function (err, friend) {
           if (err) throw err;
-          user.friends = _.filter(user.friends, function (iterFriend) {
-            return !(_.isEqual(iterFriend, friend._id));
+          user.friends = _.filter(user.friends, function (curFriend) {
+            return !(_.isEqual(curFriend, friend._id));
           });
-          user.save();
-        })
-      });
+          user.save(function (err) {
+            if (err) throw err;
+            socket.emit(Events.removeFriendFromUserOnServer, _.pick(friend, 'username'));
+          });
+        }
+      )
     });
 
     socket.on(Events.changePatternSearchPeople, function (pack) {
-      var data = JSON.parse(pack);
-      if (data.input != '') {
-        const regexPattern = new RegExp('^' + data.input + '.*', 'i');
-        const ninPattern = data.friends.concat(data.username);
-        userModel.find({
-            username: {
-              $regex: regexPattern,
-              $nin: ninPattern
-            }
+      var input = JSON.parse(pack);
+      var user = _.pick(socket.request.user, [
+        'username',
+        'friends'
+      ]);
+      if (input != '') {
+        const regexFindPattern = new RegExp('^' + input + '.*', 'i');
+        userModel.find(
+          {
+            username: {$regex: regexFindPattern, $ne: user.username},
+            _id: {$nin: user.friends}
           },
           {_id: 0, username: 1},
-          function (err, docs) {
+          function (err, result) {
             if (err) throw err;
-            socket.emit(Events.changePeople, JSON.stringify(docs));
-          });
+            socket.emit(Events.changePeople, JSON.stringify(result));
+          }
+        );
       } else {
         socket.emit(Events.changePeople, '[]');
       }

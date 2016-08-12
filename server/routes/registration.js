@@ -14,7 +14,6 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res) {
-  console.log(req.body.email, req.body.username, req.body.password);
   User.register(new User({
     email: req.body.email,
     username: req.body.username
