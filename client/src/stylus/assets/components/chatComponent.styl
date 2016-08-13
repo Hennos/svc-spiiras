@@ -10,18 +10,45 @@
     .conference-area_wrapper
       margin auto
 
+      .conference-sides_wrapper
+        margin auto
+
+      .conference-disconnect-button_wrapper
+        display inline-block
+
+        .button
+          padding  0.4em 0
+
+          p
+            display block
+            //box-shadow inset 0 0 1px 1px main_cyan_color
+            padding  0.7em 0.8em
+            border 2px dashed main_middle_grey_color
+            border-radius 100%
+
+            font-size 1.3em
+            color main_dark_grey_color
+            margin 0 auto
+            &:hover, &:active
+              cursor pointer
+              box-shadow inset 0 0 20px 0 main_cyan_color
+              border-style solid
+              color main_dark_grey_color
+
     .friends-area_wrapper
-      flex-shrink 1
       border 2px solid main_middle_grey_color
       border-width 0px 0px 0px 2px
 
       .search-area_wrapper
+        display flex
+        flex-direction column
+        justify-content center
+
         padding 0.5em
         border 2px solid main_middle_grey_color
         border-width 0px 0px 2px 0px
 
         .name_wrapper
-          margin-left auto
 
           p
             display block
@@ -33,8 +60,6 @@
 
           input[type="text"]
             display block
-
-            margin-left auto
 
             border: 2px solid main_light_grey_color //цвет рамки
             border-width 2px 0px 2px 0px

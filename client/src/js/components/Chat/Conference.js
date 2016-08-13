@@ -14,7 +14,9 @@ class Conference extends React.Component {
         </div>
 
         <div className="conference-disconnect-button_wrapper">
-
+          <div className="button">
+            <p className="fa fa-square"></p>
+          </div>
         </div>
       </div>
     )
