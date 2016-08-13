@@ -1,4 +1,21 @@
+import {Events} from '../constants/chat'
 
- /* Created by user on 13.08.2016.
- *
-*/
+export const addNewSideToChat = (side) => {
+  return {
+    type: Events.addSide,
+    side
+  }
+};
+
+export const removeOldSideFromChat = (side) => {
+  return {
+    type: Events.removeSide,
+    side
+  }
+};
+
+export const closeChatConference = () => {
+  return {
+    type: Events.closeConference
+  }
+};

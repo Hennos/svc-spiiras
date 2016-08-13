@@ -1,4 +1,9 @@
+export const Events = {
+  addSide: 'ADD:SIDE:TO:CHAT',
+  removeSide: 'REMOVE:SIDE:FROM:CHAT',
+  closeConference: 'CLOSE:CONFERENCE'
+};
 
- /* Created by user on 13.08.2016.
- *
-*/
+export const chat = {
+  sides: 'sides'
+};

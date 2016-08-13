@@ -1,4 +1,6 @@
+import Immutable from 'immutable';
+import {chat} from '../constants/chat'
 
- /* Created by user on 13.08.2016.
- *
-*/
+export const state = Immutable.Map([
+  [chat.sides, Immutable.Set()]
+]);
