@@ -29,12 +29,12 @@ class App extends React.Component {
   render() {
     return (
       <div>
-        <SideMenu/>
         <div className="wrapper_components">
           <VideoCameraComponent/>
           <PeoplesComponent/>
           <ChatComponent/>
         </div>
+        <SideMenu/>
       </div>
     );
   }

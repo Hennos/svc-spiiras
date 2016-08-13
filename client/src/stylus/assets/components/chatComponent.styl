@@ -3,3 +3,47 @@
   opacity 0.8
   width 80%
   margin-left auto
+
+  .chat-component-block_wrapper
+    display: flex
+
+    .conference-area_wrapper
+      margin auto
+
+    .friends-area_wrapper
+      flex-shrink 1
+      border 2px solid main_middle_grey_color
+      border-width 0px 0px 0px 2px
+
+      .search-area_wrapper
+        padding 0.5em
+        border 2px solid main_middle_grey_color
+        border-width 0px 0px 2px 0px
+
+        .name_wrapper
+          margin-left auto
+
+          p
+            display block
+            padding-bottom 0.2em
+            font-weight bold
+
+        .search_wrapper
+          display block
+
+          input[type="text"]
+            display block
+
+            margin-left auto
+
+            border: 2px solid main_light_grey_color //цвет рамки
+            border-width 2px 0px 2px 0px
+            border-radius: 0
+
+            background: #ffffff !important // желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым
+            outline: none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
+            height: 1.4em
+            color: black
+            font-size: 1.3em
+            &:focus
+              border-bottom 2px solid main_dark_grey_color

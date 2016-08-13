@@ -72,11 +72,11 @@ const mapStateVideoCameraProps = (state, ownProps) => {
     visible: state.componentsVisibilityFilter
       .get(appComponentsTogglesKey)
       .get(componentsVisibilityToggles.videoCamera),
-    isWorking: state.videoCameraComponent.get(Parameters.isWorking),
-    isLoading: state.videoCameraComponent.get(Parameters.isLoading)
+    isWorking: state.videoCameraComponent
+      .get(Parameters.isWorking),
+    isLoading: state.videoCameraComponent
+      .get(Parameters.isLoading)
   };
 };
 
 export default connect(mapStateVideoCameraProps, mapDispatchVideoCameraProps)(VideoCameraComponent);
-
-

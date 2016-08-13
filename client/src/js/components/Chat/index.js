@@ -4,7 +4,7 @@ import {componentsVisibilityToggles} from '../../constants/visibility'
 import {appComponentsTogglesKey} from '../../constants/visibility'
 
 import Conference from './Conference'
-import Searching from './Searching'
+import Searching from './FriendList'
 
 class Chat extends React.Component {
   constructor(props) {
@@ -15,8 +15,10 @@ class Chat extends React.Component {
     const visible = this.props.visible;
     return (
       <div className={(visible ? "" : "display_none ") + "chat-component_wrapper"}>
-        <Conference/>
-        <Searching/>
+        <div className="chat-component-block_wrapper">
+          <Conference/>
+          <Searching/>
+        </div>
       </div>
     );
   }

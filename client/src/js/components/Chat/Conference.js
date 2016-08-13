@@ -13,7 +13,7 @@ class Conference extends React.Component {
 
         </div>
 
-        <div className="button-disconnect_wrapper">
+        <div className="conference-disconnect-button_wrapper">
 
         </div>
       </div>
