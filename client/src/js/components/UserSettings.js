@@ -20,6 +20,4 @@ const mapStateCustomSettings = (state, ownProps) => {
   };
 };
 
-People = connect(mapStateCustomSettings)(UserSettings);
-
-export default People;
+export default connect(mapStateCustomSettings)(UserSettings);

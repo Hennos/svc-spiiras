@@ -107,5 +107,4 @@ const mapDispatchToSideMenuProps = (dispatch) => {
   };
 };
 
-SideMenu = connect(mapStateSideMenuProps, mapDispatchToSideMenuProps)(SideMenu);
-export default SideMenu;
+export default connect(mapStateSideMenuProps, mapDispatchToSideMenuProps)(SideMenu);

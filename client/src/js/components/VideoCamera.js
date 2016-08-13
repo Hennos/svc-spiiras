@@ -6,7 +6,7 @@ import {Parameters} from  '../constants/videoCamera';
 import {loadVideoCamera, toggleVideoCameraState} from '../actions/videoCamera';
 import Camera from '../controls/Camera'
 
-let cameraParametrs = {
+let cameraParameters = {
   videoID: 'camera-video',
   constraints: {
     audio: false,
@@ -18,7 +18,7 @@ let cameraParametrs = {
   }
 };
 
-let camera = new Camera(cameraParametrs);
+let camera = new Camera(cameraParameters);
 
 /*const cameraOnDispatcher = ()=> {
  return function (dispatch) {
@@ -77,8 +77,6 @@ const mapStateVideoCameraProps = (state, ownProps) => {
   };
 };
 
-VideoCameraComponent = connect(mapStateVideoCameraProps, mapDispatchVideoCameraProps)(VideoCameraComponent);
-
-export default VideoCameraComponent;
+export default connect(mapStateVideoCameraProps, mapDispatchVideoCameraProps)(VideoCameraComponent);
 
 
