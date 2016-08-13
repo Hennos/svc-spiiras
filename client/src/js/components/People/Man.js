@@ -1,9 +1,9 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import _ from 'lodash'
-import {manType} from '../constants/man'
-import {user as userFields} from '../constants/user'
-import {addFriendToUserOnClient, removeFriendFromUserOnClient} from '../actions/user'
+import {manType} from '../../constants/man'
+import {user as userFields} from '../../constants/user'
+import {addFriendToUserOnClient, removeFriendFromUserOnClient} from '../../actions/user'
 
 class Man extends React.Component {
   constructor(props) {

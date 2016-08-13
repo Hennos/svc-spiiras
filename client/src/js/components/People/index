@@ -1,10 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {componentsVisibilityToggles} from '../constants/visibility'
-import {appComponentsTogglesKey} from '../constants/visibility'
-import {user as userFields} from '../constants/user'
-import {people as peopleAction} from '../constants/people'
-import {setInputSearchPeopleValue} from  '../actions/people'
+import {componentsVisibilityToggles} from '../../constants/visibility'
+import {appComponentsTogglesKey} from '../../constants/visibility'
+import {user as userFields} from '../../constants/user'
+import {people as peopleAction} from '../../constants/people'
+import {setInputSearchPeopleValue} from  '../../actions/people'
 
 import PeopleArea from './PeopleArea'
 
@@ -16,7 +16,7 @@ class People extends React.Component {
   render() {
     const {visible, friends, inputValueChange, people} = this.props;
     return (
-      <div className={(visible ? "" : "display_none") + " friends-component_wrapper"}>
+      <div className={(visible ? "" : "display_none ") + "friends-component_wrapper"}>
         <div className="search-area_wrapper">
           <div className="name_wrapper">
             <div className="name">

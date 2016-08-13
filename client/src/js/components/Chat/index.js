@@ -1,7 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {componentsVisibilityToggles} from '../constants/visibility'
-import {appComponentsTogglesKey} from '../constants/visibility'
+import {componentsVisibilityToggles} from '../../constants/visibility'
+import {appComponentsTogglesKey} from '../../constants/visibility'
+
+import Conference from './Conference'
+import Searching from './Searching'
 
 class Chat extends React.Component {
   constructor(props) {
@@ -11,10 +14,9 @@ class Chat extends React.Component {
   render() {
     const visible = this.props.visible;
     return (
-      <div className={(visible ? "" : "display_none") + " chat-component_wrapper"}>
-        <div className="chat">
-          Empty
-        </div>
+      <div className={(visible ? "" : "display_none ") + "chat-component_wrapper"}>
+        <Conference/>
+        <Searching/>
       </div>
     );
   }

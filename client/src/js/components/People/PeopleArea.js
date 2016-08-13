@@ -14,12 +14,13 @@ class PeopleArea extends React.Component {
         <div className="info_block">
           <p>{title}</p>
         </div>
-        {people.map(man =>
+        {people.map(man => (
           <Man
             key={man.username}
             type={type}
             {...man}
-          />)}
+          />
+        ))}
       </div>
     );
   }

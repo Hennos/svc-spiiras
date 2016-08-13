@@ -1,0 +1,28 @@
+import React from 'react';
+import {connect} from 'react-redux';
+
+class Conference extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className="conference-area_wrapper">
+        <div className="conference-sides_wrapper">
+
+        </div>
+
+        <div className="button-disconnect_wrapper">
+
+        </div>
+      </div>
+    )
+  }
+}
+
+const mapStateConferenceProps = (state, ownProps) => {
+  return {};
+};
+
+export default connect(mapStateConferenceProps)(Conference);
