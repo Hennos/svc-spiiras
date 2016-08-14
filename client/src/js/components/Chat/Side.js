@@ -6,9 +6,19 @@ class Side extends React.Component {
   }
 
   render() {
-    const {username, firstName, lastName} = this.props;
+    const username = this.props.username;
     return (
-      <div>
+      <div className="side_wrapper">
+
+        <div className="signal_wrapper">
+          <video id={"" + username.toLowerCase() + "-signal"}></video>
+        </div>
+
+        <div className="username_wrapper">
+          <div className="username">
+            <p>{username}</p>
+          </div>
+        </div>
 
       </div>
     );

@@ -2,5 +2,8 @@ import Immutable from 'immutable';
 import {chat} from '../constants/chat'
 
 export const state = Immutable.Map([
-  [chat.sides, Immutable.Set()]
+  [chat.sides, Immutable.Set([
+    {username: 'Evgeny'},
+    {username: 'Mark'}
+  ])]
 ]);

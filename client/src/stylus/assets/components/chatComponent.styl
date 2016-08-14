@@ -8,15 +8,16 @@
     display: flex
 
     .conference-area_wrapper
-      flex-grow 4
+      flex-grow 1
       display flex
       flex-direction column
       justify-content space-between
 
       .conference-sides_wrapper
-        flex-grow 4
+        flex-grow 1
         background main_middle_grey_color
         display flex
+        flex-wrap wrap
         justify-content space-around
 
         .info_block
@@ -25,7 +26,32 @@
           align-items center
 
           p
+            padding 2em 1em 2em 1em
             text-align center
+
+        .side_wrapper
+          background main_light_grey_color
+          margin 0.5em 0.25em 0.5em 0.25em
+
+          .signal_wrapper
+            width auto
+            padding 0.75em
+            border-bottom 2px solid main_middle_grey_color
+
+            video, canvas
+              display block
+              background-color main_white_color
+              width 320px
+              height 240px
+
+          .username_wrapper
+
+            .username
+              color main_black_color
+              padding 0.3em 0 0.3em 0
+
+              p
+                text-align center
 
       .conference-disconnect-button_wrapper
         display flex
@@ -51,19 +77,14 @@
               color main_dark_grey_color
 
     .friend-list-area_wrapper
-      flex-grow 0
-
-      border 2px solid main_middle_grey_color
-      border-width 0px 0px 0px 2px
+      border-left 2px solid main_middle_grey_color
 
       .search-area_wrapper
         display flex
         flex-direction column
-        justify-items center
 
         padding 0.5em
-        border 2px solid main_middle_grey_color
-        border-width 0px 0px 2px 0px
+        border-bottom 2px solid main_middle_grey_color
 
         .name_wrapper
 
@@ -77,7 +98,7 @@
             width 100%
             display block
 
-            border: 2px solid main_light_grey_color //цвет рамки
+            border: 2px solid main_light_grey_color
             border-width 2px 0px 2px 0px
             border-radius: 0
 
@@ -128,7 +149,7 @@
 
               .username_wrapper
 
-                div
+                .username
                   color main_middle_dark_grey_color
                   padding-bottom 0.3em
                   &:nth-child(1)
@@ -163,8 +184,7 @@
             .info_block
               width 100%
               padding-top 1.5em
-              border 2px solid main_middle_grey_color
-              border-width 0px 0px 2px 0
+              border-bottom 2px solid main_middle_grey_color
 
               p
                 padding-left 3%

@@ -19,6 +19,7 @@ class Conference extends React.Component {
             sides.map(side => (
               <Side
                 key={side.username}
+
                 {...side}
               />
             ))
@@ -31,7 +32,7 @@ class Conference extends React.Component {
 
         <div className="conference-disconnect-button_wrapper">
           <div className="button">
-            <p className="fa fa-phone"></p>
+            <p className="fa fa-square"></p>
           </div>
         </div>
 
