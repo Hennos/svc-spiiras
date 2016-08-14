@@ -2,14 +2,18 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {user as userFields} from '../../constants/user';
 
+import FriendArea from './FriendArea'
+
 class Searching extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
+    const {friends} = this.props;
     return (
-      <div className="friends-area_wrapper">
+      <div className="friend-list-area_wrapper">
+
         <div className="search-area_wrapper">
           <div className="name_wrapper">
             <p>Поиск</p>
@@ -19,11 +23,18 @@ class Searching extends React.Component {
           </div>
         </div>
 
-        <div className="friends-list-area_wrapper">
-
+        <div className="friends-area_wrapper">
+          <div className="friends_wrapper">
+            {friends.length > 0 ?
+              <FriendArea friends={friends} title="Друзья" type="friend"/>
+              :
+              <FriendArea friends={friends} title="У вас нет друзей"/>
+            }
+          </div>
         </div>
+
       </div>
-    )
+    );
   }
 }
 
