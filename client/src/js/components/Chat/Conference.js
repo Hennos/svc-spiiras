@@ -2,7 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {chat} from '../../constants/chat'
 
-import {} from './Side'
+import Side from './Side'
 
 class Conference extends React.Component {
   constructor(props) {
@@ -15,12 +15,18 @@ class Conference extends React.Component {
       <div className="conference-area_wrapper">
 
         <div className="conference-sides_wrapper">
-          {sides.map(side => (
-            <Side
-              key={side.username}
-              {...side}
-            />
-          ))}
+          {sides.length > 0 ?
+            sides.map(side => (
+              <Side
+                key={side.username}
+                {...side}
+              />
+            ))
+            :
+            <div className="info_block">
+              <p>Для начала конференции выберите друга из списка</p>
+            </div>
+          }
         </div>
 
         <div className="conference-disconnect-button_wrapper">

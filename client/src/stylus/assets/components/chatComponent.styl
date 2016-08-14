@@ -9,15 +9,27 @@
 
     .conference-area_wrapper
       flex-grow 4
-      margin auto
       display flex
       flex-direction column
-      align-items center
+      justify-content space-between
 
       .conference-sides_wrapper
-        margin auto
+        flex-grow 4
+        background main_middle_grey_color
+        display flex
+        justify-content space-around
+
+        .info_block
+          display flex
+          justify-content center
+          align-items center
+
+          p
+            text-align center
 
       .conference-disconnect-button_wrapper
+        display flex
+        justify-content center
 
         .button
           padding  0.4em 0
@@ -56,12 +68,10 @@
         .name_wrapper
 
           p
-            display block
             padding-bottom 0.2em
             font-weight bold
 
         .search_wrapper
-          display block
 
           input[type="text"]
             width 100%
