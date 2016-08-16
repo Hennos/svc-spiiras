@@ -26,7 +26,7 @@ function handleUpdateUserAction(state, action) {
 }
 
 function handleAddingFriendActionOnServer(state, action) {
-  let updatedFriends = state
+  const updatedFriends = state
     .get(userFields.friends)
     .add(action.friend);
   return state

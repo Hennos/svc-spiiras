@@ -1,6 +1,6 @@
 export const Events = {
   changePatternSearchPeople: "NEW:SEARCH_PEOPLE:VALUE",
-  changePeople: "NEW:SEARCH_PEOPLE:PEOPLE"
+  changePeople: "NEW:SEARCH_PEOPLE:PEOPLE",
 };
 
 export const people = {

@@ -62,56 +62,77 @@ function Root(io) {
 
     socket.on(Events.addFriendToUserOnClient, function (pack) {
       var friendName = JSON.parse(pack);
-      var user = socket.request.user;
       userModel.findOne(
         {username: friendName},
+        {username: 1},
         function (err, friend) {
           if (err) throw err;
-          user.friends.push(friend._id);
-          user.save(function (err) {
-            if (err) throw err;
-            socket.emit(Events.addFriendToUserOnServer, _.pick(friend, ['username']));
-          });
+          userModel.findOne(
+            {username: socket.request.user.username},
+            function (err, user) {
+              if (err) throw err;
+              const newFriends = user.friends.concat(friend._id);
+              user.update(
+                {$set: {friends: newFriends}, $inc: {__v: 1}},
+                function (err) {
+                  if (err) throw err;
+                  socket.emit(Events.addFriendToUserOnServer, _.pick(friend, ['username']));
+                }
+              );
+            }
+          );
         }
       )
     });
 
     socket.on(Events.removeFriendFromUserOnClient, function (pack) {
       var friendName = JSON.parse(pack);
-      var user = socket.request.user;
       userModel.findOne(
         {username: friendName},
         {username: 1},
         function (err, friend) {
           if (err) throw err;
-          user.friends = _.filter(user.friends, function (curFriend) {
-            return !(_.isEqual(curFriend, friend._id));
-          });
-          user.save(function (err) {
-            if (err) throw err;
-            socket.emit(Events.removeFriendFromUserOnServer, _.pick(friend, 'username'));
-          });
+          userModel.findOne(
+            {username: socket.request.user.username},
+            function (err, user) {
+              if (err) throw err;
+              const newFriends = _.filter(
+                user.friends,
+                function (curFriend) {
+                  return !(_.isEqual(curFriend, friend._id));
+                });
+              user.update(
+                {$set: {friends: newFriends}, $inc: {__v: 1}},
+                function (err) {
+                  if (err) throw err;
+                  socket.emit(Events.removeFriendFromUserOnServer, _.pick(friend, 'username'));
+                }
+              );
+            }
+          );
         }
       )
     });
 
     socket.on(Events.changePatternSearchPeople, function (pack) {
       var input = JSON.parse(pack);
-      var user = _.pick(socket.request.user, [
-        'username',
-        'friends'
-      ]);
       if (input != '') {
         const regexFindPattern = new RegExp('^' + input + '.*', 'i');
-        userModel.find(
-          {
-            username: {$regex: regexFindPattern, $ne: user.username},
-            _id: {$nin: user.friends}
-          },
-          {_id: 0, username: 1},
-          function (err, result) {
-            if (err) throw err;
-            socket.emit(Events.changePeople, JSON.stringify(result));
+        userModel.findOne(
+          {username: socket.request.user.username},
+          {_id: 0, username: 1, friends: 1},
+          function (err, user) {
+            userModel.find(
+              {
+                username: {$regex: regexFindPattern, $ne: user.username},
+                _id: {$nin: user.friends}
+              },
+              {_id: 0, username: 1},
+              function (err, result) {
+                if (err) throw err;
+                socket.emit(Events.changePeople, JSON.stringify(result));
+              }
+            );
           }
         );
       } else {

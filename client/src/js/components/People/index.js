@@ -65,6 +65,7 @@ const mapStatePeoplesProps = (state, ownProps) => {
       .toArray(),
     people: state.people
       .get(peopleAction.newSearchedPeople)
+      .toArray()
   };
 };
 

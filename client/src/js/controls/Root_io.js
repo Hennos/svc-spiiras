@@ -45,10 +45,14 @@ class Root {
 
   addedFriendOnServer = (friend) => {
     this.store.dispatch(addFriendToUserOnServer(friend));
+    const input = this.newInputSearchPeopleValue;
+    this.emitChangeInputValueEvent(input);
   };
 
   removedFriendOnServer = (friend) => {
     this.store.dispatch(removeFriendFromUserOnServer(friend));
+    const input = this.newInputSearchPeopleValue;
+    this.emitChangeInputValueEvent(input);
   };
 
   newSearchPeople = (people) => {
@@ -85,12 +89,10 @@ class Root {
       if (this.selectStoreState(state, addingFriend)) {
         const nameAddingFriend = this.selectStoreState(state, addingFriend);
         this.emitFriendsEvent(EventsUser.addFriendToUserOnClient, nameAddingFriend);
-        this.emitChangeInputValueEvent(input);
       }
       else if (this.selectStoreState(state, removingFriend)) {
         const nameRemovingFriend = this.selectStoreState(state, removingFriend);
         this.emitFriendsEvent(EventsUser.removeFriendFromUserOnClient, nameRemovingFriend);
-        this.emitChangeInputValueEvent(input);
       }
     }
   }

@@ -3,5 +3,5 @@ import {people} from '../constants/people'
 
 export const state = Immutable.Map([
   [people.valueInputSearchPeople, ''],
-  [people.newSearchedPeople, []]
+  [people.newSearchedPeople, Immutable.Set()]
 ]);
