@@ -1,5 +1,6 @@
 import {Events as EventsUser, user as userFields, userRequests} from '../constants/user'
 import {Events as EventsPeople, people as peopleProperties} from '../constants/people'
+import {Events as EventsUserPreferences, newuser as userPreferencesProperties} from '../constants/UserPreferences'
 import io from 'socket.io-client'
 import _ from 'lodash'
 import {setUserProperties} from  '../actions/user'

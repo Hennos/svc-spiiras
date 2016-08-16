@@ -15,7 +15,12 @@ export const user = {
   place: 'place',
   firstName: 'firstName',
   image: 'image',
-  lastName: 'lastName'
+  lastName: 'lastName',
+  middleName:"middleName",
+  country:"country",
+  university:"university",
+  school:"school:",
+  workplace:"workplace"
 };
 
 export const userRequests = {

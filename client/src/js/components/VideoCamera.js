@@ -1,4 +1,5 @@
 import React from 'react';
+
 import {connect} from 'react-redux';
 import {componentsVisibilityToggles} from '../constants/visibility'
 import {appComponentsTogglesKey} from '../constants/visibility'

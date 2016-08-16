@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 import SideMenu from './components/SideMenu';
 import VideoCameraComponent from './components/VideoCamera';
 import PeoplesComponent from './components/People/index';
+import UserPreferencesComponent from './components/UserPreferences/index';
 import ChatComponent from './components/Chat/index'
 import Reducers from './reducers/index';
 import Root_io from './controls/Root_io';
@@ -32,7 +33,10 @@ class App extends React.Component {
         <div className="wrapper_components">
           <VideoCameraComponent/>
           <PeoplesComponent/>
-          <ChatComponent/>
+          <UserPreferencesComponent/>
+
+
+      <ChatComponent/>
         </div>
         <SideMenu/>
       </div>

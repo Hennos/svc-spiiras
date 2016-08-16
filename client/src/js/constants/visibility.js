@@ -12,7 +12,7 @@ const componentsVisibilityToggles = {
 const sideMenuToggleKey = 'sideMenuVisibilityToggle';
 const appComponentsTogglesKey = 'appComponentsVisibilityToggles';
 
-const defaultComponent = componentsVisibilityToggles.peopleArea;
+const defaultComponent = componentsVisibilityToggles.userPreferences;
 
 export {
   TOGGLE_COMPONENT_VISIBILITY,
