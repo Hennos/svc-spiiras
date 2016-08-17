@@ -12,7 +12,7 @@ import {newSearchedPeople} from '../actions/people'
 const searchPeopleInputValue = 'SearchPeopleInputValue';
 const addingFriend = 'AddingFriend';
 const removingFriend = 'RemovingFriend';
-
+const userChangePreferenses = 'userChangePreferenses';
 class Root {
   constructor(address, store) {
     this.store = store;
@@ -25,7 +25,7 @@ class Root {
     this.connection.on(EventsUser.addFriendToUserOnServer, this.addedFriendOnServer);
     this.connection.on(EventsUser.removeFriendFromUserOnServer, this.removedFriendOnServer);
     this.connection.on(EventsPeople.changePeople, this.newSearchPeople);
-
+    this.connection.on(EventsUserPreferences.userSetPreferences, this.userSetPreferences);
     this.storeUnsubscriber = store.subscribe(() => {
       this.storeHandlerChanges(store.getState());
     })
@@ -55,6 +55,11 @@ class Root {
   newSearchPeople = (people) => {
     this.store.dispatch(newSearchedPeople(JSON.parse(people)));
   };
+  userSetPreferences = (user) => {
+    console.log('send')
+    this.store.dispatch(userSetPreferences(JSON.parse(user)));
+  };
+
 
   getUserData() {
     this.connection.emit(EventsUser.getUserData)
@@ -93,6 +98,11 @@ class Root {
         this.emitFriendsEvent(EventsUser.removeFriendFromUserOnClient, nameRemovingFriend);
         this.emitChangeInputValueEvent(input);
       }
+      else if (this.selectStoreState(state, userChangePreferenses)) {
+        console.log('newuser');
+        console.log(state);
+        this.connection.emit(JSON.stringify(EventsUserPreferences.userChangePreferenses));
+      }
     }
   }
 
@@ -107,8 +117,13 @@ class Root {
       case searchPeopleInputValue:
         return state.people
           .get(peopleProperties.valueInputSearchPeople);
+      case userChangePreferenses:
+          debugger;
+          console.log(userChangePreferenses);
+        return userChangePreferenses;
     }
   }
+
 }
 
 export default Root;

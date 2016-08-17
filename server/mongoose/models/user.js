@@ -6,8 +6,18 @@ var User = new Schema({
   email: {type: String, required: true, unique: true},
 
   username: {type: String, required: true, unique: true},
+
+
   password: {type: String},
   firstName: {type: String},
+  place:{type: String},
+  lastName:{type: String},
+  image:{type: String},
+  middleName:{type: String},
+  universit:{type: String},
+  school:{type: String},
+  workplace:{type: String},
+
   hash: {type: String, required: true},
   salt: {type: String, required: true},
   created: {type: Date, default: Date.now},

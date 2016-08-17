@@ -7,6 +7,10 @@ export const state = Immutable.Map([
   [userFields.firstName, null],
   [userFields.lastName, null],
   [userFields.image, null],
+  [userFields.middleName, null],
+  [userFields.university, null],
+  [userFields.school, null],
+  [userFields.workplace, null],
   [userFields.friends, Immutable.Set()],
   [userRequests.addingFriend, null],
   [userRequests.removingFriend, null]

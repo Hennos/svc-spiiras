@@ -1,6 +1,6 @@
 export const Events = {
   userChangePreferenses: "NEW:USER_PROPS_CHANGE:VALUE",
-
+  userSetPreferences : "GET:USER_PROPS_CHANGE:VALUE"
 };
 export const newuser = {
   username: 'username',
@@ -10,8 +10,7 @@ export const newuser = {
   image: 'image',
   lastName: 'lastName',
   middleName:"middleName",
-  country:"country",
   university:"university",
-  school:"school:",
-  workplace:"workplace"
+  school:'school',
+  workplace:'workplace'
 };
