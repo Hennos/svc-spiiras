@@ -78,11 +78,11 @@ class adminAccount extends React.Component {
   }
   setMakeCall = (event)=> {
     console.log('setMakeCall');
-    this.refs.forcedCall.chacked = false;
+    this.refs.forcedCall.checked = false;
 
   }
   setForsedCall = (event)=> {
-    this.refs.makeCalls.chacked = true;
+    this.refs.makeCalls.checked = true;
     console.log('setForsedCall');
   }
 }
