@@ -17,7 +17,6 @@ let cameraParameters = {
     }
   }
 };
-
 let camera = new Camera(cameraParameters);
 
 /*const cameraOnDispatcher = ()=> {
@@ -27,7 +26,6 @@ let camera = new Camera(cameraParameters);
  };*/
 
 const ButtonOnOff = ({isWorking, onClick})=>(
-
   <div className="video-camera_toggle-button" onClick={onClick}>
     <p className="text">{isWorking ? "Off" : "On"}</p>
     <p className={"image fa fa-power-off " + (isWorking ? "off":"on")}></p>
@@ -53,8 +51,8 @@ let VideoCameraComponent = ({isWorking, visible, onButtonCameraClick, isLoading}
         <LoadingArea /> :
         <ButtonOnOff isWorking={isWorking} onClick={()=>(onButtonCameraClick())}/>
       }
-
     </div>
+
   </div>
 );
 

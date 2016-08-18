@@ -5,13 +5,13 @@ var Events = {
   connected: 'connection',
   disconnect: 'disconnect',
   getUserData: "GET:USER:DATA",
-  addFriendToUserOnServer: "ADD:FRIEND:TO:USER:SERVER",
-  removeFriendFromUserOnServer: "REMOVE:FRIEND:FROM:USER:SERVER",
-  addFriendToUserOnClient: "ADD:FRIEND:TO:USER:CLIENT",
-  removeFriendFromUserOnClient: "REMOVE:FRIEND:FROM:USER:CLIENT",
+  addFriendToUserSuccessful: "ADD:FRIEND:TO:USER",
+  removeFriendFromUserSuccessful: "REMOVE:FRIEND:FROM:USER",
+  getAddingFriend: "EMIT:ADDING:FRIEND",
+  getRemovingFriend: "EMIT:REMOVING:FRIEND",
   newUserData: "NEW:USER:DATA",
-  changePeople: "NEW:SEARCH_PEOPLE:PEOPLE",
-  changePatternSearchPeople: "NEW:SEARCH_PEOPLE:VALUE"
+  changeSearchedPeople: "NEW:SEARCH_PEOPLE:PEOPLE",
+  changePatternSearchPeople: "EMIT:SEARCH:PEOPLE:INPUT:CHANGE"
 };
 
 var userModel = require('../../mongoose/models/user');
@@ -60,7 +60,7 @@ function Root(io) {
       );
     });
 
-    socket.on(Events.addFriendToUserOnClient, function (pack) {
+    socket.on(Events.getAddingFriend, function (pack) {
       var friendName = JSON.parse(pack);
       userModel.findOne(
         {username: friendName},
@@ -76,7 +76,10 @@ function Root(io) {
                 {$set: {friends: newFriends}, $inc: {__v: 1}},
                 function (err) {
                   if (err) throw err;
-                  socket.emit(Events.addFriendToUserOnServer, _.pick(friend, ['username']));
+                  socket.emit(
+                    Events.addFriendToUserSuccessful,
+                    _.pick(friend, ['username'])
+                  );
                 }
               );
             }
@@ -85,7 +88,7 @@ function Root(io) {
       )
     });
 
-    socket.on(Events.removeFriendFromUserOnClient, function (pack) {
+    socket.on(Events.getRemovingFriend, function (pack) {
       var friendName = JSON.parse(pack);
       userModel.findOne(
         {username: friendName},
@@ -105,7 +108,10 @@ function Root(io) {
                 {$set: {friends: newFriends}, $inc: {__v: 1}},
                 function (err) {
                   if (err) throw err;
-                  socket.emit(Events.removeFriendFromUserOnServer, _.pick(friend, 'username'));
+                  socket.emit(
+                    Events.removeFriendFromUserSuccessful,
+                    _.pick(friend, 'username')
+                  );
                 }
               );
             }
@@ -130,13 +136,13 @@ function Root(io) {
               {_id: 0, username: 1},
               function (err, result) {
                 if (err) throw err;
-                socket.emit(Events.changePeople, JSON.stringify(result));
+                socket.emit(Events.changeSearchedPeople, JSON.stringify(result));
               }
             );
           }
         );
       } else {
-        socket.emit(Events.changePeople, '[]');
+        socket.emit(Events.changeSearchedPeople, '[]');
       }
     });
   });

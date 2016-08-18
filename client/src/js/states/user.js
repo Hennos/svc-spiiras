@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import {user as userFields, userRequests} from '../constants/user'
+import {user as userFields} from '../constants/user'
 
 export const state = Immutable.Map([
   [userFields.username, null],
@@ -7,7 +7,5 @@ export const state = Immutable.Map([
   [userFields.firstName, null],
   [userFields.lastName, null],
   [userFields.image, null],
-  [userFields.friends, Immutable.Set()],
-  [userRequests.addingFriend, null],
-  [userRequests.removingFriend, null]
+  [userFields.friends, Immutable.Set()]
 ]);

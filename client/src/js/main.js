@@ -40,10 +40,12 @@ class App extends React.Component {
   }
 }
 
-let store = createStore(Reducers,
-  applyMiddleware(thunk));
+let root_io = new Root_io();
 
-let root_io = new Root_io('http://localhost:3003', store);
+let store = createStore(Reducers,
+  applyMiddleware(thunk, root_io.changeEmitterMiddleware));
+
+root_io.setConnection('http://localhost:3003', store);
 
 ReactDom.render(
   <Provider store={store}>

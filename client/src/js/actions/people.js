@@ -1,15 +1,15 @@
 import {Events} from '../constants/people'
 
-export const setInputSearchPeopleValue = (value) => {
+export const gettingSearchPeopleInput = (value) => {
   return {
-    type: Events.changePatternSearchPeople,
+    type: Events.emitSearchPeopleInputChange,
     value
   }
 };
 
 export const newSearchedPeople = (people) => {
   return {
-    type: Events.changePeople,
+    type: Events.changeSearchedPeople,
     people
   }
 };

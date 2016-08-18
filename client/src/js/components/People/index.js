@@ -4,7 +4,7 @@ import {componentsVisibilityToggles} from '../../constants/visibility'
 import {appComponentsTogglesKey} from '../../constants/visibility'
 import {user as userFields} from '../../constants/user'
 import {people as peopleAction} from '../../constants/people'
-import {setInputSearchPeopleValue} from  '../../actions/people'
+import {gettingSearchPeopleInput} from  '../../actions/people'
 
 import PeopleArea from './PeopleArea'
 
@@ -50,7 +50,7 @@ class People extends React.Component {
 const mapDispatchPeoplesProps = (dispatch) => {
   return {
     inputValueChange: (event)=> {
-      dispatch(setInputSearchPeopleValue(event.target.value));
+      dispatch(gettingSearchPeopleInput(event.target.value));
     }
   };
 };
