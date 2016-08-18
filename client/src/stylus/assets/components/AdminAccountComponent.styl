@@ -34,11 +34,16 @@
       display block
       .submitButton
         width 100%
-        text-align: right
+        text-align: center
         padding-right 20%
         padding-top 1em
         input[type="button"]
-          width 30%
+          margin-bottom 1.5em
+          outline: none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
+          border: 1px solid main_dark_grey_color //цвет рамки
+          background: #ffffff
+          text-align center
+          font-size: 1em
       .checkbox_wrapper
         padding-top 1em
         .name_block

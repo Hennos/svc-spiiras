@@ -24,6 +24,7 @@ class adminAccount extends React.Component {
           <div className="adminAccount_wrapper">
             {this.adminInput("Логин","Login" )}
             {this.adminInput ("Пароль" , "Passvord")}
+            <p>Запрет: </p>
             {this.adminCheckbox ("Совершать вызовы" , "makeCalls", "setMakeCall")}
             {this.adminCheckbox ("Добавлять друзей" , "addingFriends")}
             {this.adminCheckbox ("Принудительный вызов" , "forcedCall", "setForsedCall")}

@@ -1,7 +1,7 @@
 .userPreferences-component_wrapper
   background main_light_grey_color
   opacity 0.8
-  width 80%
+  width 70%
   margin-left auto
 
   .UserPreferences-area_wrapper
@@ -18,7 +18,8 @@
     padding 1em
 
     .name_wrapper
-      width 80%
+      width 100%
+      padding-bottom 1em
 
       .name
         width 90%
@@ -30,15 +31,21 @@
           font-weight bold
 
     .UserPreferences_wrapper
-      width 50%
+      width 100%
       display block
       .submitButton
         width 100%
-        text-align: right
-        padding-right 20%
+        text-align: center
         padding-top 1em
         input[type="button"]
-          width 30%
+          margin-bottom 1.5em
+          outline: none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
+          border: 1px solid main_dark_grey_color //цвет рамки
+          background: #ffffff
+          text-align center
+          font-size: 1em
+
+        width: 100% // ширина на свое усмотрение
       .module_wrapper
         display table
         .name_block
