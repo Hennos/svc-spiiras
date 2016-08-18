@@ -124,19 +124,19 @@ function Root(io) {
       }
     });
   });
-  socket.on(Events.userChangePreferenses, function (pack) {
+ /* socket.on(Events.userChangePreferenses, function (pack) {
     var input = JSON.parse(pack);
     var user = socket.request.user;
     console.log(input);
     user.update({$set: {firstname: input.firstname},$set: {lastName: input.lastName},$set: {middleName: input.middleName},$set: {country: input.country},$set: {university: input.university},$set: {place: input.place},$set: {school: input.school},$set: {workplace: input.workplace}},
-    function(err, result){
-      if (err) throw err;
-      user.save(function (err) {
-        if (err) throw err;
-        socket.emit(Events.userSetPreferences, _.pick(friend, 'username'));
-      })
-    })
-  });
+        function(err, result){
+          if (err) throw err;
+          user.save(function (err) {
+            if (err) throw err;
+            socket.emit(Events.userSetPreferences, _.pick(friend, 'username'));
+          })
+        })
+  });*/
   //userData
   return clients;
 }

@@ -67,7 +67,7 @@ class Man extends React.Component {
       <li className="button_wrapper">
         <div className="button">{
           (!eventHandler) ?
-            <p className={className}></p>
+          <p className={className}></p>
             :
             <p className={className} onClick={eventHandler}></p>
         }

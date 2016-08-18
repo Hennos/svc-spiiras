@@ -9,6 +9,7 @@ import VideoCameraComponent from './components/VideoCamera';
 import PeoplesComponent from './components/People/index';
 import UserPreferencesComponent from './components/UserPreferences/index';
 import ChatComponent from './components/Chat/index'
+import AdminAccountComponent from './components/adminAccount/index'
 import Reducers from './reducers/index';
 import Root_io from './controls/Root_io';
 
@@ -34,9 +35,8 @@ class App extends React.Component {
           <VideoCameraComponent/>
           <PeoplesComponent/>
           <UserPreferencesComponent/>
-
-
-      <ChatComponent/>
+          <AdminAccountComponent/>
+          <ChatComponent/>
         </div>
         <SideMenu/>
       </div>

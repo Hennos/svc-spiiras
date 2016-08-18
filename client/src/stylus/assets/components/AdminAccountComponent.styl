@@ -1,0 +1,87 @@
+.adminAccount-component_wrapper
+  background main_light_grey_color
+  opacity 0.8
+  width 80%
+  margin-left auto
+
+  .adminAccount-area_wrapper
+    background main_light_grey_color
+    display flex
+    flex-direction column
+    justify-content center
+
+    border-width 0 0 2px 0
+    border-color main_middle_grey_color
+    border-style solid
+    width auto
+
+    padding 1em
+
+    .name_wrapper
+      width 80%
+
+      .name
+        width 80%
+        margin-left auto
+
+        p
+          display block
+          padding-bottom 0.2em
+          font-weight bold
+
+    .adminAccount_wrapper
+      width 90%
+      display block
+      .submitButton
+        width 100%
+        text-align: right
+        padding-right 20%
+        padding-top 1em
+        input[type="button"]
+          width 30%
+      .checkbox_wrapper
+        padding-top 1em
+        .name_block
+          display inline-block
+          width 80%
+        .checkbox_block
+          display inline-block
+          width 20%
+      .input_wrapper
+
+        width 50%
+        padding-top 2em
+        .name_block
+          display inline-block
+          padding-right 1em
+          width 30%
+          text-align center
+          p
+
+
+          padding-bottom 0.2em
+          font-weight bold
+        .input_block
+          width 60%
+          display inline-block
+          text-align: right
+          //padding-left 50%
+          input[type="text"]
+
+
+
+           width 10em
+           border: 2px solid main_light_grey_color //цвет рамки
+           border-width 2px 0px 2px 0px
+           border-radius: 0 //закругление углов (общее)  //закругление углов (Google Chrome)  //закругление углов (FireFox)
+           -khtml-border-radius 0 //закругление углов (Safari)
+
+           background: #ffffff !important // желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым
+           outline: none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
+           height: 1.4em // высота на свое усмотрение
+           color: black //цвет шрифта в обычном состоянии
+           font-size: 1.3em // Размер шрифта
+           &:focus
+             border-bottom 2px solid main_dark_grey_color
+
+
