@@ -8,7 +8,7 @@ import {removedUserFriend} from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
 
 class Root {
-  constructor(address, store) {
+  constructor() {
     this.searchPeopleInput = '';
   }
 

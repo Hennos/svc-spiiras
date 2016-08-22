@@ -19,12 +19,6 @@ let cameraParameters = {
 };
 let camera = new Camera(cameraParameters);
 
-/*const cameraOnDispatcher = ()=> {
- return function (dispatch) {
- return camera.toggleCamera(dispatch)
- };
- };*/
-
 const ButtonOnOff = ({isWorking, onClick})=>(
   <div className="video-camera_toggle-button" onClick={onClick}>
     <p className="text">{isWorking ? "Off" : "On"}</p>
@@ -40,7 +34,7 @@ const LoadingArea = ()=> (
 );
 
 let VideoCameraComponent = ({isWorking, visible, onButtonCameraClick, isLoading}) => (
-  <div className="video-camera-component_wrapper" style={{display: visible ? 'block':'none' }}>
+  <div className={(visible ? "display_block " : "display_none ") + "video-camera-component_wrapper"}>
 
     <div className="video_wrapper">
       <video id="camera-video"></video>
@@ -48,7 +42,8 @@ let VideoCameraComponent = ({isWorking, visible, onButtonCameraClick, isLoading}
 
     <div className="controls_wrapper">
       {isLoading ?
-        <LoadingArea /> :
+        <LoadingArea/>
+        :
         <ButtonOnOff isWorking={isWorking} onClick={()=>(onButtonCameraClick())}/>
       }
     </div>

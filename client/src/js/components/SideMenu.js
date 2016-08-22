@@ -59,8 +59,7 @@ const SideMenuButton = ({onClick, buttonState, image, name}) =>(
 
 let SideMenu = ({onButtonClick, buttonsBlocks, visible}) => (
 
-  <div className={(visible ? 'height_full ' : 'height_auto ') + 'side-menu_wrapper'} style={{
-                height: visible ? '100%':'auto' }}>
+  <div className={(visible ? 'height_full ' : 'height_auto ') + 'side-menu_wrapper'}>
 
     <div className='button-menu_wrapper block'>
       {sideMenu.button_menu_wrapper.map(button =>
