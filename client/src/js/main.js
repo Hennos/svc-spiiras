@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import ReactDom from 'react-dom';
 import thunk from 'redux-thunk';
 
-import SideMenu from './components/SideMenu';
+import SideMenu from './components/SideMenu/index';
 import VideoCameraComponent from './components/VideoCamera';
 import PeoplesComponent from './components/People/index';
 import ChatComponent from './components/Chat/index'
