@@ -9,10 +9,11 @@ const componentsVisibilityToggles = {
   commonPreferences: 'commonPreferencesVisibilityToggle',
   cameraAudioPreferences: 'cameraAudioPreferencesVisibilityToggle'
 };
+
 const sideMenuToggleKey = 'sideMenuVisibilityToggle';
 const appComponentsTogglesKey = 'appComponentsVisibilityToggles';
-
 const defaultComponent = componentsVisibilityToggles.peopleArea;
+const activeComponent = "activeComponent";
 
 export {
   TOGGLE_COMPONENT_VISIBILITY,
@@ -20,5 +21,6 @@ export {
   componentsVisibilityToggles,
   sideMenuToggleKey,
   appComponentsTogglesKey,
-  defaultComponent
+  defaultComponent,
+  activeComponent
 }

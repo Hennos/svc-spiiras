@@ -14,7 +14,7 @@ class Chat extends React.Component {
   render() {
     const visible = this.props.visible;
     return (
-      <div className={(visible ? "" : "display_none ") + "chat-component_wrapper"}>
+      <div className={"chat-component_wrapper" + (visible ? "" : " display_none")}>
         <div className="chat-component-block_wrapper">
           <Conference/>
           <Searching/>

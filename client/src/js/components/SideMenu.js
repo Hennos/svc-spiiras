@@ -59,7 +59,7 @@ const SideMenuButton = ({onClick, buttonState, image, name}) =>(
 
 let SideMenu = ({onButtonClick, buttonsBlocks, visible}) => (
 
-  <div className={(visible ? 'height_full ' : 'height_auto ') + 'side-menu_wrapper'}>
+  <div className={'side-menu_wrapper' + (visible ? ' height_full' : ' height_auto')}>
 
     <div className='button-menu_wrapper block'>
       {sideMenu.button_menu_wrapper.map(button =>
@@ -69,7 +69,7 @@ let SideMenu = ({onButtonClick, buttonsBlocks, visible}) => (
       )}
 
     </div>
-    <div className={(visible ? 'display_block ' : 'display_none ') + 'block'}>
+    <div className={'block' + (visible ? ' display_block' : ' display_none')}>
       {sideMenu.videochat_block.map(button =>
         <SideMenuButton
           key={button.name} {...button} onClick={() => {onButtonClick(button.name)}}
@@ -77,7 +77,7 @@ let SideMenu = ({onButtonClick, buttonsBlocks, visible}) => (
       )}
     </div>
 
-    <div className={(visible ? 'display_block ' : 'display_none ') + 'block'}>
+    <div className={'block' + (visible ? ' display_block' : ' display_none')}>
       {sideMenu.controls_block.map(button =>
         <SideMenuButton
           key={button.name} {...button} onClick={() => {onButtonClick(button.name)}}
