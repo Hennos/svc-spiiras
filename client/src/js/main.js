@@ -5,21 +5,11 @@ import ReactDom from 'react-dom';
 import thunk from 'redux-thunk';
 
 import SideMenu from './components/SideMenu/index';
-import VideoCameraComponent from './components/VideoCamera';
+import VideoCameraComponent from './components/VideoCamera/index';
 import PeoplesComponent from './components/People/index';
 import ChatComponent from './components/Chat/index'
 import Reducers from './reducers/index';
 import Root_io from './controls/Root_io';
-
-/*let friends = io('http://localhost:3001/friends', {reconnection: false});
-let root = io('http://localhost:3001', {reconnection: false});
-
-root.on('connect', function () {
-  friends.emit('say', 'hi!');
-});
-root.on('disconnect', function () {
-  console.log('disconnect')
-});*/
 
 class App extends React.Component {
   constructor(props) {

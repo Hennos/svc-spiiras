@@ -1,7 +1,7 @@
-import React, { PropTypes }  from 'react';
-import {toggleVisibilityAppComponent} from  '../../actions/visibility';
-import {toggleVisibilitySideMenu} from '../../actions/visibility';
-import {connect} from 'react-redux';
+import React, { PropTypes } from 'react'
+import {toggleVisibilityAppComponent} from  '../../actions/visibility'
+import {toggleVisibilitySideMenu} from '../../actions/visibility'
+import {connect} from 'react-redux'
 import {componentsVisibilityToggles} from '../../constants/visibility'
 import {sideMenuToggleKey} from '../../constants/visibility'
 

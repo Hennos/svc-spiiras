@@ -1,6 +1,6 @@
 import React from 'react'
 
-import Man from './Man'
+import Man from './Man/index'
 
 class PeopleArea extends React.Component {
   constructor(props) {
