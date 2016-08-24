@@ -7,30 +7,31 @@ export const setUserProperties = (user) => {
   }
 };
 
-export const addFriendToUserOnClient = (friendName) => {
+export const sendingAddingFriend = (friend) => {
   return {
-    type: Events.addFriendToUserOnClient,
-    friendName
-  }
-};
-
-export const removeFriendFromUserOnClient = (friendName) => {
-  return {
-    type: Events.removeFriendFromUserOnClient,
-    friendName
-  }
-};
-
-export const addFriendToUserOnServer = (friend) => {
-  return {
-    type: Events.addFriendToUserOnServer,
+    type: Events.emitAddingFriend,
     friend
   }
 };
 
-export const removeFriendFromUserOnServer = (friend) => {
+export const sendingRemovingFriend = (friend) => {
   return {
-    type: Events.removeFriendFromUserOnServer,
+    type: Events.emitRemovingFriend,
+    friend
+  }
+
+};
+
+export const addedUserFriend = (friend) => {
+  return {
+    type: Events.addFriendToUser,
+    friend
+  }
+};
+
+export const removedUserFriend = (friend) => {
+  return {
+    type: Events.removeFriendFromUser,
     friend
   }
 };

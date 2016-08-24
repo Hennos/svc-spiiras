@@ -11,8 +11,8 @@ var Events = {
   removeFriendFromUserOnClient: "REMOVE:FRIEND:FROM:USER:CLIENT",
   newUserData: "NEW:USER:DATA",
   changePeople: "NEW:SEARCH_PEOPLE:PEOPLE",
-  changePatternSearchPeople: "EMIT:SEARCH_PEOPLE:VALUE",
-  userChangePreferenses: "EMIT:USER_PROPS_CHANGE:VALUE",
+  changePatternSearchPeople: "NEW:SEARCH_PEOPLE:VALUE",
+  userChangePreferenses: "NEW:USER_PROPS_CHANGE:VALUE",
   userSetPreferences : "GET:USER_PROPS_CHANGE:VALUE"
 };
 
@@ -37,11 +37,10 @@ function Root(io) {
     });
 
     socket.on(Events.getUserData, function () {
-      var user = userModel.findOne(
-          {username: socket.request.user.username},
-          function (err, user) {
-              if (err) throw err;
-
+      var user = _.pick(socket.request.user, [
+        'username',
+        'friends'
+      ]);
 
       var friends = [];
       eachSeries(
@@ -61,7 +60,6 @@ function Root(io) {
           socket.emit(Events.newUserData, JSON.stringify(user));
         }
       );
-    })
     });
 
     socket.on(Events.addFriendToUserOnClient, function (pack) {
@@ -125,37 +123,22 @@ function Root(io) {
         socket.emit(Events.changePeople, '[]');
       }
     });
-    socket.on(Events.userChangePreferenses, function (pack) {
-      console.log('onServer');
-      var input = JSON.parse(pack);
-     userModel.findOne(
-         {username: socket.request.user.username},
-         function (err, user) {
-           if (err) throw err;
-      console.log("in");
-      console.log(input);
-      console.log("user");
-      console.log(user);
-      user.update({$set: {
-        firstname: input.firstname,
-        lastName: input.lastName ,
-        middleName: input.middleName ,
-        country: input.country ,
-        university: input.university ,
-        place: input.place ,
-        school: input.school ,
-        workplace: input.workplace
-      }},
-          function(err, result){
-            if (err){throw err};
-              socket.emit(Events.userSetPreferences, 1);
+  });
+ /* socket.on(Events.userChangePreferenses, function (pack) {
+    var input = JSON.parse(pack);
+    var user = socket.request.user;
+    console.log(input);
+    user.update({$set: {firstname: input.firstname},$set: {lastName: input.lastName},$set: {middleName: input.middleName},$set: {country: input.country},$set: {university: input.university},$set: {place: input.place},$set: {school: input.school},$set: {workplace: input.workplace}},
+        function(err, result){
+          if (err) throw err;
+          user.save(function (err) {
+            if (err) throw err;
+            socket.emit(Events.userSetPreferences, _.pick(friend, 'username'));
           })
-    });
-    });
+        })
+  });*/
   //userData
   return clients;
-})}
+}
 
 module.exports = Root;
-
-

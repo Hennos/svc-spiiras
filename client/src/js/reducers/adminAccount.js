@@ -7,9 +7,6 @@ import Immutable from 'immutable';
 const adminAccountReducer = (state = initialState, action) => {
 
   switch (action.type) {
-    case Events.adminAccountChangePreferenses:
-      console.log(state);
-     return state.merge(Immutable.Map(newuser));
     case Events.adminAccountSetPreferences:
       return state.set(user, action.user);
        default:

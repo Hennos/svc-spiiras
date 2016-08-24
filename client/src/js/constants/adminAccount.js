@@ -1,5 +1,5 @@
 export const Events = {
-  adminAccountChangePreferenses: "NEW:USER_PROPS_CHANGE:VALUE",
+  adminAccountChangePreferenses: "EMIT:USER_PROPS_CHANGE:VALUE",
   adminAccountSetPreferences : "GET:USER_PROPS_CHANGE:VALUE"
 };
 export const changeuserfromadmin = {

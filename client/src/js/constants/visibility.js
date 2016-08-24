@@ -8,12 +8,12 @@ const componentsVisibilityToggles = {
   userPreferences: 'userPreferencesVisibilityToggle',
   commonPreferences: 'commonPreferencesVisibilityToggle',
   cameraAudioPreferences: 'cameraAudioPreferencesVisibilityToggle',
-  administrationAccount: 'administraatioAccountVisibilityToggle'
+  administrationAccount: 'administrationAccountVisibilityToggle'
 };
 const sideMenuToggleKey = 'sideMenuVisibilityToggle';
 const appComponentsTogglesKey = 'appComponentsVisibilityToggles';
 
-const defaultComponent = componentsVisibilityToggles.administrationAccount;
+const defaultComponent = componentsVisibilityToggles.userPreferences;
 
 export {
   TOGGLE_COMPONENT_VISIBILITY,

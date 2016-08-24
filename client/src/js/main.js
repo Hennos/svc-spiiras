@@ -7,12 +7,11 @@ import thunk from 'redux-thunk';
 import SideMenu from './components/SideMenu';
 import VideoCameraComponent from './components/VideoCamera';
 import PeoplesComponent from './components/People/index';
-import UserPreferencesComponent from './components/UserPreferences/index';
 import ChatComponent from './components/Chat/index'
-import AdminAccountComponent from './components/adminAccount/index'
 import Reducers from './reducers/index';
 import Root_io from './controls/Root_io';
-
+import UserPreferences from './components/UserPreferences/index';
+import AdminAccount from './components/adminAccount/index';
 /*let friends = io('http://localhost:3001/friends', {reconnection: false});
 let root = io('http://localhost:3001', {reconnection: false});
 
@@ -34,9 +33,9 @@ class App extends React.Component {
         <div className="wrapper_components">
           <VideoCameraComponent/>
           <PeoplesComponent/>
-          <UserPreferencesComponent/>
-          <AdminAccountComponent/>
           <ChatComponent/>
+          <UserPreferences/>
+          <AdminAccount/>
         </div>
         <SideMenu/>
       </div>
@@ -44,10 +43,12 @@ class App extends React.Component {
   }
 }
 
-let store = createStore(Reducers,
-  applyMiddleware(thunk));
+let root_io = new Root_io();
 
-let root_io = new Root_io('http://localhost:3003', store);
+let store = createStore(Reducers,
+  applyMiddleware(thunk, root_io.changeEmitterMiddleware));
+
+root_io.setConnection('http://localhost:3003', store);
 
 ReactDom.render(
   <Provider store={store}>

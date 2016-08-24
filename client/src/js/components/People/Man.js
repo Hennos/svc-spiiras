@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import _ from 'lodash'
 import {manType} from '../../constants/man'
 import {user as userFields} from '../../constants/user'
-import {addFriendToUserOnClient, removeFriendFromUserOnClient} from '../../actions/user'
+import {sendingAddingFriend, sendingRemovingFriend} from '../../actions/user'
 
 class Man extends React.Component {
   constructor(props) {
@@ -55,11 +55,11 @@ class Man extends React.Component {
   };
 
   addToFriends = () => {
-    this.props.dispatch(addFriendToUserOnClient(this.props.username));
+    this.props.dispatch(sendingAddingFriend(this.props.username));
   };
 
   removeFromFriends = () => {
-    this.props.dispatch(removeFriendFromUserOnClient(this.props.username));
+    this.props.dispatch(sendingRemovingFriend(this.props.username));
   };
 
   static createPushButton = (className = "default-button", eventHandler = null) => {
@@ -67,7 +67,7 @@ class Man extends React.Component {
       <li className="button_wrapper">
         <div className="button">{
           (!eventHandler) ?
-          <p className={className}></p>
+            <p className={className}></p>
             :
             <p className={className} onClick={eventHandler}></p>
         }

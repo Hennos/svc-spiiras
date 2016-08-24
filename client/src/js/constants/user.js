@@ -2,10 +2,10 @@ export const Events = {
   connected: 'connect',
   disconnected: 'disconnect',
   getUserData: "GET:USER:DATA",
-  addFriendToUserOnServer: "ADD:FRIEND:TO:USER:SERVER",
-  removeFriendFromUserOnServer: "REMOVE:FRIEND:FROM:USER:SERVER",
-  addFriendToUserOnClient: "ADD:FRIEND:TO:USER:CLIENT",
-  removeFriendFromUserOnClient: "REMOVE:FRIEND:FROM:USER:CLIENT",
+  addFriendToUser: "ADD:FRIEND:TO:USER",
+  removeFriendFromUser: "REMOVE:FRIEND:FROM:USER",
+  emitAddingFriend: "EMIT:ADDING:FRIEND",
+  emitRemovingFriend: "EMIT:REMOVING:FRIEND",
   newUserData: "NEW:USER:DATA"
 };
 
@@ -23,7 +23,3 @@ export const user = {
   workplace:"workplace"
 };
 
-export const userRequests = {
-  addingFriend: 'addingFriend',
-  removingFriend: 'removingFriend'
-};

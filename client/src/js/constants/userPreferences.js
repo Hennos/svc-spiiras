@@ -1,16 +1,15 @@
 export const Events = {
-  userChangePreferenses: "NEW:USER_PROPS_CHANGE:VALUE",
-  userSetPreferences : "GET:USER_PROPS_CHANGE:VALUE"
+  userChangePreferenses: "EMIT:USER_PROPS_CHANGE:VALUE",
+  userSetPreferences : "GET:USER_PROPS_CHANGE:VALUE",
+  userPreferencesSetValue: "SET:USER_PROPS:VALUE"
 };
-export const newuser = {
-  username: 'username',
-  friends: 'friends',
+export const values = {
   place: 'place',
   firstName: 'firstName',
-  image: 'image',
   lastName: 'lastName',
   middleName:"middleName",
+  country:"country",
   university:"university",
-  school:'school',
-  workplace:'workplace'
+  school:"school:",
+  workplace:"workplace"
 };

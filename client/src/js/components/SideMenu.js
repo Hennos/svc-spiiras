@@ -39,7 +39,7 @@ const sideMenu = {
       name: componentsVisibilityToggles.userPreferences
     },
     {
-      buttsonState: 'off',
+      buttonState: 'off',
       image: 'fa fa-key',
       name: componentsVisibilityToggles.administrationAccount
     },

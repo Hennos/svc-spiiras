@@ -1,9 +1,9 @@
 export const Events = {
-  changePatternSearchPeople: "NEW:SEARCH_PEOPLE:VALUE",
-  changePeople: "NEW:SEARCH_PEOPLE:PEOPLE"
+  emitSearchPeopleInputChange: "EMIT:SEARCH:PEOPLE:INPUT:CHANGE",
+  changeSearchedPeople: "NEW:SEARCH_PEOPLE:PEOPLE"
 };
 
 export const people = {
-  valueInputSearchPeople: 'valueInputSearchPeople',
+  valueSearchPeopleInput: 'valueSearchPeopleInput',
   newSearchedPeople: 'searchedPeople'
 };
