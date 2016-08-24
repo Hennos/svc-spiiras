@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import {componentsVisibilityToggles} from '../../constants/visibility'
 import {appComponentsTogglesKey} from '../../constants/visibility'
 
-import Conference from './Conference'
-import Searching from './FriendList'
+import Conference from './Conference/index'
+import Searching from './FriendList/index'
 
 class Chat extends React.Component {
   constructor(props) {

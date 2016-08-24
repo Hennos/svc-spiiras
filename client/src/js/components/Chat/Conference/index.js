@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {chat} from '../../constants/chat'
+import {chat} from '../../../constants/chat'
 
 import Side from './Side'
 
@@ -10,16 +10,14 @@ class Conference extends React.Component {
   }
 
   render() {
-    const sides = this.props.sides;
+    const {sides, talking} = this.props;
     return (
       <div className="conference-area_wrapper">
-
         <div className="conference-sides_wrapper">
           {sides.length > 0 ?
             sides.map(side => (
               <Side
                 key={side.username}
-
                 {...side}
               />
             ))
@@ -30,12 +28,13 @@ class Conference extends React.Component {
           }
         </div>
 
-        <div className="conference-disconnect-button_wrapper">
-          <div className="button">
-            <p className="fa fa-square"></p>
+        <div className={"conference-disconnect-block-wrapper" + (talking ? " display_block" : " display_none")}>
+          <div className="conference-disconnect-button_wrapper">
+            <div className="button">
+              <p className="fa fa-square"></p>
+            </div>
           </div>
         </div>
-
       </div>
     );
   }
@@ -45,7 +44,9 @@ const mapStateConferenceProps = (state, ownProps) => {
   return {
     sides: state.chat
       .get(chat.sides)
-      .toArray()
+      .toArray(),
+    talking: state.chat
+      .get(chat.talking)
   };
 };
 

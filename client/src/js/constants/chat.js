@@ -1,9 +1,12 @@
 export const Events = {
   addSide: 'ADD:SIDE:TO:CHAT',
-  removeSide: 'REMOVE:SIDE:FROM:CHAT',
-  closeConference: 'CLOSE:CONFERENCE'
+  startConference: 'START:CONFERENCE',
+  closeConference: 'CLOSE:CONFERENCE',
+  emitAddingSide: 'EMIT:ADDING:SIDE',
+  emitCloseConference: 'EMIT:CLOSE:CONFERENCE'
 };
 
 export const chat = {
-  sides: 'sides'
+  sides: 'sides',
+  talking: 'talking'
 };

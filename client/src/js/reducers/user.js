@@ -17,7 +17,7 @@ const userReducer = (state = initialState, action) => {
 
 function handleUpdateUserAction(state, action) {
   let updatedUser = action.user;
-  updatedUser[userFields.friends] = Immutable.Set(updatedUser[userFields.friends]);
+  updatedUser.friends = Immutable.Set(updatedUser.friends);
   return state.merge(Immutable.Map(updatedUser));
 }
 

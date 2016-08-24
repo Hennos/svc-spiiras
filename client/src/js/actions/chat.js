@@ -1,21 +1,33 @@
 import {Events} from '../constants/chat'
 
-export const addNewSideToChat = (side) => {
+export const addSideToChat = (side) => {
   return {
     type: Events.addSide,
     side
   }
 };
 
-export const removeOldSideFromChat = (side) => {
+export const startConference = () => {
   return {
-    type: Events.removeSide,
+    type: Events.startConference
+  }
+};
+
+export const closeConference = () => {
+  return {
+    type: Events.closeConference
+  }
+};
+
+export const emitAddSideToChat = (side) => {
+  return {
+    type: Events.emitAddingFriend,
     side
   }
 };
 
-export const closeChatConference = () => {
+export const emitCloseConference = () => {
   return {
-    type: Events.closeConference
+    type: Events.emitCloseConference
   }
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {user as userFields} from '../../constants/user';
+import {user as userFields} from '../../../constants/user';
 
 import FriendArea from './FriendArea'
 
@@ -13,7 +13,6 @@ class Searching extends React.Component {
     const {friends} = this.props;
     return (
       <div className="friend-list-area_wrapper">
-
         <div className="search-area_wrapper">
           <div className="name_wrapper">
             <p>Поиск</p>
@@ -32,7 +31,6 @@ class Searching extends React.Component {
             }
           </div>
         </div>
-
       </div>
     );
   }
