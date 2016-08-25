@@ -1,8 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {chat} from '../../../constants/chat'
+import {emitCloseConference} from '../../../actions/chat'
 
 import Side from './Side'
+import ConferenceCloseButton from './ConferenceCloseButton'
 
 class Conference extends React.Component {
   constructor(props) {
@@ -10,7 +12,7 @@ class Conference extends React.Component {
   }
 
   render() {
-    const {sides, talking} = this.props;
+    const {sides, talking, onCloseConference} = this.props;
     return (
       <div className="conference-area_wrapper">
         <div className="conference-sides_wrapper">
@@ -29,16 +31,20 @@ class Conference extends React.Component {
         </div>
 
         <div className={"conference-disconnect-block-wrapper" + (talking ? " display_block" : " display_none")}>
-          <div className="conference-disconnect-button_wrapper">
-            <div className="button">
-              <p className="fa fa-square"></p>
-            </div>
-          </div>
+          <ConferenceCloseButton onClick={onCloseConference}/>
         </div>
       </div>
     );
   }
 }
+
+const mapDispatchConferenceProps = (dispatch) => {
+  return {
+    onCloseConference: () => {
+      dispatch(emitCloseConference());
+    }
+  };
+};
 
 const mapStateConferenceProps = (state, ownProps) => {
   return {
@@ -50,4 +56,4 @@ const mapStateConferenceProps = (state, ownProps) => {
   };
 };
 
-export default connect(mapStateConferenceProps)(Conference);
+export default connect(mapStateConferenceProps, mapDispatchConferenceProps)(Conference);

@@ -22,7 +22,7 @@ function handleStartConference(state, action) {
 function handleAddingSide(state, action) {
   const updateSides = state
     .get(chat.sides)
-    .set(action.side.username, action.side);
+    .set(action.side, {username: action.side});
   return state
     .set(chat.sides, updateSides);
 }

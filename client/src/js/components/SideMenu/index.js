@@ -89,21 +89,22 @@ class SideMenu extends React.Component {
   }
 }
 
-const mapStateSideMenuProps = (state, ownProps) => {
-  return {
-    visible: state.componentsVisibilityFilter.get(sideMenuToggleKey)
-  };
-};
-
 const mapDispatchToSideMenuProps = (dispatch) => {
   return {
-    onButtonClick: (name)=> {
+    onButtonClick: (name) => {
       if (name != sideMenuToggleKey) {
         dispatch(toggleVisibilityAppComponent(name));
       } else {
         dispatch(toggleVisibilitySideMenu(name));
       }
     }
+  };
+};
+
+const mapStateSideMenuProps = (state, ownProps) => {
+  return {
+    visible: state.componentsVisibilityFilter
+      .get(sideMenuToggleKey)
   };
 };
 

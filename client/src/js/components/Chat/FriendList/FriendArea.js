@@ -1,6 +1,7 @@
 import React from 'react'
+import {chat} from '../../../constants/chat';
 
-import Friend from './Friend'
+import Friend from './Friend/index'
 
 class FriendArea extends React.Component {
   constructor(props) {
@@ -8,10 +9,9 @@ class FriendArea extends React.Component {
   }
 
   render() {
-    const {friends, title} = this.props;
+    const {friends, sides, title} = this.props;
     return (
       <div className="module_wrapper">
-
         <div className="info_block">
           <p>{title}</p>
         </div>
@@ -19,10 +19,10 @@ class FriendArea extends React.Component {
         {friends.map(friend => (
           <Friend
             key={friend.username}
+            isActiveSide={(sides[friend.username]) ? true : false}
             {...friend}
           />
         ))}
-
       </div>
     );
   }

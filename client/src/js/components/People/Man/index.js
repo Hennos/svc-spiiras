@@ -20,7 +20,7 @@ class Man extends React.Component {
             (image != null) ?
               <img src={image} alt="Нет изображения"/>
               :
-              <p className="fa fa-question-circle" aria-hidden="true"></p>
+              <p className="fa fa-question-circle"></p>
           }
           </div>
 

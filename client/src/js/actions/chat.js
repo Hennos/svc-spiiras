@@ -21,7 +21,7 @@ export const closeConference = () => {
 
 export const emitAddSideToChat = (side) => {
   return {
-    type: Events.emitAddingFriend,
+    type: Events.emitAddedSide,
     side
   }
 };
