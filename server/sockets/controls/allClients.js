@@ -17,21 +17,20 @@ var Events = {
 var userModel = require('../../mongoose/models/user');
 
 function Root(io) {
-  var clients = [];
+  var clients = {};
+  var rooms = [];
 
   //connection
   io.on(Events.connected, function (socket) {
     console.log("this work");
-    _(clients).forEach(function (client) {
-      if (client.request.user.username === socket.request.user.username) {
-        client.disconnect(true);
-      }
-    });
+    if (clients[socket.request.user.username]) {
+      clients[socket.request.user.username].disconnect(true);
+    }
 
-    clients.push(socket);
+    clients[socket.request.user.username] = socket;
 
     socket.on(Events.disconnect, function () {
-      clients.splice(clients.indexOf(socket), 1);
+      delete clients[socket.request.user.username];
     });
 
     socket.on(Events.getUserData, function () {

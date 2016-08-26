@@ -25,7 +25,6 @@ var createIOServer = function (app, sessionStore) {
   }));
 
   var clients = require('./controls/allClients')(io);
-  //var friendsControl = require('./controls/friends')(io);
 
   function onAuthorizeSuccess(data, accept) {
     accept();
