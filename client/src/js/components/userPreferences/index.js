@@ -12,8 +12,12 @@ class UserPreferences extends React.Component {
     super(props);
   }
   render() {
+    console.log(values);
+    const {visible, title,  user,  values,  userChangePreferenses, userOnchangeInput} = this.props;
 
-    const {visible, title,  user, values,   userChangePreferenses, userOnchangeInput} = this.props;
+    console.log(user);
+    console.log(values);
+    console.log(values[0]);
     return (
 
       <div className={(visible ? "" : "display_none ") + "userPreferences-component_wrapper"}>
@@ -24,14 +28,14 @@ class UserPreferences extends React.Component {
           </div>
       </div>
         <div className="UserPreferences_wrapper">
-          {this.UserSettingsArea("Имя","Name",values.get(userFields.firstName), this.userOnchangeInput)}
-          {this.UserSettingsArea ("Фамилия" , "Surname", values.get(userFields.lastname), this.userOnchangeInput)}
-          {this.UserSettingsArea ("Отчество" , "MiddleName", values.get(userFields.middlename),this.userOnchangeInput)}
-          {this.UserSettingsArea ("Страна" , "Country", values.get(userFields.country),this.userOnchangeInput)}
-          {this.UserSettingsArea ("Населенный пункт" , "Locality", values.get(userFields.place),this.userOnchangeInput)}
-          {this.UserSettingsArea ("Университет" , "University", values.get(userFields.universety),this.userOnchangeInput)}
-          {this.UserSettingsArea ("Школа" , "School", values.get(userFields.school),this.userOnchangeInput)}
-          {this.UserSettingsArea ("Место работы" , "PlaceOfWork", values.get(userFields.workplace),this.userOnchangeInput)}
+          {this.UserSettingsArea("Имя","firstName",values[0], this.userOnchangeInput)}
+          {this.UserSettingsArea ("Фамилия" , "lastName", values[1], this.userOnchangeInput)}
+          {this.UserSettingsArea ("Отчество" , "middleName", values[2],this.userOnchangeInput)}
+          {this.UserSettingsArea ("Страна" , "country", values[3],this.userOnchangeInput)}
+          {this.UserSettingsArea ("Населенный пункт" , "place", values[4],this.userOnchangeInput)}
+          {this.UserSettingsArea ("Университет" , "university", values[5],this.userOnchangeInput)}
+          {this.UserSettingsArea ("Школа" , "school", values[6],this.userOnchangeInput)}
+          {this.UserSettingsArea ("Место работы" , "workplace", values[7],this.userOnchangeInput)}
           <div className="submitButton">
           <input type="button" name="Submit" value="Принять" onClick = {this.userChangePreferenses} />
         </div>
@@ -41,7 +45,7 @@ class UserPreferences extends React.Component {
   );
   }
   UserSettingsArea=(title, setname, basevalue, fn )=> {
-    console.log(basevalue);
+    //console.log(basevalue);
     return( <div className="module_wrapper">
         <div className="name_block">
           <p>{title}</p>
@@ -59,9 +63,9 @@ class UserPreferences extends React.Component {
     this.props.dispatch(userPreferencesSetValue({name: event.target.name, val:event.target.value}));
   }
   userChangePreferenses = (event)=> {
-    console.log(this.refs.Name.value);
-    console.log(this);
-    this.props.dispatch(userChangePreferenses({firstName:this.refs.Name.value , Surname:this.refs.Surname.value ,middleName:this.refs.MiddleName.value ,country:this.refs.Country.value ,place:this.refs.Locality.value ,university:this.refs.University.value ,school:this.refs.School.value , workplace:this.refs.PlaceOfWork.value }));
+    //console.log(this.refs.firstName.value);
+    //console.log(this);
+    this.props.dispatch(userChangePreferenses({firstName:this.refs.firstName.value , lastName:this.refs.lastName.value ,middleName:this.refs.middleName.value ,country:this.refs.country.value ,place:this.refs.place.value ,university:this.refs.university.value ,school:this.refs.school.value , workplace:this.refs.workplace.value }));
 
 }
 }
@@ -74,14 +78,15 @@ const mapDispatchUserPreferencesProps = (dispatch) => {
 };
 
 const mapStateUserPreferencesProps = (state, ownProps) => {
-  console.log(state);
+  //console.log(state);
   return {
 
     visible: state.componentsVisibilityFilter
       .get(appComponentsTogglesKey)
       .get(componentsVisibilityToggles.userPreferences),
+    values: state.preferences.toArray(),
     user: state.user,
-    values: state.values
+
   };
 };
 

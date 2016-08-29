@@ -3,13 +3,13 @@ export const Events = {
   userSetPreferences : "GET:USER_PROPS_CHANGE:VALUE",
   userPreferencesSetValue: "SET:USER_PROPS:VALUE"
 };
-export const values = {
-  place: 'place',
+export const userPrefsValues = {
   firstName: 'firstName',
   lastName: 'lastName',
   middleName:"middleName",
   country:"country",
+  place: 'place',
   university:"university",
-  school:"school:",
+  school:"school",
   workplace:"workplace"
 };

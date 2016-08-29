@@ -69,6 +69,8 @@ class Root {
 
   newUserData = (user) => {
     this.store.dispatch(setUserProperties(JSON.parse(user)));
+    this.store.dispatch(userSetPreferences(JSON.parse(user)));
+
   };
 
   getUserData = () => {
@@ -94,9 +96,7 @@ class Root {
     if(data)
       console.log('indata')
       this.getUserData();
-
-
-  };
+        };
 
   emitChangeInputValueEvent = (type, value) => {
     this.connection.emit(

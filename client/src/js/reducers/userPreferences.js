@@ -1,38 +1,67 @@
 import {Events} from '../constants/userPreferences'
 import {user} from '../constants/user'
-import {values} from '../constants/userPreferences'
+import {userPrefsValues} from '../constants/userPreferences'
 import {state as initialState} from '../states/userPreferences'
 import Immutable from 'immutable';
 
 const userPreferencesReducer = (state = initialState, action) => {
-
+  console.log(userPrefsValues );
   switch (action.type) {
     case Events.userPreferencesSetValue:
-      console.log('userPreferencesSetValue')
-      switch (action.name){
-         case 'place':
-           return state.set(values.place, action.val)
+      console.log(action.object.name);
+      switch (action.object.name){
          case   'firstName':
-           return state.set(values.firstName, action.val)
+           console.log(userPrefsValues.firstName);
+           return state.set(userPrefsValues.firstName, action.object.val);
+           break;
          case 'lastName':
-           return state.set(values.place, action.val)
+           console.log(userPrefsValues.lastName);
+           return state.set(userPrefsValues.lastName, action.object.val);
+           break;
          case 'middleName':
-           return state.set(values.middleName, action.val)
+           console.log('middleName');
+           return state.set(userPrefsValues.middleName, action.object.val);
+           break;
          case 'country':
-           return state.set(values.country, action.val)
+           console.log('country');
+           return state.set(userPrefsValues.country, action.object.val);
+           break;
+        case 'place':
+          console.log('place')
+          return state.set(userPrefsValues.place, action.object.val);
+          break;
          case 'university':
-           return state.set(values.university, action.val)
+           console.log('university');
+           return state.set(userPrefsValues.university, action.object.val);
+           break;
          case 'school':
-           return state.set(values.school, action.val)
+           console.log('school');
+           return state.set(userPrefsValues.school, action.object.val);
+           break;
          case 'workplace':
-           return state.set(values.workplace, action.val)
+           console.log('workplace');
+           return state.set(userPrefsValues.workplace, action.object.val);
+           break;
+
       }
+      break;
 
     case Events.userSetPreferences:
-      console.log('state');
       console.log(action);
-      return state.set(user, action);
+      console.log('userSetPreferences');
+      var  value = Object.assign({}, JSON.parse(JSON.stringify(userPrefsValues)));
+      value.firstName=action.object.firstName;
+      value.lastName=action.object.lastName;
+      value.middleName=action.object.middleName;
+      value.place=action.object.place;
+      value.country=action.object.country;
+      value.university=action.object.university;
+      value.school=action.object.school ;
+      value.workplace=action.object.workplace;
+      console.log(value);
+      return state.merge(state.value , value);
        default:
+         //console.log('state')
       return state;
   }
 };

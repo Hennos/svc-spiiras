@@ -1,12 +1,14 @@
 import Immutable from 'immutable'
-import {user } from '../constants/user'
-import {values} from '../constants/userPreferences'
+import {user as userFields} from '../constants/user'
+import {userPrefsValues as valuseFields} from '../constants/userPreferences'
 export const state = Immutable.Map([
-  [values.place, user.place],
-  [values.firstName, user.firstName],
-  [values.lastName, user.lastName],
-  [values.middleName, user.middleName],
-  [values.university, user.university],
-  [values.school, user.school],
-  [values.workplace, user.workplace]
+
+  [valuseFields.firstName, userFields.firstName],
+  [valuseFields.lastName, userFields.lastName],
+  [valuseFields.middleName, userFields.middleName],
+  [valuseFields.country, userFields.country],
+  [valuseFields.place, userFields.place],
+  [valuseFields.university, userFields.university],
+  [valuseFields.school, userFields.school],
+  [valuseFields.workplace, userFields.workplace]
 ]);

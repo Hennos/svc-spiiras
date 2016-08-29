@@ -58,6 +58,7 @@ function Root(io) {
         function (err) {
           if (err) throw err;
           user.friends = friends;
+            console.log(user);
           socket.emit(Events.newUserData, JSON.stringify(user));
         }
       );
@@ -137,7 +138,7 @@ function Root(io) {
       console.log("user");
       console.log(user);
       user.update({$set: {
-        firstname: input.firstname,
+        firstName: input.firstName,
         lastName: input.lastName ,
         middleName: input.middleName ,
         country: input.country ,
