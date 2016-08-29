@@ -30,7 +30,7 @@ class Conference extends React.Component {
           }
         </div>
 
-        <div className={"conference-disconnect-block-wrapper" + (talking ? " display_block" : " display_none")}>
+        <div className={"conference-disconnect-block-wrapper" + (sides.length ? " display_block" : " display_none")}>
           <ConferenceCloseButton onClick={onCloseConference}/>
         </div>
       </div>
@@ -50,9 +50,7 @@ const mapStateConferenceProps = (state, ownProps) => {
   return {
     sides: state.chat
       .get(chat.sides)
-      .toArray(),
-    talking: state.chat
-      .get(chat.talking)
+      .toArray()
   };
 };
 

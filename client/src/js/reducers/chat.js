@@ -3,8 +3,6 @@ import {state as initialState} from '../states/chat'
 
 const chatReducer = (state = initialState, action) => {
   switch (action.type) {
-    case Events.startConference:
-      return handleStartConference(state, action);
     case Events.addSide:
       return handleAddingSide(state, action);
     case Events.closeConference:
@@ -13,11 +11,6 @@ const chatReducer = (state = initialState, action) => {
       return state;
   }
 };
-
-function handleStartConference(state, action) {
-  return state
-    .set(chat.talking, true);
-}
 
 function handleAddingSide(state, action) {
   const updateSides = state
@@ -33,7 +26,6 @@ function handleCloseConference(state, action) {
     .clear();
   return state
     .set(chat.sides, updateSides)
-    .set(chat.talking, false);
 }
 
 export default chatReducer;

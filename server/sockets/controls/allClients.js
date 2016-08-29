@@ -13,7 +13,6 @@ var Events = {
   newUserData: "NEW:USER:DATA",
   changeSearchedPeople: "NEW:SEARCH_PEOPLE:PEOPLE",
   changePatternSearchPeople: "EMIT:SEARCH:PEOPLE:INPUT:CHANGE",
-  callerStartConference: "START:CONFERENCE",
   callerAddToConference: "EMIT:ADDED:SIDE",
   sideJoinConference: "ADD:SIDE:TO:CHAT",
   sideChangeConference: "CHANGE:CONFERENCE",

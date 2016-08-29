@@ -5,7 +5,7 @@ import io from 'socket.io-client'
 import _ from 'lodash'
 import {setUserProperties, addedUserFriend, removedUserFriend} from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
-import {startConference, addSideToChat, closeConference} from '../actions/chat'
+import {addSideToChat, closeConference} from '../actions/chat'
 
 class Root {
   constructor() {
@@ -23,7 +23,6 @@ class Root {
     this.connection.on(EventsUser.addFriendToUser, this.updateUserAfterAddingFriend);
     this.connection.on(EventsUser.removeFriendFromUser, this.updateUserAfterRemovingFriend);
     this.connection.on(EventsPeople.changeSearchedPeople, this.updateSearchedPeople);
-    this.connection.on(EventsChat.startConference, this.pushStartConference);
     this.connection.on(EventsChat.addSide, this.pushSideToConference);
   };
 
@@ -78,10 +77,6 @@ class Root {
 
   updateSearchedPeople = (people) => {
     this.store.dispatch(newSearchedPeople(JSON.parse(people)));
-  };
-
-  pushStartConference = () => {
-    this.store.dispatch(startConference());
   };
 
   pushSideToConference = (side) => {

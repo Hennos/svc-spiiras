@@ -7,12 +7,6 @@ export const addSideToChat = (side) => {
   }
 };
 
-export const startConference = () => {
-  return {
-    type: Events.startConference
-  }
-};
-
 export const closeConference = () => {
   return {
     type: Events.closeConference
