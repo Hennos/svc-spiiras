@@ -9,6 +9,7 @@ import {addedUserFriend} from  '../actions/user'
 import {removedUserFriend} from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
 import {userSetPreferences} from '../actions/userPreferences'
+import {adminAccountChangePreferenses,adminAccountSetPreferences} from '../actions/adminAccount'
 class Root {
   constructor(address, store) {
     this.searchPeopleInput = '';
@@ -26,6 +27,7 @@ class Root {
     this.connection.on(EventsUser.removeFriendFromUser, this.updateUserAfterRemovingFriend);
     this.connection.on(EventsPeople.changeSearchedPeople, this.updateSearchedPeople);
     this.connection.on(EventsUserPreferences.userSetPreferences, this.userSetPreferences);
+    this.connection.on(EventsAdminAccount.adminAccountSetPreferences, this.userSetPreferences);
   };
 
 
@@ -90,14 +92,14 @@ class Root {
   updateSearchedPeople = (people) => {
     this.store.dispatch(newSearchedPeople(JSON.parse(people)));
   };
-  userSetPreferences= (data) => {
+
+  adminAccountSetPreferences= (data) => {
     console.log('onClient')
     console.log(data)
     if(data)
       console.log('indata')
-      this.getUserData();
-        };
-
+    this.adminAccountSetPreferences();
+  };
   emitChangeInputValueEvent = (type, value) => {
     this.connection.emit(
       type,

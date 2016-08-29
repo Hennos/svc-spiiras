@@ -49,7 +49,6 @@ class UserPreferences extends React.Component {
     return( <div className="module_wrapper">
         <div className="name_block">
           <p>{title}</p>
-          <p>{basevalue}</p>
         </div>
         <div className="input_block">
           <input ref={setname} type="text" name={setname} value ={basevalue} onChange = {fn}  />

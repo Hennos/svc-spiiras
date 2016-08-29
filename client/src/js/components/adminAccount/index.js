@@ -22,8 +22,9 @@ class adminAccount extends React.Component {
             </div>
           </div>
           <div className="adminAccount_wrapper">
-            {this.adminInput("Логин","Login" )}
-            {this.adminInput ("Пароль" , "Passvord")}
+            {this.adminInput("Логин","Username" )}
+            {this.adminInput ("Пароль" , "Password")}
+            {this.adminInput("Email","Email" )}
             <p>Запрет: </p>
             {this.adminCheckbox ("Совершать вызовы" , "makeCalls", "setMakeCall")}
             {this.adminCheckbox ("Добавлять друзей" , "addingFriends")}
@@ -32,7 +33,7 @@ class adminAccount extends React.Component {
             {this.adminCheckbox ("Запрашивать пароль при попытке выхода из профиля" , "passwordExitProfile")}
             {this.adminCheckbox ("Запрашивать пароль при манипуляции аудио/видео потоком" , "passwordManipulationOfAudioVideo")}
             <div className="submitButton">
-              <input type="button" name="Submit" value="Принять" onClick = {this.adminAccountChangePreferenses}  />
+              <input type="button" name="Submit" value="Создать аккаунт" onClick = {this.adminAccountChangePreferenses}  />
             </div>
           </div>
         </div>
@@ -72,9 +73,9 @@ class adminAccount extends React.Component {
   }
 
   adminAccountChangePreferenses = (event)=> {
-    console.log(this.refs.Login.value);
+    //console.log(this.refs.Login.value);
     console.log(this);
-    this.props.dispatch(adminAccountChangePreferenses({login:this.refs.Login.value , passvord:this.refs.Passvord.value ,makecalls:this.refs.makeCalls.checked ,addingfriends:this.refs.addingFriends.checked ,forcedcall:this.refs.forcedCall.checked ,interactiveboard:this.refs.interactiveBoard.checked ,passwordexitprofile:this.refs.passwordExitProfile.checked , passwordmanipulationofaudiovideo:this.refs.passwordManipulationOfAudioVideo.checked }));
+    this.props.dispatch(adminAccountChangePreferenses({username:this.refs.Username.value ,password:this.refs.Password.value , email:this.refs.Email.value ,makecalls:this.refs.makeCalls.checked ,addingfriends:this.refs.addingFriends.checked ,forcedcall:this.refs.forcedCall.checked ,interactiveboard:this.refs.interactiveBoard.checked ,passwordexitprofile:this.refs.passwordExitProfile.checked , passwordmanipulationofaudiovideo:this.refs.passwordManipulationOfAudioVideo.checked }));
 
   }
   setMakeCall = (event)=> {

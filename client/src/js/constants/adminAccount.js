@@ -1,10 +1,10 @@
 export const Events = {
-  adminAccountChangePreferenses: "EMIT:USER_PROPS_CHANGE:VALUE",
-  adminAccountSetPreferences : "GET:USER_PROPS_CHANGE:VALUE"
+  adminAccountChangePreferenses: "EMIT:ADMIN_ACCOUNT_CREATE:VALUE",
+  adminAccountSetPreferences : "GET:ADMIN_ACCOUNT_CREATE:VALUE"
 };
 export const changeuserfromadmin = {
-  login: 'login',
-  passvord: 'passvord',
+  username: 'username',
+  password: 'password',
   makecalls: 'makecalls',
   addingfriends: 'addingfriends',
   forcedchallenge:"forcedchallenge",

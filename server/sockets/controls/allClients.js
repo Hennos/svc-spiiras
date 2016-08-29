@@ -13,7 +13,10 @@ var Events = {
   changePeople: "NEW:SEARCH_PEOPLE:PEOPLE",
   changePatternSearchPeople: "EMIT:SEARCH_PEOPLE:VALUE",
   userChangePreferenses: "EMIT:USER_PROPS_CHANGE:VALUE",
-  userSetPreferences : "GET:USER_PROPS_CHANGE:VALUE"
+  userSetPreferences : "GET:USER_PROPS_CHANGE:VALUE",
+  adminAccountChangePreferenses: "EMIT:ADMIN_ACCOUNT_CREATE:VALUE",
+    adminAccountSetPreferences : "GET:ADMIN_ACCOUNT_CREATE:VALUE"
+
 };
 
 var userModel = require('../../mongoose/models/user');
@@ -127,7 +130,7 @@ function Root(io) {
       }
     });
     socket.on(Events.userChangePreferenses, function (pack) {
-      console.log('onServer');
+      console.log('userChangePreferenses');
       var input = JSON.parse(pack);
      userModel.findOne(
          {username: socket.request.user.username},
@@ -154,6 +157,44 @@ function Root(io) {
     });
     });
   //userData
+      socket.on(Events.adminAccountChangePreferenses, function (pack) {
+          console.log("adminAccountChangePreferenses");
+
+          var input = JSON.parse(pack);
+          var curuser;
+          console.log("in");
+
+          userModel.findOne(
+              {username: socket.request.user.username},
+              function (err, curuser) {
+                  console.log("input");
+                  console.log(input);
+
+                  var newuser =(new userModel({
+
+                          username: input.username,
+                          password: input.password,
+                          email:input.email,
+                          makecalls: input.makecalls,
+                          addingfriends: input.addingfriends,
+                          forcedchallenge: input.forcedchallenge,
+                          interactiveboard: input.interactiveboard,
+                          passwordexitprofile: input.passwordexitprofile,
+                          passwordmanipulationofaudiovideo: input.passwordmanipulationofaudiovideo
+
+                  }));
+                  curuser.admined.push(newuser.id)
+                  console.log("newuser");
+                  console.log(newuser);
+                  console.log("curuser");
+                  console.log(curuser);
+                  newuser.save(function (err) {
+                      if (err) throw err;
+                      console.log('serverOut')
+                      socket.emit(Events.adminAccountSetPreferences, 1);
+                  });
+              })
+      });
   return clients;
 })}
 
