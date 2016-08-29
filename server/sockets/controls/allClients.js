@@ -1,3 +1,4 @@
+var crypto = require('crypto');
 var _ = require('lodash');
 var eachSeries = require('async/eachSeries');
 
@@ -11,30 +12,45 @@ var Events = {
   getRemovingFriend: "EMIT:REMOVING:FRIEND",
   newUserData: "NEW:USER:DATA",
   changeSearchedPeople: "NEW:SEARCH_PEOPLE:PEOPLE",
-  changePatternSearchPeople: "EMIT:SEARCH:PEOPLE:INPUT:CHANGE"
+  changePatternSearchPeople: "EMIT:SEARCH:PEOPLE:INPUT:CHANGE",
+  callerStartConference: "START:CONFERENCE",
+  callerAddToConference: "EMIT:ADDED:SIDE",
+  sideJoinConference: "ADD:SIDE:TO:CHAT",
+  sideChangeConference: "CHANGE:CONFERENCE",
+  sideLeaveConference: "REMOVE:SIDE:FROM:CHAT",
+  callerCloseConference: "EMIT:CLOSE:CONFERENCE",
+  sideAlreadyCalled: "SIDE:ALREADY:CALLED",
+  sideNotAvailable: "SIDE:NOT:AVAILABLE"
 };
 
 var userModel = require('../../mongoose/models/user');
 
 function Root(io) {
   var clients = {};
-  var rooms = [];
 
   //connection
   io.on(Events.connected, function (socket) {
     console.log("this work");
-    if (clients[socket.request.user.username]) {
-      clients[socket.request.user.username].disconnect(true);
+    var socketUser = socket.request.user;
+    if (clients[socketUser.username]) {
+      clients[socketUser.username].disconnect(true);
+      return clients;
     }
 
-    clients[socket.request.user.username] = socket;
+    clients[socketUser.username] = socket;
+    var roomId = crypto.randomBytes(32).toString('hex');
+    socket.join(roomId, function (err) {
+      if (err) throw err;
+      clients[socketUser.username].roomId = roomId;
+    });
 
     socket.on(Events.disconnect, function () {
-      delete clients[socket.request.user.username];
+      socket.broadcast.to(roomId).emit(Events.sideLeaveConference, socketUser.username);
+      delete clients[socketUser.username];
     });
 
     socket.on(Events.getUserData, function () {
-      var user = _.pick(socket.request.user, [
+      var user = _.pick(socketUser, [
         'username',
         'friends'
       ]);
@@ -67,7 +83,7 @@ function Root(io) {
         function (err, friend) {
           if (err) throw err;
           userModel.findOne(
-            {username: socket.request.user.username},
+            {username: socketUser.username},
             function (err, user) {
               if (err) throw err;
               const newFriends = user.friends.concat(friend._id);
@@ -95,7 +111,7 @@ function Root(io) {
         function (err, friend) {
           if (err) throw err;
           userModel.findOne(
-            {username: socket.request.user.username},
+            {username: socketUser.username},
             function (err, user) {
               if (err) throw err;
               const newFriends = _.filter(
@@ -124,7 +140,7 @@ function Root(io) {
       if (input != '') {
         const regexFindPattern = new RegExp('^' + input + '.*', 'i');
         userModel.findOne(
-          {username: socket.request.user.username},
+          {username: socketUser.username},
           {_id: 0, username: 1, friends: 1},
           function (err, user) {
             userModel.find(
@@ -143,6 +159,44 @@ function Root(io) {
       } else {
         socket.emit(Events.changeSearchedPeople, '[]');
       }
+    });
+
+    socket.on(Events.callerAddToConference, function (side) {
+      debugger;
+      var caused = clients[side];
+      if (!caused) {
+        socket.emit(Events.sideNotAvailable);
+        return false;
+      }
+      if (caused.roomId === roomId) {
+        socket.emit(Events.sideAlreadyCalled);
+        return false;
+      }
+      io.to(caused.roomId).emit(
+        Events.sideChangeConference,
+        JSON.stringify(
+          io.sockets.clients(roomId).map(function (elem) {
+            return _.pick(elem.user, ['username']);
+          })
+        )
+      );
+      io.to(roomId).emit(
+        Events.sideChangeConference,
+        JSON.stringify(
+          io.sockets.clients(caused.roomId).map(function (elem) {
+            return _.pick(elem.user, ['username']);
+          })
+        )
+      );
+      io.sockets.clients(caused.roomId).forEach(function (elem) {
+        elem.leave(caused.roomId);
+        elem.join(roomId);
+        elem.roomId = roomId;
+      });
+    });
+
+    socket.on(Events.callerCloseConference, function () {
+
     });
   });
 
