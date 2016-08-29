@@ -1,5 +1,5 @@
 export const Events = {
-  addSide: 'ADD:SIDE:TO:CHAT',
+  addSides: 'ADD:SIDES:TO:CONFERENCE',
   removeSide: 'REMOVE:SIDE:FROM:CHAT',
   closeConference: 'CLOSE:CONFERENCE',
   emitAddedSide: 'EMIT:ADDED:SIDE',

@@ -1,9 +1,9 @@
 import {Events} from '../constants/chat'
 
-export const addSideToChat = (side) => {
+export const addSidesToChat = (sides) => {
   return {
-    type: Events.addSide,
-    side
+    type: Events.addSides,
+    sides
   }
 };
 

@@ -14,10 +14,10 @@ var Events = {
   changeSearchedPeople: "NEW:SEARCH_PEOPLE:PEOPLE",
   changePatternSearchPeople: "EMIT:SEARCH:PEOPLE:INPUT:CHANGE",
   callerAddToConference: "EMIT:ADDED:SIDE",
-  sideJoinConference: "ADD:SIDE:TO:CHAT",
-  sideChangeConference: "CHANGE:CONFERENCE",
-  sideLeaveConference: "REMOVE:SIDE:FROM:CHAT",
+  sideChangeConference: "ADD:SIDES:TO:CONFERENCE",
+  sideLeaveConference: "REMOVE:SIDE:FROM:CONFERENCE",
   callerCloseConference: "EMIT:CLOSE:CONFERENCE",
+  callerDroppedConference: "CLOSE:CONFERENCE",
   sideAlreadyCalled: "SIDE:ALREADY:CALLED",
   sideNotAvailable: "SIDE:NOT:AVAILABLE"
 };
@@ -32,11 +32,17 @@ function Root(io) {
     console.log("this work");
     var socketUser = socket.request.user;
     if (clients[socketUser.username]) {
+      clients[socketUser.username]
+        .broadcast
+        .to(clients[socketUser.username].roomId)
+        .emit(Events.sideLeaveConference, socketUser.username);
+      clients[socketUser.username].emit(Events.closeConference);
       clients[socketUser.username].disconnect(true);
       return clients;
     }
 
     clients[socketUser.username] = socket;
+
     var roomId = crypto.randomBytes(32).toString('hex');
     socket.join(roomId, function (err) {
       if (err) throw err;
@@ -44,7 +50,10 @@ function Root(io) {
     });
 
     socket.on(Events.disconnect, function () {
-      socket.broadcast.to(roomId).emit(Events.sideLeaveConference, socketUser.username);
+      socket
+        .broadcast
+        .to(roomId)
+        .emit(Events.sideLeaveConference, socketUser.username);
       delete clients[socketUser.username];
     });
 
@@ -195,7 +204,11 @@ function Root(io) {
     });
 
     socket.on(Events.callerCloseConference, function () {
-
+      socket
+        .broadcast
+        .to(roomId)
+        .emit(Events.sideLeaveConference, socketUser.username);
+      socket.emit(Events.callerDroppedConference);
     });
   });
 

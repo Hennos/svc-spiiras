@@ -1,10 +1,11 @@
+import Immutable from 'immutable'
 import {Events, chat} from '../constants/chat'
 import {state as initialState} from '../states/chat'
 
 const chatReducer = (state = initialState, action) => {
   switch (action.type) {
-    case Events.addSide:
-      return handleAddingSide(state, action);
+    case Events.addSides:
+      return handleAddingSides(state, action);
     case Events.closeConference:
       return handleCloseConference(state, action);
     default:
@@ -12,20 +13,23 @@ const chatReducer = (state = initialState, action) => {
   }
 };
 
-function handleAddingSide(state, action) {
-  const updateSides = state
+function handleAddingSides(state, action) {
+  const addingSides = Immutable.Map(
+    action.sides.map(side => [side.username, side])
+  );
+  const updatedSides = state
     .get(chat.sides)
-    .set(action.side, {username: action.side});
+    .merge(addingSides);
   return state
-    .set(chat.sides, updateSides);
+    .set(chat.sides, updatedSides);
 }
 
 function handleCloseConference(state, action) {
-  const updateSides = state
+  const updatedSides = state
     .get(chat.sides)
     .clear();
   return state
-    .set(chat.sides, updateSides)
+    .set(chat.sides, updatedSides)
 }
 
 export default chatReducer;
