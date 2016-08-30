@@ -45,14 +45,16 @@ function Root(io) {
 
     var roomId = crypto.randomBytes(32).toString('hex');
     socket.join(roomId, function (err) {
-      if (err) throw err;
+      if (err) {
+        throw err;
+      }
       clients[socketUser.username].roomId = roomId;
     });
 
     socket.on(Events.disconnect, function () {
       socket
         .broadcast
-        .to(roomId)
+        .to(socket.roomId)
         .emit(Events.sideLeaveConference, socketUser.username);
       delete clients[socketUser.username];
     });
@@ -76,7 +78,9 @@ function Root(io) {
           })
         },
         function (err) {
-          if (err) throw err;
+          if (err) {
+            throw err;
+          }
           user.friends = friends;
           socket.emit(Events.newUserData, JSON.stringify(user));
         }
@@ -89,7 +93,9 @@ function Root(io) {
         {username: friendName},
         {username: 1},
         function (err, friend) {
-          if (err) throw err;
+          if (err) {
+            throw err;
+          }
           userModel.findOne(
             {username: socketUser.username},
             function (err, user) {
@@ -98,7 +104,9 @@ function Root(io) {
               user.update(
                 {$set: {friends: newFriends}, $inc: {__v: 1}},
                 function (err) {
-                  if (err) throw err;
+                  if (err) {
+                    throw err;
+                  }
                   socket.emit(
                     Events.addFriendToUserSuccessful,
                     _.pick(friend, ['username'])
@@ -117,11 +125,15 @@ function Root(io) {
         {username: friendName},
         {username: 1},
         function (err, friend) {
-          if (err) throw err;
+          if (err) {
+            throw err;
+          }
           userModel.findOne(
             {username: socketUser.username},
             function (err, user) {
-              if (err) throw err;
+              if (err) {
+                throw err;
+              }
               const newFriends = _.filter(
                 user.friends,
                 function (curFriend) {
@@ -130,7 +142,9 @@ function Root(io) {
               user.update(
                 {$set: {friends: newFriends}, $inc: {__v: 1}},
                 function (err) {
-                  if (err) throw err;
+                  if (err) {
+                    throw err;
+                  }
                   socket.emit(
                     Events.removeFriendFromUserSuccessful,
                     _.pick(friend, 'username')
@@ -158,7 +172,9 @@ function Root(io) {
               },
               {_id: 0, username: 1},
               function (err, result) {
-                if (err) throw err;
+                if (err) {
+                  throw err;
+                }
                 socket.emit(Events.changeSearchedPeople, JSON.stringify(result));
               }
             );
@@ -170,43 +186,50 @@ function Root(io) {
     });
 
     socket.on(Events.callerAddToConference, function (side) {
-      debugger;
       var caused = clients[side];
       if (!caused) {
         socket.emit(Events.sideNotAvailable);
         return false;
       }
-      if (caused.roomId === roomId) {
+      if (caused.roomId === socket.roomId) {
         socket.emit(Events.sideAlreadyCalled);
         return false;
       }
       io.to(caused.roomId).emit(
         Events.sideChangeConference,
         JSON.stringify(
-          io.sockets.clients(roomId).map(function (elem) {
-            return _.pick(elem.user, ['username']);
+          getSocketsInRoom(socket.roomId).map(function (iterSocket) {
+            return _.pick(iterSocket.request.user, ['username']);
           })
         )
       );
-      io.to(roomId).emit(
+      io.to(socket.roomId).emit(
         Events.sideChangeConference,
         JSON.stringify(
-          io.sockets.clients(caused.roomId).map(function (elem) {
-            return _.pick(elem.user, ['username']);
+          getSocketsInRoom(caused.roomId).map(function (iterSocket) {
+            return _.pick(iterSocket.request.user, ['username']);
           })
         )
       );
-      io.sockets.clients(caused.roomId).forEach(function (elem) {
-        elem.leave(caused.roomId);
-        elem.join(roomId);
-        elem.roomId = roomId;
+      getSocketsInRoom(caused.roomId).forEach(function (elem) {
+        elem.leave(caused.roomId, function(err) {
+          if (err) {
+            throw err;
+          }
+          elem.join(socket.roomId, function(err) {
+            if (err) {
+              throw err;
+            }
+            elem.roomId = socket.roomId;
+          });
+        });
       });
     });
 
     socket.on(Events.callerCloseConference, function () {
       socket
         .broadcast
-        .to(roomId)
+        .to(socket.roomId)
         .emit(Events.sideLeaveConference, socketUser.username);
       socket.emit(Events.callerDroppedConference);
     });
@@ -214,6 +237,17 @@ function Root(io) {
 
   //userData
   return clients;
+
+  function getSocketsInRoom(roomId) {
+    var res = []
+      , room = io.sockets.adapter.rooms[roomId];
+    if (room) {
+      for (var id in room.sockets) {
+        res.push(io.sockets.adapter.nsp.connected[id]);
+      }
+    }
+    return res;
+  }
 }
 
 module.exports = Root;

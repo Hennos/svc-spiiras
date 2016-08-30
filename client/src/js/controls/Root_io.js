@@ -5,7 +5,7 @@ import io from 'socket.io-client'
 import _ from 'lodash'
 import {setUserProperties, addedUserFriend, removedUserFriend} from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
-import {addSidesToChat, closeConference} from '../actions/chat'
+import {addSidesToChat, removeSideFromChat, closeConference} from '../actions/chat'
 
 class Root {
   constructor() {
@@ -39,7 +39,6 @@ class Root {
         this.emitFriendsEvent(action.type, action.friend);
         break;
       case EventsChat.emitAddedSide:
-        debugger;
         this.emitAddedSide(action.type, action.side);
         break;
       case EventsChat.emitCloseConference:
@@ -80,12 +79,12 @@ class Root {
     this.store.dispatch(newSearchedPeople(JSON.parse(people)));
   };
 
-  pushSidesToConference = (side) => {
-    this.store.dispatch(addSidesToChat(side));
+  pushSidesToConference = (sides) => {
+    this.store.dispatch(addSidesToChat(JSON.parse(sides)));
   };
 
-  eraseSideFromConference = (side) => {
-    this.store.dispatch();
+  eraseSideFromConference = (sideName) => {
+    this.store.dispatch(removeSideFromChat(sideName));
   };
 
   emitChangeInputValueEvent = (type, value) => {

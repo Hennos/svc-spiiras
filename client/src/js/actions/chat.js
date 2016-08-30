@@ -7,6 +7,13 @@ export const addSidesToChat = (sides) => {
   }
 };
 
+export const removeSideFromChat = (side) => {
+  return {
+    type: Events.removeSide,
+    side
+  }
+};
+
 export const closeConference = () => {
   return {
     type: Events.closeConference
