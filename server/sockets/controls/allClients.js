@@ -17,7 +17,7 @@ var Events = {
   sideChangeConference: "ADD:SIDES:TO:CONFERENCE",
   sideLeaveConference: "REMOVE:SIDE:FROM:CONFERENCE",
   callerCloseConference: "EMIT:CLOSE:CONFERENCE",
-  callerDroppedConference: "CLOSE:CONFERENCE",
+  closeConference: "CLOSE:CONFERENCE",
   sideAlreadyCalled: "SIDE:ALREADY:CALLED",
   sideNotAvailable: "SIDE:NOT:AVAILABLE"
 };
@@ -231,7 +231,6 @@ function Root(io) {
         .broadcast
         .to(socket.roomId)
         .emit(Events.sideLeaveConference, socketUser.username);
-      socket.emit(Events.callerDroppedConference);
     });
   });
 
