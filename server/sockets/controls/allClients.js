@@ -171,27 +171,28 @@ function Root(io) {
                   console.log(input);
 
                   var newuser =(new userModel({
-
                           username: input.username,
                           password: input.password,
-                          email:input.email,
+                          email:curuser.email,
                           makecalls: input.makecalls,
                           addingfriends: input.addingfriends,
                           forcedchallenge: input.forcedchallenge,
                           interactiveboard: input.interactiveboard,
                           passwordexitprofile: input.passwordexitprofile,
                           passwordmanipulationofaudiovideo: input.passwordmanipulationofaudiovideo
-
                   }));
                   curuser.admined.push(newuser.id)
                   console.log("newuser");
-                  console.log(newuser);
+                  console.log(newuser.id);
                   console.log("curuser");
                   console.log(curuser);
                   newuser.save(function (err) {
+                      curuser.save(function (err) {
+                      console.log('save')
                       if (err) throw err;
                       console.log('serverOut')
                       socket.emit(Events.adminAccountSetPreferences, 1);
+                  });
                   });
               })
       });

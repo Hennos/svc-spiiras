@@ -27,7 +27,7 @@ class Root {
     this.connection.on(EventsUser.removeFriendFromUser, this.updateUserAfterRemovingFriend);
     this.connection.on(EventsPeople.changeSearchedPeople, this.updateSearchedPeople);
     this.connection.on(EventsUserPreferences.userSetPreferences, this.userSetPreferences);
-    this.connection.on(EventsAdminAccount.adminAccountSetPreferences, this.userSetPreferences);
+    this.connection.on(EventsAdminAccount.adminAccountSetPreferences, this.adminAccountSetPreferences);
   };
 
 
@@ -94,11 +94,9 @@ class Root {
   };
 
   adminAccountSetPreferences= (data) => {
-    console.log('onClient')
-    console.log(data)
-    if(data)
-      console.log('indata')
-    this.adminAccountSetPreferences();
+    console.log(data);
+    this.connection.emit(EventsAdminAccount.adminAccountSetPreferences);
+
   };
   emitChangeInputValueEvent = (type, value) => {
     this.connection.emit(

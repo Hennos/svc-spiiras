@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {user as userFields} from '../../constants/user'
-import {values as valFields} from '../../constants/userPreferences'
+import {userPrefsValues as valFields} from '../../constants/userPreferences'
 import {componentsVisibilityToggles} from '../../constants/visibility'
 import {appComponentsTogglesKey} from '../../constants/visibility'
 import {Events} from '../../constants/userPreferences'
@@ -49,6 +49,7 @@ class UserPreferences extends React.Component {
     return( <div className="module_wrapper">
         <div className="name_block">
           <p>{title}</p>
+          <p>{basevalue}</p>
         </div>
         <div className="input_block">
           <input ref={setname} type="text" name={setname} value ={basevalue} onChange = {fn}  />
