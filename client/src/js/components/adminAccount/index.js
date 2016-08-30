@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import {componentsVisibilityToggles} from '../../constants/visibility'
 import {appComponentsTogglesKey} from '../../constants/visibility'
 import {changeuserfromadmin as userFields} from '../../constants/adminAccount'
+import {result} from '../../constants/adminAccount'
 
 import {Events} from '../../constants/adminAccount'
 import {adminAccountChangePreferenses, adminAccountSetPreferences} from '../../actions/adminAccount'
@@ -12,7 +13,11 @@ class adminAccount extends React.Component {
     super(props);
   }
   render() {
-    const {visible, title, user,   adminAccountChangePreferenses} = this.props;
+    console.log(this);
+
+
+    const {visible, title, user, result,  adminAccountChangePreferenses} = this.props;
+    console.log(result);
     return (
       <div className={(visible ? "" : "display_none ") + "adminAccount-component_wrapper"}>
         <div className="adminAccount-area_wrapper">
@@ -22,6 +27,9 @@ class adminAccount extends React.Component {
             </div>
           </div>
           <div className="adminAccount_wrapper">
+            <div className="result_block">
+              <p className={(result ? "" : "display_none ") + "result"}>{result}</p>
+            </div>
             {this.adminInput("Логин","Username" )}
             {this.adminInput ("Пароль" , "Password")}
             {this.adminInput("Email","Email" )}
@@ -101,6 +109,7 @@ const mapStateAdminAccountProps = (state, ownProps) => {
     visible: state.componentsVisibilityFilter
       .get(appComponentsTogglesKey)
       .get(componentsVisibilityToggles.administrationAccount),
+    result: state.adminAccount.get(result)
 
   };
 };

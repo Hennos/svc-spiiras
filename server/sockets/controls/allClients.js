@@ -170,10 +170,18 @@ function Root(io) {
                   console.log("input");
                   console.log(input);
 
+                  if(!input.username || !input.password){
+                      socket.emit(Events.adminAccountSetPreferences, 2);
+                  }else{
+
+                  var email = input.email;
+                  if(!email){
+                      email = curuser.email;
+                  }
                   var newuser =(new userModel({
                           username: input.username,
                           password: input.password,
-                          email:curuser.email,
+                          email:email,
                           makecalls: input.makecalls,
                           addingfriends: input.addingfriends,
                           forcedchallenge: input.forcedchallenge,
@@ -181,20 +189,29 @@ function Root(io) {
                           passwordexitprofile: input.passwordexitprofile,
                           passwordmanipulationofaudiovideo: input.passwordmanipulationofaudiovideo
                   }));
-                  curuser.admined.push(newuser.id)
+
                   console.log("newuser");
-                  console.log(newuser.id);
+                  console.log(newuser);
                   console.log("curuser");
                   console.log(curuser);
                   newuser.save(function (err) {
+                      if (err){
+                          socket.emit(Events.adminAccountSetPreferences, 3);
+                      }
+                      else{
+                      curuser.admined.push(newuser.id)
                       curuser.save(function (err) {
                       console.log('save')
-                      if (err) throw err;
-                      console.log('serverOut')
-                      socket.emit(Events.adminAccountSetPreferences, 1);
-                  });
-                  });
-              })
+                          if (err){
+                              socket.emit(Events.adminAccountSetPreferences, 4);
+                          }
+                          else {
+                              console.log('serverOut')
+                              socket.emit(Events.adminAccountSetPreferences, 1);
+                          }});
+                      }});
+
+                  }})
       });
   return clients;
 })}

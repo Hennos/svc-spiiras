@@ -7,9 +7,9 @@ export const adminAccountChangePreferenses = (object) => {
     object
   }
 };
-export const adminAccountSetPreferences = (object) => {
+export const adminAccountSetPreferences = (string) => {
   return {
     type: Events.adminAccountSetPreferences,
-    object
+    string
   }
 };

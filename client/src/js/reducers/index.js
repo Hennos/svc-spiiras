@@ -5,13 +5,15 @@ import user from './user'
 import people from './people'
 import chat from './chat'
 import preferences from './userPreferences'
+import adminAccount from './adminAccount'
 const Reducers = combineReducers({
   componentsVisibilityFilter,
   videoCameraComponent,
   user,
   people,
   chat,
-  preferences
+  preferences,
+  adminAccount
 });
 
 export default Reducers;

@@ -12,3 +12,6 @@ export const changeuserfromadmin = {
   passwordexitprofile:'passwordexitprofile',
   passwordmanipulationofaudiovideo:'passwordmanipulationofaudiovideo'
 };
+export const result = {
+  result: 'result'
+};
