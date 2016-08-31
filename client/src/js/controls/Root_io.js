@@ -96,7 +96,7 @@ class Root {
   adminAccountSetPreferences= (data) => {
     console.log(data);
     this.store.dispatch(adminAccountSetPreferences(data));
-
+    getUserData();
   };
   emitChangeInputValueEvent = (type, value) => {
     this.connection.emit(

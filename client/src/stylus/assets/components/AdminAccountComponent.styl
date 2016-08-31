@@ -3,25 +3,21 @@
   opacity 0.8
   width 80%
   margin-left auto
+  display table
 
   .adminAccount-area_wrapper
     background main_light_grey_color
-    display flex
-    flex-direction column
     justify-content center
-
+    display table-cell
     border-width 0 0 2px 0
     border-color main_middle_grey_color
     border-style solid
-    width auto
-
-    padding 1em
-
+    width 80%
     .name_wrapper
-      width 80%
+
 
       .name
-        width 80%
+
         margin-left auto
 
         p
@@ -89,4 +85,14 @@
            &:focus
              border-bottom 2px solid main_dark_grey_color
 
+  .admined_user_wrapper
+    width 20%
+    display table-cell
+    .name_wrapper
+          .name
+            margin-left auto
+            p
+              display block
+              padding-bottom 0.2em
+              font-weight bold
 

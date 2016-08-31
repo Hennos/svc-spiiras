@@ -12,6 +12,7 @@ export const Events = {
 export const user = {
   username: 'username',
   friends: 'friends',
+  admined: 'admined',
   place: 'place',
   firstName: 'firstName',
   image: 'image',

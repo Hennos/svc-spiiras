@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {componentsVisibilityToggles} from '../../constants/visibility'
 import {appComponentsTogglesKey} from '../../constants/visibility'
-import {changeuserfromadmin as userFields} from '../../constants/adminAccount'
+import {changeuserfromadmin} from '../../constants/adminAccount'
 import {result} from '../../constants/adminAccount'
-
+import {user as userFields} from '../../constants/user'
 import {Events} from '../../constants/adminAccount'
 import {adminAccountChangePreferenses, adminAccountSetPreferences} from '../../actions/adminAccount'
 class adminAccount extends React.Component {
@@ -15,8 +15,8 @@ class adminAccount extends React.Component {
   render() {
     console.log(this);
 
-
-    const {visible, title, user, result,  adminAccountChangePreferenses} = this.props;
+    console.log(admined);
+    const {visible, title, admined, result,  adminAccountChangePreferenses} = this.props;
     console.log(result);
     return (
       <div className={(visible ? "" : "display_none ") + "adminAccount-component_wrapper"}>
@@ -43,6 +43,20 @@ class adminAccount extends React.Component {
             <div className="submitButton">
               <input type="button" name="Submit" value="Создать аккаунт" onClick = {this.adminAccountChangePreferenses}  />
             </div>
+          </div>
+        </div>
+        <div className="admined_user_wrapper">
+          <div className="name_wrapper">
+            <div className="name">
+              <p>Администрируемые пользователи</p>
+            </div>
+          </div>
+          <div className="admined_user">
+            {admined.length > 0 ?
+              admined.map(man => (<p>{man.username}</p>))
+              :
+              <p>У вас пока нет контролируемых аккаунтов</p>
+            }
           </div>
         </div>
       </div>
@@ -105,11 +119,16 @@ const mapDispatchAdminAccountProps = (dispatch) => {
 };
 
 const mapStateAdminAccountProps = (state, ownProps) => {
+  console.log(state);
+  console.log(state.user.get(userFields.admined));
   return {
     visible: state.componentsVisibilityFilter
       .get(appComponentsTogglesKey)
       .get(componentsVisibilityToggles.administrationAccount),
-    result: state.adminAccount.get(result)
+    result: state.adminAccount.get(result),
+    admined: state.user
+      .get(userFields.admined)
+
 
   };
 };

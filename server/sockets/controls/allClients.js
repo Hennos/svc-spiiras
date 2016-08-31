@@ -40,32 +40,68 @@ function Root(io) {
     });
 
     socket.on(Events.getUserData, function () {
-      var user = userModel.findOne(
-          {username: socket.request.user.username},
-          function (err, user) {
-              if (err) throw err;
+        console.log('in');
+        var user = userModel.findOne(
+            {username: socket.request.user.username},
+            function (err, user) {
+                if (err) throw err;
+                console.log('user found');
+                console.log(user);
+                var friends = [];
+                var admined = [];
+                eachSeries(
+                    user.friends,
+                    function (friend, callback) {
+                        console.log('fr');
+                        userModel.findById(friend, function (err, found) {
+                            if (err) return callback(err);
+                            friends.push(
+                                _.pick(found, ['username'])
+                            );
+                            callback();
+                        }),
+                            function (err) {
+                                if (err) throw err;
+                                user.friends = friends;
+                                console.log(user);
+                           }
+                    }
+                ),
+
+                eachSeries(
+                    user.admined,
+                    function (adm, callback) {
+                        console.log('adm');
+                        userModel.findById(adm, function (err, found) {
+                            console.log('adm2');
+                            if (err) return callback(err);
+                            admined.push(
+                                _.pick(found, ['username'])
+                            );
+                            callback();
+                            console.log(admined);
+                        })
 
 
-      var friends = [];
-      eachSeries(
-        user.friends,
-        function (friend, callback) {
-          userModel.findById(friend, function (err, found) {
-            if (err) return callback(err);
-            friends.push(
-              _.pick(found, ['username'])
-            );
-            callback();
-          })
-        },
-        function (err) {
-          if (err) throw err;
-          user.friends = friends;
-            console.log(user);
-          socket.emit(Events.newUserData, JSON.stringify(user));
-        }
-      );
-    })
+                    },
+                        function (err) {
+                            if (err) throw err;
+                            user.admined = admined;
+                            console.log('user');
+                            console.log(user);
+                            console.log('err');
+                            console.log('admined');
+                            console.log(admined);
+                            console.log('aaaa');
+                            console.log(user);
+                            socket.emit(Events.newUserData, JSON.stringify(user));
+                        }
+
+                            );
+
+
+
+            })
     });
 
     socket.on(Events.addFriendToUserOnClient, function (pack) {
@@ -199,7 +235,7 @@ function Root(io) {
                           socket.emit(Events.adminAccountSetPreferences, 3);
                       }
                       else{
-                      curuser.admined.push(newuser.id)
+                      curuser.admined.push(newuser._id)
                       curuser.save(function (err) {
                       console.log('save')
                           if (err){

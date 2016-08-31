@@ -13,3 +13,4 @@ export const adminAccountSetPreferences = (string) => {
     string
   }
 };
+
