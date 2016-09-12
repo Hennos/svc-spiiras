@@ -1,13 +1,14 @@
-import {TOGGLE_VIDEO_CAMERA_STATE, VIDEO_CAMERA_LOADING}from '../constants/videoCamera'
+import {Events}from '../constants/videoCamera'
 
-export const toggleVideoCameraState = () => {
+export const toggleVideoCameraState = (stream) => {
   return {
-    type: TOGGLE_VIDEO_CAMERA_STATE
+    type: Events.toggleCameraState,
+    stream
   }
 };
 
 export const loadVideoCamera = () => {
   return {
-    type: VIDEO_CAMERA_LOADING
+    type: Events.videoCameraLoading
   }
 };

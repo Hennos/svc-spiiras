@@ -12,7 +12,7 @@ class Camera {
       navigator.mediaDevices.getUserMedia = this.promisifiedOldGUM;
     }
 
-    //constrants of camera
+    //constraints of camera
     this.videoID = videoID;
     this.videoArea = null;
     this.constraints = constraints;
@@ -20,9 +20,10 @@ class Camera {
 
   promisifiedOldGUM(constraints, successCallback, errorCallback) {
     // First get ahold of getUserMedia, if present
-    let getUserMedia = (navigator.getUserMedia ||
-    navigator.webkitGetUserMedia ||
-    navigator.mozGetUserMedia);
+    let getUserMedia =
+      navigator.getUserMedia ||
+      navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia;
 
     // Some browsers just don't implement it - return a rejected promise with an error
     // to keep a consistent interface
@@ -45,26 +46,34 @@ class Camera {
 
   toggleCamera(dispatch) {
     if (!this.stream) {
-      return navigator.mediaDevices.getUserMedia(this.constraints).then(
-        stream => {
-          let videoTracks = stream.getVideoTracks();
-          if (!this.videoArea) {
-            this.videoArea = document.getElementById(this.videoID);
+      return navigator.mediaDevices.getUserMedia(this.constraints)
+        .then(
+          stream => {
+            let videoTracks = stream.getVideoTracks();
+            if (!this.videoArea) {
+              this.videoArea = document.getElementById(this.videoID);
+            }
+
+            console.log('Using video device: ' + videoTracks[0].label);
+            stream.onended = ()=> console.log('Stream ended');
+
+            this.stream = stream;
+            this.videoArea.src = window.URL.createObjectURL(stream);
+            this.videoArea.onloadedmetadata = (e)=> {
+              this.videoArea.play();
+            };
+
+            if (dispatch) {
+              dispatch(toggleVideoCameraState(stream));
+            }
+          },
+          error => {
+            throw err(error);
           }
-
-          console.log('Using video device: ' + videoTracks[0].label);
-          stream.onended = ()=> console.log('Stream ended');
-
-          this.stream = stream;
-          this.videoArea.src = window.URL.createObjectURL(stream);
-          this.videoArea.onloadedmetadata = (e)=> {
-            this.videoArea.play();
-          };
-
-          if (dispatch) dispatch(toggleVideoCameraState());
-        },
-        error => console.log(error)
-      );
+        )
+        .catch(error => {
+          console.log(error);
+        });
     } else {
       this.videoArea.pause();
       this.videoArea.src = '';

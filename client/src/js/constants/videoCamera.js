@@ -1,5 +1,11 @@
-export const TOGGLE_VIDEO_CAMERA_STATE = 'TOGGLE_VIDEO_CAMERA_STATE';
-export const VIDEO_CAMERA_LOADING = 'VIDEO_CAMERA_LOADING';
+export const Events = {
+  toggleCameraState: 'TOGGLE_VIDEO_CAMERA_STATE',
+  videoCameraLoading: 'VIDEO_CAMERA_LOADING'
+};
+
+export const Stream = {
+  localStream: 'localStream'
+};
 
 export const Parameters = {
   isWorking: 'isWorking',

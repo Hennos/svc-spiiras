@@ -1,12 +1,12 @@
-import {TOGGLE_VIDEO_CAMERA_STATE, VIDEO_CAMERA_LOADING} from  '../constants/videoCamera';
-import {Parameters} from  '../constants/videoCamera';
+import {Events} from  '../constants/videoCamera';
+import {Stream, Parameters} from  '../constants/videoCamera';
 import {state as initialState} from '../states/videoCamera'
 
 const videoCameraComponent = (state = initialState, action) => {
   switch (action.type) {
-    case VIDEO_CAMERA_LOADING:
+    case Events.videoCameraLoading:
       return handleVideoCameraLoading(state, action);
-    case TOGGLE_VIDEO_CAMERA_STATE:
+    case Events.toggleCameraState:
       return handleTogglingCameraState(state, action);
     default:
       return state;
@@ -14,13 +14,13 @@ const videoCameraComponent = (state = initialState, action) => {
 };
 
 function handleVideoCameraLoading(state, action) {
-  console.log(VIDEO_CAMERA_LOADING);
   return state.set(Parameters.isLoading, !state.get(Parameters.isLoading));
 }
 
 function handleTogglingCameraState(state, action) {
-  console.log(TOGGLE_VIDEO_CAMERA_STATE);
-  return state.withMutations((ctx) => {
+  const condition = !state.get(Parameters.isWorking);
+  let newState = state.set(Stream.localStream, (condition) ? action.stream : null);
+  return newState.withMutations((ctx) => {
     ctx.set(Parameters.isLoading, false)
       .set(Parameters.isWorking, !state.get(Parameters.isWorking))
   });
