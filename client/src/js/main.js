@@ -31,11 +31,13 @@ class App extends React.Component {
 }
 
 let root_io = new Root_io();
-
 let store = createStore(Reducers,
-  applyMiddleware(thunk, root_io.changeEmitterMiddleware));
-
-root_io.setConnection('http://192.168.0.76:3003', store);
+  applyMiddleware(
+    thunk,
+    root_io.changeEmitterMiddleware,
+    root_io.getterMiddleware
+  ));
+root_io.setConnection('http://localhost:3003', store);
 
 ReactDom.render(
   <Provider store={store}>
@@ -43,4 +45,3 @@ ReactDom.render(
   </Provider>,
   document.getElementById('app')
 );
-
