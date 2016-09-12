@@ -19,7 +19,10 @@ var Events = {
   callerCloseConference: "EMIT:CLOSE:CONFERENCE",
   closeConference: "CLOSE:CONFERENCE",
   sideAlreadyCalled: "SIDE:ALREADY:CALLED",
-  sideNotAvailable: "SIDE:NOT:AVAILABLE"
+  sideNotAvailable: "SIDE:NOT:AVAILABLE",
+  handleWebRTCMessage: "WEB:RTC:MESSAGE",
+  responseWebRTCMessage: "WEB:RTC:RESPONSE:MESSAGE",
+  sendNewPeers: "SEND:NEW:PEERS"
 };
 
 var userModel = require('../../mongoose/models/user');
@@ -43,13 +46,7 @@ function Root(io) {
 
     clients[socketUser.username] = socket;
 
-    var roomId = crypto.randomBytes(32).toString('hex');
-    socket.join(roomId, function (err) {
-      if (err) {
-        throw err;
-      }
-      clients[socketUser.username].roomId = roomId;
-    });
+    refreshSocketsRoom(socket);
 
     socket.on(Events.disconnect, function () {
       socket
@@ -204,6 +201,14 @@ function Root(io) {
         )
       );
       io.to(socket.roomId).emit(
+        Events.sendNewPeers,
+        JSON.stringify(
+          getSocketsInRoom(caused.roomId).map(function (iterSocket) {
+            return _.pick(iterSocket.request.user, ['username']);
+          })
+        )
+      );
+      io.to(socket.roomId).emit(
         Events.sideChangeConference,
         JSON.stringify(
           getSocketsInRoom(caused.roomId).map(function (iterSocket) {
@@ -231,6 +236,22 @@ function Root(io) {
         .broadcast
         .to(socket.roomId)
         .emit(Events.sideLeaveConference, socketUser.username);
+      socket.leave(socket.roomId);
+      refreshSocketsRoom(socket);
+    });
+
+    // Candidate-Offer-Answer WebRTC
+    socket.on(Events.handleWebRTCMessage, function (message) {
+      var data = JSON.parse(message);
+      if ((data.side !== undefined) && (clients[data.side] !== undefined)) {
+        clients[data.side].emit(Events.responseWebRTCMessage, message);
+      } else {
+        data.side = socketUser.username;
+        socket
+          .broadcast
+          .to(socket.roomId)
+          .emit(Events.responseWebRTCMessage, JSON.stringify(data));
+      }
     });
   });
 
@@ -246,6 +267,16 @@ function Root(io) {
       }
     }
     return res;
+  }
+
+  function refreshSocketsRoom(socket) {
+    var roomId = crypto.randomBytes(32).toString('hex');
+    socket.join(roomId, function (err) {
+      if (err) {
+        throw err;
+      }
+      socket.roomId = roomId;
+    });
   }
 }
 
