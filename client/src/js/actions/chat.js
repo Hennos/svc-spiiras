@@ -20,6 +20,13 @@ export const closeConference = () => {
   }
 };
 
+export const getUserStreamURL = (url) => {
+  return {
+    type: Events.getUserStreamURL,
+    url: url
+  }
+};
+
 export const emitAddSideToChat = (side) => {
   return {
     type: Events.emitAddedSide,

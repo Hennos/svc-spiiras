@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {chat} from '../../../constants/chat'
 
 class Side extends React.Component {
   constructor(props) {
@@ -6,12 +8,13 @@ class Side extends React.Component {
   }
 
   render() {
-    const username = this.props.username;
+    const {username, url} = this.props;
+    console.log(url);
     return (
       <div className="side_wrapper">
 
         <div className="signal_wrapper">
-          <video id={"" + username.toLowerCase() + "-signal"}></video>
+          <video id={"" + username.toLowerCase() + "-signal"} src={url}></video>
         </div>
 
         <div className="username_wrapper">
@@ -25,4 +28,11 @@ class Side extends React.Component {
   }
 }
 
-export default Side;
+const mapStateSideProps = (state, ownProps) => {
+  return {
+    url: state.chat
+      .get(chat.url)
+  };
+};
+
+export default connect(mapStateSideProps)(Side);

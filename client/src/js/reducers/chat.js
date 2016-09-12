@@ -8,6 +8,8 @@ const chatReducer = (state = initialState, action) => {
       return handleAddingSides(state, action);
     case Events.removeSide:
       return handleRemovingSide(state, action);
+    case Events.getUserStreamURL:
+      return handleUserStreamURL(state, action);
     case Events.closeConference:
       return handleCloseConference(state, action);
     default:
@@ -24,6 +26,11 @@ function handleAddingSides(state, action) {
     .merge(addingSides);
   return state
     .set(chat.sides, updatedSides);
+}
+
+function handleUserStreamURL(state, action) {
+  return state
+    .set(chat.url, action.url);
 }
 
 function handleRemovingSide(state, action) {
