@@ -10,6 +10,7 @@ class FriendArea extends React.Component {
 
   render() {
     const {friends, sides, title} = this.props;
+    const isGotStream = !!this.props.stream;
     return (
       <div className="module_wrapper">
         <div className="info_block">
@@ -20,6 +21,7 @@ class FriendArea extends React.Component {
           <Friend
             key={friend.username}
             isActiveSide={(sides[friend.username]) ? true : false}
+            isGotStream={isGotStream}
             {...friend}
           />
         ))}

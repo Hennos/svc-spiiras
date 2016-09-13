@@ -2,16 +2,17 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {user as userFields} from '../../../constants/user'
 import {chat} from '../../../constants/chat'
+import {Stream} from '../../../constants/videoCamera'
 
 import FriendArea from './FriendArea'
 
-class Searching extends React.Component {
+class FriendList extends React.Component {
   constructor(props) {
     super(props);
   }
 
   render() {
-    const {friends, sides} = this.props;
+    const {friends, sides, stream} = this.props;
     return (
       <div className="friend-list-area_wrapper">
         <div className="search-area_wrapper">
@@ -26,7 +27,7 @@ class Searching extends React.Component {
         <div className="friends-area_wrapper">
           <div className="friends_wrapper">
             {friends.length > 0 ?
-              <FriendArea friends={friends} sides={sides} title="Друзья"/>
+              <FriendArea friends={friends} sides={sides} stream={stream} title="Друзья"/>
               :
               <FriendArea friends={friends} title="У вас нет друзей"/>
             }
@@ -44,8 +45,10 @@ const mapStateFriendListProps = (state, ownProps) => {
       .toArray(),
     sides: state.chat
       .get(chat.sides)
-      .toJS()
+      .toJS(),
+    stream: state.videoCameraComponent
+      .get(Stream.localStream)
   };
 };
 
-export default connect(mapStateFriendListProps)(Searching);
+export default connect(mapStateFriendListProps)(FriendList);

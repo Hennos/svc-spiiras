@@ -6,14 +6,18 @@ class CallFriendButton extends React.Component {
   }
 
   render() {
-    const {inChat, onClick} = this.props;
+    const {inChat, onClick, isGotStream} = this.props;
     return (
       <div className="button_wrapper">
-        <div className="button" onClick={onClick}>
+        <div className="button" onClick={(isGotStream && !inChat) ? onClick : this.onDisabled}>
           <p className={"fa fa-phone" + (inChat ? " in_chat" : " out_chat")}></p>
         </div>
       </div>
     );
+  }
+
+  onDisabled = () => {
+    console.log("Добавление в разговор недоступно")
   }
 }
 

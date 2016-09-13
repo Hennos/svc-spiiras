@@ -10,13 +10,13 @@ class Friend extends React.Component {
   }
 
   render() {
-    const {isActiveSide, image, username, onAddToSide} = this.props;
+    const {isActiveSide, isGotStream, image, username, onAddToSide} = this.props;
     return (
       <div className="friend_wrapper">
         <div className="friend">
 
           <div className="img_place">{
-            (image != null) ?
+            (image) ?
               <img src={image} alt="Нет изображения"/>
               :
               <p className="fa fa-question-circle"></p>
@@ -29,7 +29,11 @@ class Friend extends React.Component {
             </div>
           </div>
 
-          <CallFriendButton inChat={isActiveSide} onClick={() => {onAddToSide(username)}}/>
+          <CallFriendButton
+            inChat={isActiveSide}
+            isGotStream = {isGotStream}
+            onClick={() => {onAddToSide(username)}}
+          />
 
         </div>
       </div>
@@ -40,6 +44,7 @@ class Friend extends React.Component {
 const mapDispatchFriendEvent = (dispatch) => {
   return {
     onAddToSide: (side) => {
+      console.log('Добавить в разговор ', side.username);
       dispatch(emitAddSideToChat(side));
     }
   };
