@@ -44,7 +44,7 @@ class Friend extends React.Component {
 const mapDispatchFriendEvent = (dispatch) => {
   return {
     onAddToSide: (side) => {
-      console.log('Добавить в разговор ', side.username);
+      console.log('Добавить в разговор ', side);
       dispatch(emitAddSideToChat(side));
     }
   };

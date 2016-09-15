@@ -9,10 +9,14 @@ class RTCInterfaces {
       window.RTCPeerConnection ||
       window.webkitRTCPeerConnection ||
       window.mozRTCPeerConnection;
+    this.SessionDescription =
+      window.RTCSessionDescription ||
+      window.webkitRTCSessionDescription ||
+      window.mozRTCSessionDescription
   }
 }
 
-class PtPController {
+class P2PController {
   constructor(connection) {
     this.connection = connection;
 
@@ -40,15 +44,15 @@ class PtPController {
     switch (data.type) {
       case 'offer':
         this.peers.push(data.side);
-        console.log(this);
-        this.pcP2P.setRemoteDescription(data.desc)
+        this.pcP2P.setRemoteDescription(new this.RTC.SessionDescription(data.desc))
           .then(() => {
             this._sendAnswer();
           })
           .catch(this._logError);
         break;
       case 'answer':
-        this.pcP2P.setRemoteDescription(data.desc);
+        this.pcP2P.setRemoteDescription(new this.RTC.SessionDescription(data.desc))
+          .catch(this._logError(err));
         break;
       case 'candidate':
         this.pcP2P.addIceCandidate(data.candidate);
@@ -58,8 +62,8 @@ class PtPController {
     }
   };
 
-  createPeerConnection() {
-    const server = PtPController.contactServer;
+  createPeerConnection = () => {
+    const server = P2PController.contactServer;
     try {
       this.pcP2P = new this.RTC.PeerConnection(server);
       this.pcP2P.onicecandidate = this._handleIceCandidate.bind(this);
@@ -132,11 +136,12 @@ class PtPController {
       .then(() => {
         const message = {
           type: 'answer',
-          side: this.peers[0].username,
+          side: this.peers[0],
           desc: this.pcP2P.localDescription
         };
         this._emitSignalingMessage(message);
       })
+      .catch(this._logError(err))
   };
 
   _emitSignalingMessage = (message) => {
@@ -144,12 +149,12 @@ class PtPController {
     this.connection.emit(EventsChat.emitWebRTCMessage, JSON.stringify(message));
   };
 
-  _handleIceCandidate(evt) {
+  _handleIceCandidate = (evt) => {
     console.log('icecandidate event: ', evt);
     if (evt.candidate) {
       const message = {
         type: 'candidate',
-        side: this.peers[0].username,
+        side: this.peers[0],
         candidate: evt.candidate
       };
       this._emitSignalingMessage(message);
@@ -158,7 +163,7 @@ class PtPController {
     }
   };
 
-  _handleNegotiationNeeded() {
+  _handleNegotiationNeeded = () => {
     this.pcP2P.createOffer()
       .then((offer) => {
         return this.pcP2P.setLocalDescription(offer);
@@ -166,7 +171,7 @@ class PtPController {
       .then(() => {
         const message = {
           type: 'offer',
-          side: this.peers[0].username,
+          side: this.peers[0],
           desc: this.pcP2P.localDescription
         };
         this._emitSignalingMessage(message);
@@ -174,15 +179,14 @@ class PtPController {
       .catch(this._logError);
   };
 
-  _handleStream(evt) {
+  _handleStream = (evt) => {
     console.log('Remote stream added:', evt);
-    if (evt.stream) {
-      let videoArea = document.getElementById(this.peers[0].username.toLowerCase + '-signal');
-      videoArea.src = window.URL(evt.stream);
-      videoArea.onloadedmetadata = () => {
-        videoArea.play();
-      };
-    }
+    this.remoteStream = evt.stream;
+    let videoArea = document.getElementById(this.peers[0].toLowerCase() + '-signal');
+    videoArea.srcObject = this.remoteStream;
+    videoArea.onloadedmetadata = () => {
+      videoArea.play();
+    };
   };
 
   _logError(error) {
@@ -190,4 +194,4 @@ class PtPController {
   };
 }
 
-export default PtPController;
+export default P2PController;

@@ -9,12 +9,14 @@ class Side extends React.Component {
 
   render() {
     const {username, url} = this.props;
-    console.log(url);
     return (
       <div className="side_wrapper">
 
         <div className="signal_wrapper">
-          <video id={"" + username.toLowerCase() + "-signal"} src={url}></video>
+          <video
+            id={"" + username.toLowerCase() + "-signal"}
+            autoPlay="autoplay">
+          </video>
         </div>
 
         <div className="username_wrapper">

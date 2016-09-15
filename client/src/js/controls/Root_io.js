@@ -9,7 +9,7 @@ import {setUserProperties, addedUserFriend, removedUserFriend} from  '../actions
 import {newSearchedPeople} from '../actions/people'
 import {addSidesToConference, removeSideFromConference, closeConference} from '../actions/chat'
 
-import PtPController from './PtPController'
+import PtPController from './P2PController'
 
 class Root {
   constructor() {
