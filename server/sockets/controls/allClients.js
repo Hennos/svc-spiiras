@@ -144,7 +144,7 @@ function Root(io) {
                   }
                   socket.emit(
                     Events.removeFriendFromUserSuccessful,
-                    _.pick(friend, 'username')
+                    friend.username
                   );
                 }
               );
@@ -204,7 +204,7 @@ function Root(io) {
         Events.sendNewPeers,
         JSON.stringify(
           getSocketsInRoom(caused.roomId).map(function (iterSocket) {
-            return _.pick(iterSocket.request.user, ['username']);
+            return iterSocket.request.user.username;
           })
         )
       );
@@ -244,7 +244,9 @@ function Root(io) {
     socket.on(Events.handleWebRTCMessage, function (message) {
       var data = JSON.parse(message);
       if ((data.side !== undefined) && (clients[data.side] !== undefined)) {
-        clients[data.side].emit(Events.responseWebRTCMessage, message);
+        var callyClient = clients[data.side];
+        data.side = socketUser.username;
+        callyClient.emit(Events.responseWebRTCMessage, JSON.stringify(data));
       } else {
         data.side = socketUser.username;
         socket
