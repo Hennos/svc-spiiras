@@ -99,6 +99,7 @@ class Root {
   };
 
   eraseSideFromConference = (sideName) => {
+    this.peerConnector.closeClientConnections();
     this.store.dispatch(removeSideFromConference(sideName));
   };
 
@@ -116,6 +117,7 @@ class Root {
   };
 
   emitCloseConferenceEvent = (type) => {
+    this.peerConnector.closeClientConnections();
     this.store.dispatch(closeConference());
     this.connection.emit(type);
   };

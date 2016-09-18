@@ -12,7 +12,11 @@ class RTCInterfaces {
     this.SessionDescription =
       window.RTCSessionDescription ||
       window.webkitRTCSessionDescription ||
-      window.mozRTCSessionDescription
+      window.mozRTCSessionDescription;
+    this.ICECandidate =
+      window.RTCIceCandidate ||
+      window.webkitRTCIceCandidate||
+      window.mozRTCIceCandidate;
   }
 }
 
@@ -52,10 +56,10 @@ class P2PController {
         break;
       case 'answer':
         this.pcP2P.setRemoteDescription(new this.RTC.SessionDescription(data.desc))
-          .catch(this._logError(err));
+          .catch(this._logError);
         break;
       case 'candidate':
-        this.pcP2P.addIceCandidate(data.candidate);
+        this.pcP2P.addIceCandidate(new this.RTC.ICECandidate(data.candidate));
         break;
       default:
         break;
@@ -84,7 +88,11 @@ class P2PController {
   }
 
   closeClientConnections = () => {
-    if (this.pcP2P) this.pcP2P.close();
+    if (this.pcP2P) {
+      this.peers = null;
+      this.pcP2P.close();
+      this.pcP2P = null
+    }
   };
 
   static get contactServer() {
@@ -141,7 +149,7 @@ class P2PController {
         };
         this._emitSignalingMessage(message);
       })
-      .catch(this._logError(err))
+      .catch(this._logError)
   };
 
   _emitSignalingMessage = (message) => {

@@ -144,8 +144,6 @@ gulp.task('assets', () => {
     .pipe(gulp.dest(config.server.assets));
 });
 
-
-
 /*
  * Server livereload
  * Reload browser and server
@@ -175,10 +173,7 @@ gulp.task('server', () => {
   });
 });
 
-
 gulp.task('watch', () => {
-
-
   ['templates', 'styles', 'assets', 'scripts'].forEach((watched) => {
     watch(config[watched].watch, () => {
       gulp.start(watched);
