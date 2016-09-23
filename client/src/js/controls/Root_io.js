@@ -81,6 +81,7 @@ class Root {
   };
 
   updateUserAfterAddingFriend = (friend) => {
+    this.store.dispatch(newSearchedPeople([]));
     this.store.dispatch(addedUserFriend(friend));
     this.emitChangeInputValueEvent(EventsPeople.emitSearchPeopleInputChange, this.searchPeopleInput);
   };
