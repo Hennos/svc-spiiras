@@ -33,7 +33,7 @@ function handleRemovingFriendAction(state, action) {
   let updatedFriends = state
     .get(userFields.friends)
     .filter((friend) => {
-      return friend.username !== action.friend.username;
+      return friend.username !== action.friend;
     });
   return state
     .set(userFields.friends, updatedFriends)
