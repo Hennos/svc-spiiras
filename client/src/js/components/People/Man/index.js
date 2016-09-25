@@ -2,8 +2,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {sendingAddingFriend, sendingRemovingFriend} from '../../../actions/user'
 
-import PushButton from './PushButton'
-import FriendTogglingButton from './FriendTogglingButton'
+import ButtonMap from './ButtonMap'
 
 class Man extends React.Component {
   constructor(props) {
@@ -16,12 +15,12 @@ class Man extends React.Component {
       <div className="man_wrapper">
         <div className="man">
 
-          <div className="img_place">{
-            (image != null) ?
+          <div className="img_place">
+            {(image != null) ?
               <img src={image} alt="Нет изображения"/>
               :
-              <p className="fa fa-question-circle"></p>
-          }
+              <p className="fa fa-question-circle"/>
+            }
           </div>
 
           <ul className="name_place">
@@ -35,11 +34,9 @@ class Man extends React.Component {
             <li className="place">{place}</li>
           </ul>
 
-          <ul className="buttons_wrapper">
-            <PushButton className="fa fa-phone"/>
-            <FriendTogglingButton type={type} username={username}/>
-            <PushButton className="fa fa-search"/>
-          </ul>
+          <div className="buttons_wrapper">
+            <ButtonMap type={type} username={username}/>
+          </div>
 
         </div>
       </div>

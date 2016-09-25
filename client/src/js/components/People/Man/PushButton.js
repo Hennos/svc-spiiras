@@ -6,14 +6,14 @@ class PushButton extends React.Component {
   }
 
   render() {
-    const {className, eventHandler} = this.props;
+    const {image, username, eventHandler} = this.props;
     return (
       <li className="button_wrapper">
         <div className="button">{
           (!eventHandler) ?
-            <p className={className}></p>
+            <p className={image}/>
             :
-            <p className={className} onClick={eventHandler}></p>
+            <p className={image} onClick={() => eventHandler(username)}/>
         }
         </div>
       </li>
