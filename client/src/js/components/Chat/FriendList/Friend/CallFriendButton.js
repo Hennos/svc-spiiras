@@ -10,7 +10,7 @@ class CallFriendButton extends React.Component {
     return (
       <div className="button_wrapper">
         <div className="button" onClick={(isGotStream && !inChat) ? onClick : this.onDisabled}>
-          <p className={"fa fa-phone" + (inChat ? " in_chat" : " out_chat")}></p>
+          <p className={"fa fa-phone" + (inChat ? " in_chat" : " out_chat")} />
         </div>
       </div>
     );

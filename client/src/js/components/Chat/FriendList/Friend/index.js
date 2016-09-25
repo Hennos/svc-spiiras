@@ -19,7 +19,7 @@ class Friend extends React.Component {
             (image) ?
               <img src={image} alt="Нет изображения"/>
               :
-              <p className="fa fa-question-circle"></p>
+              <p className="fa fa-question-circle" />
           }
           </div>
 

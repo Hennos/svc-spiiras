@@ -8,7 +8,7 @@ class LoadingArea extends React.Component {
   render() {
     return (
       <div className="video-camera_spinner-area">
-        <p className="image fa fa-spinner fa-pulse"></p>
+        <p className="image fa fa-spinner fa-pulse" />
         <p className="text">Loading...</p>
       </div>
     );

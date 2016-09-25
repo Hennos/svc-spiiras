@@ -10,7 +10,7 @@ class ConferenceCloseButton extends React.Component {
     return (
       <div className="conference-close-button_wrapper">
         <div className="button" onClick={onClick}>
-          <p className="fa fa-square"></p>
+          <p className="fa fa-square" />
         </div>
       </div>
     );

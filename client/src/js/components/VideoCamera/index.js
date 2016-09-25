@@ -32,7 +32,7 @@ class VideoCameraComponent extends React.Component {
     return (
       <div className={"video-camera-component_wrapper" + (visible ? " display_block" : " display_none")}>
         <div className="video_wrapper">
-          <video id="camera-video"></video>
+          <video id="camera-video" />
         </div>
 
         <div className="controls_wrapper">

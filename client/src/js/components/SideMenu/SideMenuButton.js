@@ -9,7 +9,7 @@ class SideMenuButton extends React.Component {
     const {onClick, buttonState, image, name} = this.props;
     return (
       <div className={"button " + buttonState} onClick={onClick}>
-        <p className={image}></p>
+        <p className={image} />
       </div>
     );
   }

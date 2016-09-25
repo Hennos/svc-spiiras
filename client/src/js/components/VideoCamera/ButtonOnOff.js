@@ -10,7 +10,7 @@ class ButtonOnOff extends React.Component {
     return (
       <div className="video-camera_toggle-button" onClick={onClick}>
         <p className="text">{isWorking ? "Off" : "On"}</p>
-        <p className={"image fa fa-power-off" + (isWorking ? " off" : " on")}></p>
+        <p className={"image fa fa-power-off" + (isWorking ? " off" : " on")} />
       </div>
     );
   }
