@@ -5,9 +5,16 @@ import {Events as EventsVideoCamera} from '../constants/videoCamera'
 import {Stream} from '../constants/videoCamera'
 import io from 'socket.io-client'
 import _ from 'lodash'
-import {setUserProperties, addedUserFriend, removedUserFriend} from  '../actions/user'
+import {
+  setUserProperties,
+  addedUserFriend,removedUserFriend,
+  addedUserRequest, removedUserRequest
+} from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
-import {addSidesToConference, removeSideFromConference, closeConference} from '../actions/chat'
+import {
+  addSidesToConference, removeSideFromConference,
+  closeConference
+} from '../actions/chat'
 
 import PtPController from './P2PController'
 
@@ -22,8 +29,9 @@ class Root {
     this.connection.on(EventsUser.connected, this.afterConnection);
     this.connection.on(EventsUser.disconnected, this.afterDisconnection);
     this.connection.on(EventsUser.newUserData, this.newUserData);
-    this.connection.on(EventsUser.addFriendToUser, this.updateUserAfterAddingFriend);
-    this.connection.on(EventsUser.removeFriendFromUser, this.updateUserAfterRemovingFriend);
+    this.connection.on(EventsUser.addRequestToUser, this.updateAfterAddingRequest);
+    this.connection.on(EventsUser.addFriendToUser, this.updateAfterAddingFriend);
+    this.connection.on(EventsUser.removeFriendFromUser, this.updateAfterRemovingFriend);
     this.connection.on(EventsPeople.changeSearchedPeople, this.updateSearchedPeople);
     this.connection.on(EventsChat.addSides, this.pushSidesToConference);
     this.connection.on(EventsChat.removeSide, this.eraseSideFromConference);
@@ -36,11 +44,13 @@ class Root {
       case EventsPeople.emitSearchPeopleInputChange:
         this.emitChangeInputValueEvent(action.type, action.value);
         break;
-      case EventsUser.emitAddingFriend:
-        this.emitFriendsEvent(action.type, action.friend);
+      case EventsUser.emitUserRequest:
+      case EventsUser.emitRemovingRequest:
+        this.emitRequestEvent(action.type, action.friend);
         break;
+      case EventsUser.emitAddingFriend:
       case EventsUser.emitRemovingFriend:
-        this.emitFriendsEvent(action.type, action.friend);
+        this.emitFriendEvent(action.type, action.friend);
         break;
       case EventsChat.emitAddedSide:
         this.emitAddedSide(action.type, action.side);
@@ -80,13 +90,17 @@ class Root {
     this.connection.emit(EventsUser.getUserData);
   };
 
-  updateUserAfterAddingFriend = (friend) => {
+  updateAfterAddingRequest = (user) => {
+
+  };
+
+  updateAfterAddingFriend = (friend) => {
     this.store.dispatch(newSearchedPeople([]));
     this.store.dispatch(addedUserFriend(friend));
     this.emitChangeInputValueEvent(EventsPeople.emitSearchPeopleInputChange, this.searchPeopleInput);
   };
 
-  updateUserAfterRemovingFriend = (friend) => {
+  updateAfterRemovingFriend = (friend) => {
     this.store.dispatch(removedUserFriend(friend));
     this.emitChangeInputValueEvent(EventsPeople.emitSearchPeopleInputChange, this.searchPeopleInput);
   };
@@ -109,8 +123,12 @@ class Root {
     this.searchPeopleInput = value;
   };
 
-  emitFriendsEvent = (type, friendName) => {
-    this.connection.emit(type, JSON.stringify(friendName));
+  emitRequestEvent = (type, userName) => {
+    this.connection.emit(type, userName)
+  };
+
+  emitFriendEvent = (type, friendName) => {
+    this.connection.emit(type, friendName);
   };
 
   emitAddedSide = (type, sideName) => {

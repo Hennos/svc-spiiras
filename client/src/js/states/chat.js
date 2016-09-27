@@ -5,3 +5,9 @@ export const state = Immutable.Map([
   [chat.sides, Immutable.Map()],
   [chat.url, null]
 ]);
+
+//[
+//  ['bob', {username: 'bob'}],
+//  ['mark', {username: 'mark'}],
+//  ['jon', {username: 'jon'}]
+//]
