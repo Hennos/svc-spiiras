@@ -84,8 +84,7 @@ function Root(io) {
       );
     });
 
-    socket.on(Events.getAddingFriend, function (pack) {
-      var friendName = JSON.parse(pack);
+    socket.on(Events.getAddingFriend, function (friendName) {
       userModel.findOne(
         {username: friendName},
         {username: 1},
@@ -116,8 +115,7 @@ function Root(io) {
       )
     });
 
-    socket.on(Events.getRemovingFriend, function (pack) {
-      var friendName = JSON.parse(pack);
+    socket.on(Events.getRemovingFriend, function (friendName) {
       userModel.findOne(
         {username: friendName},
         {username: 1},
@@ -217,11 +215,11 @@ function Root(io) {
         )
       );
       getSocketsInRoom(caused.roomId).forEach(function (elem) {
-        elem.leave(caused.roomId, function(err) {
+        elem.leave(caused.roomId, function (err) {
           if (err) {
             throw err;
           }
-          elem.join(socket.roomId, function(err) {
+          elem.join(socket.roomId, function (err) {
             if (err) {
               throw err;
             }
