@@ -14,7 +14,7 @@ class People extends React.Component {
   }
 
   render() {
-    const {visible, friends, inputValueChange, people} = this.props;
+    const {visible, friends, people, requests, inputValueChange} = this.props;
     return (
       <div className={"friends-component_wrapper" + (visible ? "" : " display_none")}>
         <div className="search-area_wrapper">
@@ -30,16 +30,9 @@ class People extends React.Component {
 
         <div className="people-area_wrapper">
           <div className="people_wrapper">
-            {friends.length > 0 ?
-              <PeopleArea people={friends} title="Друзья" type="friend"/>
-              :
-              <PeopleArea people={friends} title="У вас пока нет ни одного друга"/>
-            }
-            {people.length > 0 ?
-              <PeopleArea people={people} title="Найденные пользователи" type="other"/>
-              :
-              <PeopleArea people={people} title="Нет найденных пользователей"/>
-            }
+            <PeopleArea people={friends} title="Друзья" alt="Нет найденных друзей" type="friend"/>
+            <PeopleArea people={requests} title="Запросы" alt="Нет активных запросов" type="request"/>
+            <PeopleArea people={people} title="Пользователи" alt="Нет найденных пользователей" type="other"/>
           </div>
         </div>
       </div>
@@ -62,6 +55,9 @@ const mapStatePeoplesProps = (state, ownProps) => {
       .get(componentsVisibilityToggles.peopleArea),
     friends: state.user
       .get(userFields.friends)
+      .toArray(),
+    requests: state.user
+      .get(userFields.requests)
       .toArray(),
     people: state.people
       .get(peopleAction.newSearchedPeople)

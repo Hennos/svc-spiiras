@@ -8,11 +8,11 @@ class PeopleArea extends React.Component {
   }
 
   render() {
-    const {people, title, type} = this.props;
+    const {people, title, alt, type} = this.props;
     return (
       <div className="module_wrapper">
         <div className="info_block">
-          <p>{title}</p>
+          <p>{(people.length > 0) ? title : alt}</p>
         </div>
         {people.map(man => (
           <Man
