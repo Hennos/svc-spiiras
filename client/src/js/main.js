@@ -4,10 +4,11 @@ import { Provider } from 'react-redux';
 import ReactDom from 'react-dom';
 import thunk from 'redux-thunk';
 
-import SideMenu from './components/SideMenu/index';
+import SideMenu from './components/SideMenu/SideMenu';
+import ToggleMenuButton from './components/SideMenu/ToggleMenuButton';
 import VideoCameraComponent from './components/VideoCamera/index';
 import PeoplesComponent from './components/People/index';
-import ChatComponent from './components/Chat/index'
+import ChatComponent from './components/Chat/index';
 import Reducers from './reducers/index';
 import Root_io from './controls/Root_io';
 
@@ -18,13 +19,16 @@ class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <div className="wrapper_components">
-          <VideoCameraComponent/>
-          <PeoplesComponent/>
-          <ChatComponent/>
+      <div className="main_wrapper">
+        <ToggleMenuButton/>
+        <div className="content_wrapper">
+          <SideMenu/>
+          <div className="wrapper_components">
+            <VideoCameraComponent/>
+            <PeoplesComponent/>
+            <ChatComponent/>
+          </div>
         </div>
-        <SideMenu/>
       </div>
     );
   }
