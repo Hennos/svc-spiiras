@@ -1,18 +1,11 @@
 .friends-component_wrapper
   background main_light_grey_color
   opacity 0.8
-  width 80%
-  margin-left auto
 
   .search-area_wrapper
     display flex
     flex-direction column
     justify-content center
-
-    border-width 0 0 2px 0
-    border-color main_middle_grey_color
-    border-style solid
-    width auto
 
     padding 1em
 
@@ -38,8 +31,10 @@
         margin-left auto
         display block
 
-        border: 2px solid main_light_grey_color //цвет рамки
-        border-width 2px 0px 2px 0px
+        border-width 2px 0 0 0
+        border-color main_light_grey_color
+        border-style solid
+
         border-radius: 0 //закругление углов (общее)  //закругление углов (Google Chrome)  //закругление углов (FireFox)
         -khtml-border-radius 0 //закругление углов (Safari)
 
@@ -72,21 +67,20 @@
 
   .people-area_wrapper
     display inline-block
-    width 80%
+    width 100%
     border-color 2px solid main_middle_grey_color
 
     background-color main_light_grey_color
 
     .people_wrapper
       background-color main_light_grey_color
+      border-bottom 2px solid main_middle_grey_color
 
       .man_wrapper
         display block
         padding 0.5em 0.5em
         width auto
-        border-bottom 1px solid main_middle_grey_color
-        :nth-last-child
-          border-bottom none
+        border-top 1px solid main_middle_grey_color
 
         .man
           width 100%
@@ -171,11 +165,14 @@
 
       .module_wrapper
 
+
         .info_block
-          width 100%
+          width calc(100% - 2px)
           padding-top 2.5em
-          border 2px solid main_middle_grey_color
-          border-width 0px 2px 2px 0
+
+          border-width 2px 2px 0 0
+          border-color main_middle_grey_color
+          border-style solid
 
           p
             padding-left 3%

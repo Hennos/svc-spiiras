@@ -24,10 +24,8 @@ class P2PController {
   constructor(connection) {
     this.connection = connection;
 
-    this.pcP2P = null;
-    this.peers = [];
+    this.peers = {};
     this.localStream = null;
-    this.remoteStream = null;
 
     this.RTC = new RTCInterfaces();
 
@@ -35,49 +33,73 @@ class P2PController {
     this.connection.on(EventsChat.webRTCMessage, this.handleWebRTCMessage);
   }
 
+  /*
+   Необходимо принять участников разговора от сервера,
+   сохранить их на стороне клиента и вызвать каждого, обменявшись WebRTC-сообщениями.
+   Ожидаем, что получаем массив с именами всех подключаемых к разговору
+  */
   handleNewPeers = (peers) => {
-    this.peers = JSON.parse(peers);
-    this.createPeerConnection();
+    function peersToMap(arrayPeers) {
+      let peersMap = {};
+      for (let i = 0; i < arrayPeers.length; ++i) {
+        peersMap[arrayPeers[i]] = null;
+      }
+      return peersMap;
+    }
+
+    this.peers = peersToMap(JSON.parse(peers));
+
+    for (let side in this.peers) {
+      this.createPeerConnection(side);
+    }
   };
 
   handleWebRTCMessage = (message) => {
-    if (!this.pcP2P) {
-      this.createPeerConnection();
-    }
     const data = JSON.parse(message);
+    let curSide = data.side;
+    if (!this.peers[curSide]) {
+      this.peers.push(curSide);
+      this.createPeerConnection(curSide);
+    }
     switch (data.type) {
       case 'offer':
-        this.peers.push(data.side);
-        this.pcP2P.setRemoteDescription(new this.RTC.SessionDescription(data.desc))
+        this.peers[curSide].connection
+          .setRemoteDescription(new this.RTC.SessionDescription(data.desc))
           .then(() => {
             this._sendAnswer();
           })
           .catch(this._logError);
         break;
       case 'answer':
-        this.pcP2P.setRemoteDescription(new this.RTC.SessionDescription(data.desc))
+        this.peers[curSide].connection
+          .setRemoteDescription(new this.RTC.SessionDescription(data.desc))
           .catch(this._logError);
         break;
       case 'candidate':
-        this.pcP2P.addIceCandidate(new this.RTC.ICECandidate(data.candidate));
+        this.peers[curSide].connection
+          .addIceCandidate(new this.RTC.ICECandidate(data.candidate))
+          .catch(this._logError);
         break;
       default:
         break;
     }
   };
 
-  createPeerConnection = () => {
+  createPeerConnection = (side) => {
     const server = P2PController.contactServer;
     try {
-      this.pcP2P = new this.RTC.PeerConnection(server);
-      this.pcP2P.onicecandidate = this._handleIceCandidate.bind(this);
-      this.pcP2P.onnegotiationneeded = this._handleNegotiationNeeded.bind(this);
-      this.pcP2P.onaddstream = this._handleStream.bind(this);
+      this.peers[side].connection = new this.RTC.PeerConnection(server);
+      this.peers[side].connection
+        .onicecandidate = this._handleIceCandidate.bind(this, side);
+      this.peers[side].connection
+        .onnegotiationneeded = this._handleNegotiationNeeded.bind(this, side);
+      this.peers[side].connection
+        .onaddstream = this._handleStream.bind(this, side);
 
       if (this.localStream.getVideoTracks().length > 0)
-        this.pcP2P.addStream(this.localStream);
+        this.peers[side].connection.addStream(this.localStream);
 
-      console.log('Created RTCPeerConnection');
+      console.log('Created local RTCPeerConnection for ' + side);
     } catch (err) {
       this._logError(err);
     }
@@ -88,11 +110,19 @@ class P2PController {
   }
 
   closeClientConnections = () => {
-    if (this.pcP2P) {
-      this.peers = null;
-      this.pcP2P.close();
-      this.pcP2P = null
+    for (let side in this.peers) {
+      let curSideDoc = this.peers[side];
+      if (curSideDoc.remoteStream) {
+        if (curSideDoc.remoteStream.getVideoTracks()[0]) {
+          curSideDoc.remoteStream.getVideoTracks()[0].stop();
+        }
+        if (curSideDoc.remoteStream.getAudioTracks()[0]) {
+          curSideDoc.remoteStream.getAudioTracks()[0].stop();
+        }
+      }
+      if (curSideDoc.connection) curSideDoc.connection.close();
     }
+    this.peers = {};
   };
 
   static get contactServer() {
@@ -136,16 +166,16 @@ class P2PController {
     };
   }
 
-  _sendAnswer() {
-    this.pcP2P.createAnswer()
+  _sendAnswer(side) {
+    this.peers[side].createAnswer()
       .then((answer) => {
-        return this.pcP2P.setLocalDescription(answer);
+        return this.peers[side].connection.setLocalDescription(answer);
       })
       .then(() => {
         const message = {
           type: 'answer',
-          side: this.peers[0],
-          desc: this.pcP2P.localDescription
+          desc: this.peers[side].connection.localDescription,
+          side
         };
         this._emitSignalingMessage(message);
       })
@@ -157,13 +187,13 @@ class P2PController {
     this.connection.emit(EventsChat.emitWebRTCMessage, JSON.stringify(message));
   };
 
-  _handleIceCandidate = (evt) => {
+  _handleIceCandidate = (side, evt) => {
     console.log('icecandidate event: ', evt);
     if (evt.candidate) {
       const message = {
         type: 'candidate',
-        side: this.peers[0],
-        candidate: evt.candidate
+        candidate: evt.candidate,
+        side
       };
       this._emitSignalingMessage(message);
     } else {
@@ -171,27 +201,28 @@ class P2PController {
     }
   };
 
-  _handleNegotiationNeeded = () => {
-    this.pcP2P.createOffer()
+  _handleNegotiationNeeded = (side) => {
+    let connection = this.peers[side].connection;
+    connection.createOffer()
       .then((offer) => {
-        return this.pcP2P.setLocalDescription(offer);
+        return connection.setLocalDescription(offer);
       })
       .then(() => {
         const message = {
           type: 'offer',
-          side: this.peers[0],
-          desc: this.pcP2P.localDescription
+          desc: connection.localDescription,
+          side
         };
         this._emitSignalingMessage(message);
       })
       .catch(this._logError);
   };
 
-  _handleStream = (evt) => {
+  _handleStream = (side, evt) => {
     console.log('Remote stream added:', evt);
-    this.remoteStream = evt.stream;
-    let videoArea = document.getElementById(this.peers[0].toLowerCase() + '-signal');
-    videoArea.srcObject = this.remoteStream;
+    this.peers[side].remoteStream = evt.stream;
+    let videoArea = document.getElementById(side.toLowerCase() + '-signal');
+    videoArea.srcObject = this.peers[side].remoteStream;
     videoArea.onloadedmetadata = () => {
       videoArea.play();
     };
