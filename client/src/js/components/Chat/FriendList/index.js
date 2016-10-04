@@ -24,15 +24,11 @@ class FriendList extends React.Component {
           </div>
         </div>
 
-        <div className="friends-area_wrapper">
-          <div className="friends_wrapper">
-            {friends.length > 0 ?
-              <FriendArea friends={friends} sides={sides} stream={stream} title="Друзья"/>
-              :
-              <FriendArea friends={friends} title="У вас нет друзей"/>
-            }
-          </div>
-        </div>
+        {friends.length > 0 ?
+          <FriendArea friends={friends} sides={sides} stream={stream} title="Друзья"/>
+          :
+          <FriendArea friends={friends} title="У вас нет друзей"/>
+        }
       </div>
     );
   }
