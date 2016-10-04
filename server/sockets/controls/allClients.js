@@ -83,29 +83,81 @@ function Root(io) {
     socket.on(Events.userData.getUserData, function () {
       var user = _.pick(socketUser, [
         'username',
-        'friends'
+        'friends',
+        'requests'
       ]);
 
-      var friends = [];
+      var groups = [];
       eachSeries(
-        user.friends,
-        function (friend, callback) {
-          userModel.findById(friend, function (err, found) {
-            if (err) return callback(err);
-            friends.push(
-              _.pick(found, ['username'])
-            );
-            callback();
-          })
+        [user.friends, user.requests],
+        function (manGroup, groupCallback) {
+          var founded = [];
+          eachSeries(
+            manGroup,
+            function (man, manCallback) {
+              userModel.findById(man, function (err, found) {
+                if (err) {
+                  return manCallback(err);
+                }
+                founded.push(
+                  _.pick(found, ['username'])
+                );
+                manCallback();
+              })
+            },
+            function (err) {
+              if (err) {
+                return groupCallback(err);
+              }
+              groups.push(founded);
+              return groupCallback();
+            }
+          )
         },
         function (err) {
           if (err) {
-            throw err;
+            throw(err);
           }
-          user.friends = friends;
+          user.friends = groups[0];
+          user.requests = groups[1];
           socket.emit(Events.userData.newUserData, user);
         }
       );
+    });
+
+    socket.on(Events.requests.getAddingRequest, function (requestedName) {
+      userModel.findOne(
+        {username: socketUser.username},
+        {username: 1},
+        function (err, user) {
+          if (err) {
+            throw err;
+          }
+          userModel.findOne(
+            {username: requestedName},
+            function (err, requested) {
+              if (err) {
+                throw err;
+              }
+              const newRequests = _.union(requested.requests, [user._id]);
+              requested.update(
+                {$set: {requests: newRequests}, $inc: {__v: 1}},
+                function (err) {
+                  if (err) {
+                    throw err;
+                  }
+                  if (clients[requested.username]) {
+                    clients[requested.username].emit(
+                      Events.requests.addRequestToUserSuccessful,
+                      _.pick(requested.username, ['username'])
+                    );
+                  }
+                }
+              );
+            }
+          );
+        }
+      )
     });
 
     socket.on(Events.friends.getAddingFriend, function (friendName) {
