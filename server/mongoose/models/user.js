@@ -12,7 +12,8 @@ var User = new Schema({
   salt: {type: String, required: true},
   created: {type: Date, default: Date.now},
 
-  friends: [{type: Schema.Types.ObjectId, ref: 'User'}]
+  friends: {type: [{type: Schema.Types.ObjectId, ref: 'User'}], default: []},
+  requests: {type: [{type: Schema.Types.ObjectId, ref: 'User'}], default: []}
 });
 
 User.plugin(passportLocalMongoose);
