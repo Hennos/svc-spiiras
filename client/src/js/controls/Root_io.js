@@ -47,7 +47,7 @@ class Root {
         break;
       case EventsUser.emitUserRequest:
       case EventsUser.emitRemovingRequest:
-        this.emitRequestEvent(action.type, action.friend);
+        this.emitRequestEvent(action.type, action.user);
         break;
       case EventsUser.emitAddingFriend:
       case EventsUser.emitRemovingFriend:
@@ -92,13 +92,13 @@ class Root {
   };
 
   updateAfterAddingRequest = (user) => {
-
+    this.store.dispatch(newSearchedPeople([]));
+    this.store.dispatch(addedUserRequest(user));
+    this.emitChangeInputValueEvent(EventsPeople.emitSearchPeopleInputChange, this.searchPeopleInput);
   };
 
   updateAfterAddingFriend = (friend) => {
-    this.store.dispatch(newSearchedPeople([]));
     this.store.dispatch(addedUserFriend(friend));
-    this.emitChangeInputValueEvent(EventsPeople.emitSearchPeopleInputChange, this.searchPeopleInput);
   };
 
   updateAfterRemovingFriend = (friend) => {
