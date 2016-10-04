@@ -79,7 +79,7 @@ function Root(io) {
             throw err;
           }
           user.friends = friends;
-          socket.emit(Events.newUserData, JSON.stringify(user));
+          socket.emit(Events.newUserData, user);
         }
       );
     });
@@ -153,7 +153,7 @@ function Root(io) {
     });
 
     socket.on(Events.changePatternSearchPeople, function (pack) {
-      var input = JSON.parse(pack);
+      var input = pack;
       if (input != '') {
         const regexFindPattern = new RegExp('^' + input + '.*', 'i');
         userModel.findOne(
@@ -170,13 +170,13 @@ function Root(io) {
                 if (err) {
                   throw err;
                 }
-                socket.emit(Events.changeSearchedPeople, JSON.stringify(result));
+                socket.emit(Events.changeSearchedPeople, result);
               }
             );
           }
         );
       } else {
-        socket.emit(Events.changeSearchedPeople, '[]');
+        socket.emit(Events.changeSearchedPeople, []);
       }
     });
 
@@ -192,27 +192,21 @@ function Root(io) {
       }
       io.to(caused.roomId).emit(
         Events.sideChangeConference,
-        JSON.stringify(
-          getSocketsInRoom(socket.roomId).map(function (iterSocket) {
-            return _.pick(iterSocket.request.user, ['username']);
-          })
-        )
+        getSocketsInRoom(socket.roomId).map(function (iterSocket) {
+          return _.pick(iterSocket.request.user, ['username']);
+        })
       );
       io.to(socket.roomId).emit(
         Events.sendNewPeers,
-        JSON.stringify(
-          getSocketsInRoom(caused.roomId).map(function (iterSocket) {
-            return iterSocket.request.user.username;
-          })
-        )
+        getSocketsInRoom(caused.roomId).map(function (iterSocket) {
+          return iterSocket.request.user.username;
+        })
       );
       io.to(socket.roomId).emit(
         Events.sideChangeConference,
-        JSON.stringify(
-          getSocketsInRoom(caused.roomId).map(function (iterSocket) {
-            return _.pick(iterSocket.request.user, ['username']);
-          })
-        )
+        getSocketsInRoom(caused.roomId).map(function (iterSocket) {
+          return _.pick(iterSocket.request.user, ['username']);
+        })
       );
       getSocketsInRoom(caused.roomId).forEach(function (elem) {
         elem.leave(caused.roomId, function (err) {
@@ -240,17 +234,17 @@ function Root(io) {
 
     // Candidate-Offer-Answer WebRTC
     socket.on(Events.handleWebRTCMessage, function (message) {
-      var data = JSON.parse(message);
+      var data = message;
       if ((data.side !== undefined) && (clients[data.side] !== undefined)) {
         var callyClient = clients[data.side];
         data.side = socketUser.username;
-        callyClient.emit(Events.responseWebRTCMessage, JSON.stringify(data));
+        callyClient.emit(Events.responseWebRTCMessage, data);
       } else {
         data.side = socketUser.username;
         socket
           .broadcast
           .to(socket.roomId)
-          .emit(Events.responseWebRTCMessage, JSON.stringify(data));
+          .emit(Events.responseWebRTCMessage, data);
       }
     });
   });

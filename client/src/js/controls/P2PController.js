@@ -47,7 +47,7 @@ class P2PController {
       return peersMap;
     }
 
-    this.peers = peersToMap(JSON.parse(peers));
+    this.peers = peersToMap(peers);
 
     for (let side in this.peers) {
       this.createPeerConnection(side);
@@ -55,7 +55,7 @@ class P2PController {
   };
 
   handleWebRTCMessage = (message) => {
-    const data = JSON.parse(message);
+    const data = message;
     let curSide = data.side;
     if (!this.peers[curSide]) {
       this.peers.push(curSide);
@@ -184,7 +184,7 @@ class P2PController {
 
   _emitSignalingMessage = (message) => {
     console.log('Client sending message: ', message);
-    this.connection.emit(EventsChat.emitWebRTCMessage, JSON.stringify(message));
+    this.connection.emit(EventsChat.emitWebRTCMessage, message);
   };
 
   _handleIceCandidate = (side, evt) => {

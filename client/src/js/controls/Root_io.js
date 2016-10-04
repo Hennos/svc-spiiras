@@ -25,6 +25,7 @@ class Root {
 
   setConnection = (address, store) => {
     this.store = store;
+
     this.connection = io(address, {reconnection: false});
     this.connection.on(EventsUser.connected, this.afterConnection);
     this.connection.on(EventsUser.disconnected, this.afterDisconnection);
@@ -83,7 +84,7 @@ class Root {
   };
 
   newUserData = (user) => {
-    this.store.dispatch(setUserProperties(JSON.parse(user)));
+    this.store.dispatch(setUserProperties(user));
   };
 
   getUserData = () => {
@@ -106,11 +107,11 @@ class Root {
   };
 
   updateSearchedPeople = (people) => {
-    this.store.dispatch(newSearchedPeople(JSON.parse(people)));
+    this.store.dispatch(newSearchedPeople(people));
   };
 
   pushSidesToConference = (sides) => {
-    this.store.dispatch(addSidesToConference(JSON.parse(sides)));
+    this.store.dispatch(addSidesToConference(sides));
   };
 
   eraseSideFromConference = (sideName) => {
@@ -119,7 +120,7 @@ class Root {
   };
 
   emitChangeInputValueEvent = (type, value) => {
-    this.connection.emit(type, JSON.stringify(value));
+    this.connection.emit(type, value);
     this.searchPeopleInput = value;
   };
 
