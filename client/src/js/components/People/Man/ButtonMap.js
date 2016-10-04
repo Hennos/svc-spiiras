@@ -1,6 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {sendingAddingFriend, sendingRemovingFriend} from '../../../actions/user'
+import {
+  sendingUserRequest, sendingRemovingRequest,
+  sendingAddingFriend, sendingRemovingFriend
+} from '../../../actions/user'
 
 import PushButton from './PushButton'
 
@@ -22,23 +25,36 @@ class ButtonMap extends React.Component {
 
   getCurButtons() {
     const {username, type} = this.props;
+    const {requestMan, disagreeManRequest} = this.props;
     const {addToFriends, removeFromFriends} = this.props;
     const buttons = {
-      callFriend: {
-        name: "callFriend",
-        image: "fa fa-phone",
+      requestMan: {
+        name: "requestMan",
+        image: "fa fa-plus-circle",
+        eventHandler: requestMan,
         username
       },
-      addFriend: {
-        name: "addFriend",
+      agreeRequest: {
+        name: "agreeRequest",
         image: "fa fa-plus-circle",
         eventHandler: addToFriends,
+        username
+      },
+      disagreeRequest: {
+        name: "disagreeRequest",
+        image: "fa fa-minus-circle",
+        eventHandler: disagreeManRequest,
         username
       },
       removeFriend: {
         name: "removeFriend",
         image: "fa fa-minus-circle",
         eventHandler: removeFromFriends,
+        username
+      },
+      callFriend: {
+        name: "callFriend",
+        image: "fa fa-phone",
         username
       },
       watchMan: {
@@ -57,11 +73,13 @@ class ButtonMap extends React.Component {
         ];
       case 'request':
         return [
-          buttons.watchMan
+          buttons.watchMan,
+          buttons.agreeRequest,
+          buttons.disagreeRequest
         ];
       case 'other':
         return [
-          buttons.addFriend,
+          buttons.requestMan,
           buttons.watchMan
         ];
       default:
@@ -72,6 +90,12 @@ class ButtonMap extends React.Component {
 
 const mapDispatchManProps = (dispatch) => {
   return {
+    requestMan: (username) => {
+      dispatch(sendingUserRequest(username));
+    },
+    disagreeManRequest: (username) => {
+      dispatch(sendingRemovingRequest(username));
+    },
     addToFriends: (username) => {
       dispatch(sendingAddingFriend(username));
     },
