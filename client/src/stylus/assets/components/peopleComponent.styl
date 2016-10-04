@@ -3,6 +3,8 @@
   opacity 0.8
 
   .search-area_wrapper
+    width 80%
+
     display flex
     flex-direction column
     justify-content center
@@ -10,33 +12,21 @@
     padding 1em
 
     .name_wrapper
-      width 80%
+      padding-left 1.5em
 
-      .name
-        width 90%
-        margin-left auto
-
-        p
-          display block
-          padding-bottom 0.2em
-          font-weight bold
+      p
+        padding-bottom 0.2em
+        font-weight bold
 
     .search_wrapper
-      width 80%
-      display block
+      padding 0 1.5em 0 1.5em
 
       input[type="text"]
-        width 90%
+        width 80%
+        min-width 8em
 
-        margin-left auto
-        display block
-
-        border-width 2px 0 0 0
-        border-color main_light_grey_color
-        border-style solid
-
-        border-radius: 0 //закругление углов (общее)  //закругление углов (Google Chrome)  //закругление углов (FireFox)
-        -khtml-border-radius 0 //закругление углов (Safari)
+        border-width 0
+        border-radius: 0
 
         background: #ffffff !important // желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым
         outline: none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
@@ -46,128 +36,23 @@
         &:focus
           border-bottom 2px solid main_dark_grey_color
 
-    .button-search_wrapper
-      width 50%
-      font-size base-font-size
-      display table-cell
-      text-align left
-      height 100%
-
-      p
-        height 100%
-        color main_black_color
-        padding 0.3em 0.5em
-        font-size 16px
-        background-color main_light_grey_color
-
-        &:hover, &:active
-          cursor pointer
-          color main_white_color
-          background-color main_middle_grey_color
-
   .people-area_wrapper
+    width 80%
+
     display inline-block
-    width 100%
     border-color 2px solid main_middle_grey_color
 
     background-color main_light_grey_color
 
     .people_wrapper
       background-color main_light_grey_color
-      border-bottom 2px solid main_middle_grey_color
-
-      .man_wrapper
-        display block
-        padding 0.5em 0.5em
-        width auto
-        border-top 1px solid main_middle_grey_color
-
-        .man
-          width 100%
-          display table
-          table-layout fixed
-
-          .img_place
-            width 25%
-            display table-cell
-            vertical-align middle
-            text-align left
-            padding-left 0.8em
-
-            img, p
-              border-radius 100%
-              margin-right auto
-
-            p
-              display inline
-              //box-shadow inset 0 0 1px 1px main_cyan_color
-              padding 0.3em 0.4em
-              border 2px dashed main_middle_dark_grey_color
-              font-size 2.5em
-              color main_middle_dark_grey_color
-
-            img
-              display block
-              border-radius 100%
-              width 50%
-              height auto
-              border 2px solid main_middle_grey_color
-
-          .name_place
-            width 35%
-            display table-cell
-            vertical-align middle
-            padding-left 0.5em
-            li
-              color main_middle_dark_grey_color
-              padding-bottom 0.3em
-              &:nth-child(1)
-                color main_black_color
-              &:last-child
-                padding-bottom 0
-            .username, .allName
-              padding-top 0.5em
-            .allName
-              font-style italic
-              padding-bottom 0.7em
-
-          .buttons_wrapper
-            width 40%
-            text-align right
-            display table-cell
-            vertical-align middle
-            padding-right 0.2em 0.5em
-            clearfix()
-            .button_wrapper
-              padding  0.3em
-              display inline-block
-              vertical-align middle
-
-              .button
-                text-align center
-                padding  0.4em 0
-
-                p
-                  display block
-                  //box-shadow inset 0 0 1px 1px main_cyan_color
-                  padding  0.7em 0.8em
-                  border 2px dashed main_middle_grey_color
-                  border-radius 100%
-
-                  font-size 1.3em
-                  color main_dark_grey_color
-                  margin 0 auto
-                  &:hover, &:active
-                    cursor pointer
-                    box-shadow inset 0 0 20px 0 main_cyan_color
-                    border-style solid
-                    color main_dark_grey_color
 
       .module_wrapper
 
+        &:last-child
+          border-bottom 2px solid main_middle_grey_color
 
         .info_block
-          width calc(100% - 2px)
           padding-top 2.5em
 
           border-width 2px 2px 0 0
@@ -178,3 +63,82 @@
             padding-left 3%
             padding-bottom 1em
             color main_black_color
+
+        .friends_block
+
+          .man_wrapper
+            padding 0.5em 0.5em
+            width auto
+
+            border-top-width 1px
+            border-style solid
+            border-color main_middle_grey_color
+
+            &:first-child
+              border-top-width 2px
+
+            .man
+              display flex
+              align-items center
+
+              .img_place
+                padding 0 0.5em 0 0.5em
+
+                img, p
+                  border-radius 100%
+                  margin-right auto
+
+                p
+                  padding 0.3em 0.4em
+                  border 2px dashed main_middle_dark_grey_color
+                  font-size 2.5em
+                  color main_middle_dark_grey_color
+
+                img
+                  display block
+                  border-radius 100%
+                  width 50%
+                  height auto
+                  border 2px solid main_middle_grey_color
+
+              .name_place
+                flex-grow 1
+                padding 0 0.5em 0 0.5em
+
+                li
+                  color main_middle_dark_grey_color
+                  padding-bottom 0.3em
+                  &:nth-child(1)
+                    color main_black_color
+                  &:last-child
+                    padding-bottom 0
+                .allName
+                  font-style italic
+
+              .buttons_wrapper
+                padding 0 0.5em 0 0.5em
+                text-align right
+
+                .button_wrapper
+                  padding 0.3em
+                  display inline-block
+                  vertical-align middle
+
+                  .button
+                    text-align center
+                    padding 0.4em 0
+
+                    p
+                      display block
+                      padding 0.7em 0.8em
+                      border 2px dashed main_middle_grey_color
+                      border-radius 100%
+
+                      font-size 1.3em
+                      color main_dark_grey_color
+                      margin 0 auto
+                      &:hover, &:active
+                        cursor pointer
+                        box-shadow inset 0 0 20px 0 main_cyan_color
+                        border-style solid
+                        color main_dark_grey_color

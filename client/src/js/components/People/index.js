@@ -19,9 +19,7 @@ class People extends React.Component {
       <div className={"friends-component_wrapper" + (visible ? "" : " display_none")}>
         <div className="search-area_wrapper">
           <div className="name_wrapper">
-            <div className="name">
-              <p>Поиск</p>
-            </div>
+            <p>Поиск</p>
           </div>
           <div className="search_wrapper">
             <input type="text" name="search-area" onChange={inputValueChange}/>

@@ -34,9 +34,7 @@ class Man extends React.Component {
             <li className="place">{place}</li>
           </ul>
 
-          <div className="buttons_wrapper">
-            <ButtonMap type={type} username={username}/>
-          </div>
+          <ButtonMap type={type} username={username}/>
 
         </div>
       </div>

@@ -12,7 +12,7 @@ class ButtonMap extends React.Component {
   render() {
     const curButtons = this.getCurButtons();
     return (
-      <div>
+      <div className="buttons_wrapper">
         {curButtons.map(button =>
           <PushButton key={button.name} {...button}/>
         )}
