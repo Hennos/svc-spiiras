@@ -3,26 +3,50 @@ var _ = require('lodash');
 var eachSeries = require('async/eachSeries');
 
 var Events = {
-  connected: 'connection',
-  disconnect: 'disconnect',
-  getUserData: "GET:USER:DATA",
-  addFriendToUserSuccessful: "ADD:FRIEND:TO:USER",
-  removeFriendFromUserSuccessful: "REMOVE:FRIEND:FROM:USER",
-  getAddingFriend: "EMIT:ADDING:FRIEND",
-  getRemovingFriend: "EMIT:REMOVING:FRIEND",
-  newUserData: "NEW:USER:DATA",
-  changeSearchedPeople: "NEW:SEARCH_PEOPLE:PEOPLE",
-  changePatternSearchPeople: "EMIT:SEARCH:PEOPLE:INPUT:CHANGE",
-  callerAddToConference: "EMIT:ADDED:SIDE",
-  sideChangeConference: "ADD:SIDES:TO:CONFERENCE",
-  sideLeaveConference: "REMOVE:SIDE:FROM:CONFERENCE",
-  callerCloseConference: "EMIT:CLOSE:CONFERENCE",
-  closeConference: "CLOSE:CONFERENCE",
-  sideAlreadyCalled: "SIDE:ALREADY:CALLED",
-  sideNotAvailable: "SIDE:NOT:AVAILABLE",
-  handleWebRTCMessage: "WEB:RTC:MESSAGE",
-  responseWebRTCMessage: "WEB:RTC:RESPONSE:MESSAGE",
-  sendNewPeers: "SEND:NEW:PEERS"
+  base: {
+    connected: 'connection',
+    disconnect: 'disconnect'
+  },
+
+  userData: {
+    getUserData: "GET:USER:DATA",
+    newUserData: "NEW:USER:DATA"
+  },
+
+  requests: {
+    addRequestToUserSuccessful: "ADD:REQUEST:TO:USER",
+    removeRequestFromUserSuccessful: "REMOVE:REQUEST:FROM:USER",
+    getAddingRequest: "EMIT:USER:REQUEST",
+    getRemovingRequest: "EMIT:REMOVING:REQUEST"
+  },
+
+  friends: {
+    addFriendToUserSuccessful: "ADD:FRIEND:TO:USER",
+    removeFriendFromUserSuccessful: "REMOVE:FRIEND:FROM:USER",
+    getAddingFriend: "EMIT:ADDING:FRIEND",
+    getRemovingFriend: "EMIT:REMOVING:FRIEND"
+  },
+
+  search: {
+    changeSearchedPeople: "NEW:SEARCH_PEOPLE:PEOPLE",
+    changePatternSearchPeople: "EMIT:SEARCH:PEOPLE:INPUT:CHANGE"
+  },
+
+  conference: {
+    callerAddToConference: "EMIT:ADDED:SIDE",
+    sideChangeConference: "ADD:SIDES:TO:CONFERENCE",
+    sideLeaveConference: "REMOVE:SIDE:FROM:CONFERENCE",
+    callerCloseConference: "EMIT:CLOSE:CONFERENCE",
+    closeConference: "CLOSE:CONFERENCE",
+    sideAlreadyCalled: "SIDE:ALREADY:CALLED",
+    sideNotAvailable: "SIDE:NOT:AVAILABLE",
+    sendNewPeers: "SEND:NEW:PEERS"
+  },
+
+  signaling: {
+    handleWebRTCMessage: "WEB:RTC:MESSAGE",
+    responseWebRTCMessage: "WEB:RTC:RESPONSE:MESSAGE",
+  }
 };
 
 var userModel = require('../../mongoose/models/user');
@@ -31,15 +55,15 @@ function Root(io) {
   var clients = {};
 
   //connection
-  io.on(Events.connected, function (socket) {
+  io.on(Events.base.connected, function (socket) {
     console.log("this work");
     var socketUser = socket.request.user;
     if (clients[socketUser.username]) {
       clients[socketUser.username]
         .broadcast
         .to(clients[socketUser.username].roomId)
-        .emit(Events.sideLeaveConference, socketUser.username);
-      clients[socketUser.username].emit(Events.closeConference);
+        .emit(Events.conference.sideLeaveConference, socketUser.username);
+      clients[socketUser.username].emit(Events.conference.closeConference);
       clients[socketUser.username].disconnect(true);
       return clients;
     }
@@ -48,15 +72,15 @@ function Root(io) {
 
     refreshSocketsRoom(socket);
 
-    socket.on(Events.disconnect, function () {
+    socket.on(Events.base.disconnect, function () {
       socket
         .broadcast
         .to(socket.roomId)
-        .emit(Events.sideLeaveConference, socketUser.username);
+        .emit(Events.conference.sideLeaveConference, socketUser.username);
       delete clients[socketUser.username];
     });
 
-    socket.on(Events.getUserData, function () {
+    socket.on(Events.userData.getUserData, function () {
       var user = _.pick(socketUser, [
         'username',
         'friends'
@@ -79,12 +103,12 @@ function Root(io) {
             throw err;
           }
           user.friends = friends;
-          socket.emit(Events.newUserData, user);
+          socket.emit(Events.userData.newUserData, user);
         }
       );
     });
 
-    socket.on(Events.getAddingFriend, function (friendName) {
+    socket.on(Events.friends.getAddingFriend, function (friendName) {
       userModel.findOne(
         {username: friendName},
         {username: 1},
@@ -104,7 +128,7 @@ function Root(io) {
                     throw err;
                   }
                   socket.emit(
-                    Events.addFriendToUserSuccessful,
+                    Events.friends.addFriendToUserSuccessful,
                     _.pick(friend, ['username'])
                   );
                 }
@@ -115,7 +139,7 @@ function Root(io) {
       )
     });
 
-    socket.on(Events.getRemovingFriend, function (friendName) {
+    socket.on(Events.friends.getRemovingFriend, function (friendName) {
       userModel.findOne(
         {username: friendName},
         {username: 1},
@@ -141,7 +165,7 @@ function Root(io) {
                     throw err;
                   }
                   socket.emit(
-                    Events.removeFriendFromUserSuccessful,
+                    Events.friends.removeFriendFromUserSuccessful,
                     friend.username
                   );
                 }
@@ -152,7 +176,7 @@ function Root(io) {
       )
     });
 
-    socket.on(Events.changePatternSearchPeople, function (pack) {
+    socket.on(Events.search.changePatternSearchPeople, function (pack) {
       var input = pack;
       if (input != '') {
         const regexFindPattern = new RegExp('^' + input + '.*', 'i');
@@ -170,40 +194,40 @@ function Root(io) {
                 if (err) {
                   throw err;
                 }
-                socket.emit(Events.changeSearchedPeople, result);
+                socket.emit(Events.search.changeSearchedPeople, result);
               }
             );
           }
         );
       } else {
-        socket.emit(Events.changeSearchedPeople, []);
+        socket.emit(Events.search.changeSearchedPeople, []);
       }
     });
 
-    socket.on(Events.callerAddToConference, function (side) {
+    socket.on(Events.conference.callerAddToConference, function (side) {
       var caused = clients[side];
       if (!caused) {
-        socket.emit(Events.sideNotAvailable);
+        socket.emit(Events.conference.sideNotAvailable);
         return false;
       }
       if (caused.roomId === socket.roomId) {
-        socket.emit(Events.sideAlreadyCalled);
+        socket.emit(Events.conference.sideAlreadyCalled);
         return false;
       }
       io.to(caused.roomId).emit(
-        Events.sideChangeConference,
+        Events.conference.sideChangeConference,
         getSocketsInRoom(socket.roomId).map(function (iterSocket) {
           return _.pick(iterSocket.request.user, ['username']);
         })
       );
       io.to(socket.roomId).emit(
-        Events.sendNewPeers,
+        Events.conference.sendNewPeers,
         getSocketsInRoom(caused.roomId).map(function (iterSocket) {
           return iterSocket.request.user.username;
         })
       );
       io.to(socket.roomId).emit(
-        Events.sideChangeConference,
+        Events.conference.sideChangeConference,
         getSocketsInRoom(caused.roomId).map(function (iterSocket) {
           return _.pick(iterSocket.request.user, ['username']);
         })
@@ -223,28 +247,28 @@ function Root(io) {
       });
     });
 
-    socket.on(Events.callerCloseConference, function () {
+    socket.on(Events.conference.callerCloseConference, function () {
       socket
         .broadcast
         .to(socket.roomId)
-        .emit(Events.sideLeaveConference, socketUser.username);
+        .emit(Events.conference.sideLeaveConference, socketUser.username);
       socket.leave(socket.roomId);
       refreshSocketsRoom(socket);
     });
 
     // Candidate-Offer-Answer WebRTC
-    socket.on(Events.handleWebRTCMessage, function (message) {
+    socket.on(Events.signaling.handleWebRTCMessage, function (message) {
       var data = message;
       if ((data.side !== undefined) && (clients[data.side] !== undefined)) {
         var callyClient = clients[data.side];
         data.side = socketUser.username;
-        callyClient.emit(Events.responseWebRTCMessage, data);
+        callyClient.emit(Events.signaling.responseWebRTCMessage, data);
       } else {
         data.side = socketUser.username;
         socket
           .broadcast
           .to(socket.roomId)
-          .emit(Events.responseWebRTCMessage, data);
+          .emit(Events.signaling.responseWebRTCMessage, data);
       }
     });
   });
