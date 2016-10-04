@@ -182,12 +182,13 @@ function Root(io) {
         const regexFindPattern = new RegExp('^' + input + '.*', 'i');
         userModel.findOne(
           {username: socketUser.username},
-          {_id: 0, username: 1, friends: 1},
+          {_id: 0, username: 1, friends: 1, requests: 1},
           function (err, user) {
+            const ninPattern = _.union(user.friends, user.requests);
             userModel.find(
               {
                 username: {$regex: regexFindPattern, $ne: user.username},
-                _id: {$nin: user.friends}
+                _id: {$nin: ninPattern}
               },
               {_id: 0, username: 1},
               function (err, result) {
