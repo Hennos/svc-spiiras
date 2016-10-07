@@ -1,6 +1,5 @@
 var crypto = require('crypto');
 var _ = require('lodash');
-var eachSeries = require('async/eachSeries');
 
 var Events = {
   base: {
@@ -45,7 +44,7 @@ var Events = {
 
   signaling: {
     handleWebRTCMessage: "WEB:RTC:MESSAGE",
-    responseWebRTCMessage: "WEB:RTC:RESPONSE:MESSAGE",
+    responseWebRTCMessage: "WEB:RTC:RESPONSE:MESSAGE"
   }
 };
 
@@ -81,48 +80,22 @@ function Root(io) {
     });
 
     socket.on(Events.userData.getUserData, function () {
-      var user = _.pick(socketUser, [
-        'username',
-        'friends',
-        'requests'
-      ]);
-
-      var groups = [];
-      eachSeries(
-        [user.friends, user.requests],
-        function (manGroup, groupCallback) {
-          var founded = [];
-          eachSeries(
-            manGroup,
-            function (man, manCallback) {
-              userModel.findById(man, function (err, found) {
-                if (err) {
-                  return manCallback(err);
-                }
-                founded.push(
-                  _.pick(found, ['username'])
-                );
-                manCallback();
-              })
-            },
-            function (err) {
-              if (err) {
-                return groupCallback(err);
-              }
-              groups.push(founded);
-              return groupCallback();
-            }
-          )
-        },
-        function (err) {
+      var user = {username: socketUser.username};
+      userModel
+        .findOne({username: user.username})
+        .populate('friends', 'username')
+        .populate('requests', 'username')
+        .exec(function (err, popUser) {
           if (err) {
             throw(err);
           }
-          user.friends = groups[0];
-          user.requests = groups[1];
+          var grabFields = function (o) {
+            return _.pick(o, ['username'])
+          };
+          user.friends = popUser.friends.map(grabFields);
+          user.requests = popUser.requests.map(grabFields);
           socket.emit(Events.userData.newUserData, user);
-        }
-      );
+        });
     });
 
     socket.on(Events.requests.getAddingRequest, function (requestedName) {
@@ -236,6 +209,9 @@ function Root(io) {
           {username: socketUser.username},
           {_id: 0, username: 1, friends: 1, requests: 1},
           function (err, user) {
+            if (err) {
+              throw err;
+            }
             const ninPattern = _.union(user.friends, user.requests);
             userModel.find(
               {
