@@ -14,6 +14,7 @@ var Events = {
 
   requests: {
     addRequestToUserSuccessful: "ADD:REQUEST:TO:USER",
+    sendingRequestSuccessful: "SENDING:REQUEST:SUCCESSFUL",
     removeRequestFromUserSuccessful: "REMOVE:REQUEST:FROM:USER",
     getAddingRequest: "EMIT:USER:REQUEST",
     getRemovingRequest: "EMIT:REMOVING:REQUEST"
@@ -80,57 +81,66 @@ function Root(io) {
     });
 
     socket.on(Events.userData.getUserData, function () {
-      var user = {username: socketUser.username};
+      var user = {};
       userModel
-        .findOne({username: user.username})
+        .findOne({username: socketUser.username})
         .populate('friends', 'username')
         .populate('requests', 'username')
-        .exec(function (err, popUser) {
+        .exec(function (err, populated) {
           if (err) {
             throw(err);
           }
-          var grabFields = function (o) {
-            return _.pick(o, ['username'])
-          };
-          user.friends = popUser.friends.map(grabFields);
-          user.requests = popUser.requests.map(grabFields);
+
+          const groups = ['friends', 'requests'];
+          groups.forEach(function (group) {
+            user[group] = populated[group].map(function (o) {
+              return _.pick(o, ['username'])
+            });
+          });
           socket.emit(Events.userData.newUserData, user);
         });
     });
 
     socket.on(Events.requests.getAddingRequest, function (requestedName) {
-      userModel.findOne(
-        {username: socketUser.username},
-        {username: 1},
-        function (err, user) {
-          if (err) {
-            throw err;
+      var sender;
+      userModel.findOne({username: socketUser.username}, {username: 1}).exec()
+        .then(
+          function catchSender(requesting) {
+            sender = requesting;
+            return userModel.findOne({username: requestedName}).exec();
           }
-          userModel.findOne(
-            {username: requestedName},
-            function (err, requested) {
-              if (err) {
-                throw err;
-              }
-              const newRequests = _.union(requested.requests, [user._id]);
-              requested.update(
-                {$set: {requests: newRequests}, $inc: {__v: 1}},
-                function (err) {
-                  if (err) {
-                    throw err;
-                  }
-                  if (clients[requested.username]) {
-                    clients[requested.username].emit(
-                      Events.requests.addRequestToUserSuccessful,
-                      _.pick(requested.username, ['username'])
-                    );
-                  }
+        )
+        .then(
+          function updateRequested(requested) {
+            const alreadyRequested =
+              requested.requests.some(
+                function compareId(elem) {
+                  return _.isEqual(elem, sender._id);
                 }
               );
+            if (!alreadyRequested) {
+              requested.requests.push(sender._id);
+              requested.markModified('requests');
             }
-          );
-        }
-      )
+            return requested.save();
+          }
+        )
+        .then(
+          function emitMessage(requested) {
+            socket.emit(Events.requests.sendingRequestSuccessful);
+            if (clients[requested.username]) {
+              clients[requested.username].emit(
+                Events.requests.addRequestToUserSuccessful,
+                _.pick(sender, ['username'])
+              );
+            }
+          }
+        )
+        .catch(
+          function (err) {
+            throw err;
+          }
+        );
     });
 
     socket.on(Events.friends.getAddingFriend, function (friendName) {
@@ -204,7 +214,7 @@ function Root(io) {
     socket.on(Events.search.changePatternSearchPeople, function (pack) {
       var input = pack;
       if (input != '') {
-        const regexFindPattern = new RegExp('^' + input + '.*', 'i');
+        const patternName = new RegExp('^' + input + '.*', 'i');
         userModel.findOne(
           {username: socketUser.username},
           {_id: 0, username: 1, friends: 1, requests: 1},
@@ -212,11 +222,11 @@ function Root(io) {
             if (err) {
               throw err;
             }
-            const ninPattern = _.union(user.friends, user.requests);
+            const patternRelations = _.union(user.friends, user.requests);
             userModel.find(
               {
-                username: {$regex: regexFindPattern, $ne: user.username},
-                _id: {$nin: ninPattern}
+                username: {$regex: patternName, $ne: user.username},
+                _id: {$nin: patternRelations}
               },
               {_id: 0, username: 1},
               function (err, result) {
@@ -285,7 +295,6 @@ function Root(io) {
       refreshSocketsRoom(socket);
     });
 
-    // Candidate-Offer-Answer WebRTC
     socket.on(Events.signaling.handleWebRTCMessage, function (message) {
       var data = message;
       if ((data.side !== undefined) && (clients[data.side] !== undefined)) {
