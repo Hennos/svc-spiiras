@@ -1,6 +1,5 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {sendingAddingFriend, sendingRemovingFriend} from '../../../actions/user'
 
 import ButtonMap from './ButtonMap'
 
