@@ -231,7 +231,8 @@ function Root(io) {
     });
 
     socket.on(Events.search.changePatternSearchPeople, function (pack) {
-      var input = pack;
+      var input = escapeRegExp(pack);
+
       if (input != '') {
         const patternName = new RegExp('^' + input + '.*', 'i');
         userModel.findOne(
@@ -352,6 +353,10 @@ function Root(io) {
       }
       socket.roomId = roomId;
     });
+  }
+
+  function escapeRegExp(string) {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   }
 }
 
