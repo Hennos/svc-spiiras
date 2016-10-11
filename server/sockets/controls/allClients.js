@@ -102,45 +102,33 @@ function Root(io) {
     });
 
     socket.on(Events.requests.getAddingRequest, function (requestedName) {
-      var sender;
-      userModel.findOne({username: socketUser.username}, {username: 1}).exec()
-        .then(
-          function catchSender(requesting) {
-            sender = requesting;
-            return userModel.findOne({username: requestedName}).exec();
+      var user;
+      userModel.findById(socketUser.id).exec()
+        .then(function catchUser(caught) {
+          user = caught;
+          return userModel.findOne({username: requestedName}).exec();
+        })
+        .then(function updateRequested(requested) {
+          const relSenderByRequests =
+            requested.requests.some(_.isEqual.bind(null, user._id));
+          if (!relSenderByRequests) {
+            requested.requests.push(user._id);
+            requested.markModified('requests');
           }
-        )
-        .then(
-          function updateRequested(requested) {
-            const alreadyRequested =
-              requested.requests.some(
-                function compareId(elem) {
-                  return _.isEqual(elem, sender._id);
-                }
-              );
-            if (!alreadyRequested) {
-              requested.requests.push(sender._id);
-              requested.markModified('requests');
-            }
-            return requested.save();
+          return requested.save();
+        })
+        .then(function emitMessage(requested) {
+          socket.emit(Events.requests.sendingRequestSuccessful);
+          if (clients[requested.username]) {
+            clients[requested.username].emit(
+              Events.requests.addRequestToUserSuccessful,
+              _.pick(user, ['username'])
+            );
           }
-        )
-        .then(
-          function emitMessage(requested) {
-            socket.emit(Events.requests.sendingRequestSuccessful);
-            if (clients[requested.username]) {
-              clients[requested.username].emit(
-                Events.requests.addRequestToUserSuccessful,
-                _.pick(sender, ['username'])
-              );
-            }
-          }
-        )
-        .catch(
-          function (err) {
-            throw err;
-          }
-        );
+        })
+        .catch(function handleError(err) {
+          throw err;
+        });
     });
 
     socket.on(Events.friends.getAddingFriend, function (friendName) {
