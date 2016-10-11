@@ -186,40 +186,48 @@ function Root(io) {
     });
 
     socket.on(Events.friends.getRemovingFriend, function (friendName) {
-      userModel.findOne(
-        {username: friendName},
-        {username: 1},
-        function (err, friend) {
-          if (err) {
-            throw err;
+      var user, removingFriend;
+      userModel.findOne({username: friendName}).exec()
+        .then(function catchRemoving(caughtFriend) {
+          removingFriend = caughtFriend;
+          return userModel.findById(socketUser.id).exec();
+        })
+        .then(function catchUser(caughtUser) {
+          user = caughtUser;
+        })
+        .then(function updateUserFriends() {
+          const posRemovingInFriends =
+            user.friends.findIndex(_.isEqual.bind(null, removingFriend._id));
+          if (posRemovingInFriends != -1) {
+            user.friends.splice(posRemovingInFriends, 1);
+            user.markModified('friends');
           }
-          userModel.findOne(
-            {username: socketUser.username},
-            function (err, user) {
-              if (err) {
-                throw err;
-              }
-              const newFriends = _.filter(
-                user.friends,
-                function (curFriend) {
-                  return !(_.isEqual(curFriend, friend._id));
-                });
-              user.update(
-                {$set: {friends: newFriends}, $inc: {__v: 1}},
-                function (err) {
-                  if (err) {
-                    throw err;
-                  }
-                  socket.emit(
-                    Events.friends.removeFriendFromUserSuccessful,
-                    friend.username
-                  );
-                }
-              );
-            }
+          return user.save();
+        })
+        .then(function updateRemovingFriends() {
+          const posUserInFriends =
+            removingFriend.friends.findIndex(_.isEqual.bind(null, user._id));
+          if (posUserInFriends != -1) {
+            removingFriend.friends.splice(posUserInFriends, 1);
+            removingFriend.markModified('friends');
+          }
+          return removingFriend.save();
+        })
+        .then(function emitMessage() {
+          socket.emit(
+            Events.friends.removeFriendFromUserSuccessful,
+            _.pick(removingFriend, ['username'])
           );
-        }
-      )
+          if (clients[removingFriend.username]) {
+            clients[removingFriend.username].emit(
+              Events.friends.removeFriendFromUserSuccessful,
+              _.pick(user, ['username'])
+            );
+          }
+        })
+        .catch(function handleError(err) {
+          throw err;
+        });
     });
 
     socket.on(Events.search.changePatternSearchPeople, function (pack) {
