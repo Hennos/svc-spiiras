@@ -132,34 +132,57 @@ function Root(io) {
     });
 
     socket.on(Events.friends.getAddingFriend, function (friendName) {
-      userModel.findOne(
-        {username: friendName},
-        {username: 1},
-        function (err, friend) {
-          if (err) {
-            throw err;
+      var user, addingFriend;
+      userModel.findOne({username: friendName}).exec()
+        .then(function catchAdding(caught) {
+          addingFriend = caught;
+          return userModel.findById(socketUser.id).exec();
+        })
+        .then(function catchUser(caught) {
+          return user = caught;
+        })
+        .then(function updateUserFriends() {
+          const relAddingByFriends =
+            user.friends.some(_.isEqual.bind(null, addingFriend._id));
+          if (!relAddingByFriends) {
+            user.friends.push(addingFriend._id);
+            user.markModified('friends');
           }
-          userModel.findOne(
-            {username: socketUser.username},
-            function (err, user) {
-              if (err) throw err;
-              const newFriends = user.friends.concat(friend._id);
-              user.update(
-                {$set: {friends: newFriends}, $inc: {__v: 1}},
-                function (err) {
-                  if (err) {
-                    throw err;
-                  }
-                  socket.emit(
-                    Events.friends.addFriendToUserSuccessful,
-                    _.pick(friend, ['username'])
-                  );
-                }
-              );
-            }
+          return user.save();
+        })
+        .then(function updateUserRequests() {
+          const posAddingInRequests =
+            user.requests.findIndex(_.isEqual.bind(null, addingFriend._id));
+          if (posAddingInRequests != -1) {
+            user.requests.splice(posAddingInRequests, 1);
+            user.markModified('requests');
+          }
+          return user.save();
+        })
+        .then(function updateAddingFriends() {
+          const relUserByFriends =
+            addingFriend.friends.some(_.isEqual.bind(null, user._id));
+          if (!relUserByFriends) {
+            addingFriend.friends.push(user._id);
+            addingFriend.markModified('friends');
+          }
+          return addingFriend.save();
+        })
+        .then(function emitMessage() {
+          socket.emit(
+            Events.friends.addFriendToUserSuccessful,
+            _.pick(addingFriend, ['username'])
           );
-        }
-      )
+          if (clients[addingFriend.username]) {
+            clients[addingFriend.username].emit(
+              Events.friends.addFriendToUserSuccessful,
+              _.pick(user, ['username'])
+            );
+          }
+        })
+        .catch(function handleError(err) {
+          throw err;
+        });
     });
 
     socket.on(Events.friends.getRemovingFriend, function (friendName) {
