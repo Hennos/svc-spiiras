@@ -27,35 +27,35 @@ function handleUpdateUser(state, action) {
 }
 
 function handleUserRequest(state, action) {
-  const updatedRequests = state
+  const upRequests = state
     .get(userFields.requests)
     .add(action.user);
   return state
-    .set(userFields.requests, updatedRequests);
+    .set(userFields.requests, upRequests);
 }
 function handleAddingFriend(state, action) {
-  const updatedFriends = state
+  const upFriends = state
     .get(userFields.friends)
-    .add(action.friend);
+    .add(action.user);
+  const upRequests  = state
+    .get(userFields.requests)
+    .filterNot(Object.is.bind(null, action.user));
   return state
-    .set(userFields.friends, updatedFriends);
+    .set(userFields.friends, upFriends)
+    .set(userFields.requests, upRequests);
 }
 
 function handleRemovingUserRequest(state, action) {
-  let updatedRequests = state
+  let upRequests = state
     .get(userFields.requests)
-    .filter((user) => {
-      return user.username !== action.user;
-    });
+    .filterNot(Object.is.bind(null, action.user));
   return state
-    .set(userFields.requests, updatedRequests);
+    .set(userFields.requests, upRequests);
 }
 function handleRemovingFriend(state, action) {
   let updatedFriends = state
     .get(userFields.friends)
-    .filter((friend) => {
-      return friend.username !== action.friend;
-    });
+    .filterNot(Object.is.bind(null, action.user));
   return state
     .set(userFields.friends, updatedFriends);
 }
