@@ -15,20 +15,20 @@ export const sendingUserRequest = (user) => {
 };
 export const sendingRemovingRequest = (user) => {
   return {
-    type: Events.emitRemovingRequest,
+    type: Events.emitRejectionRequest,
     user
   }
 };
-export const sendingAddingFriend = (friend) => {
+export const sendingAddingRequest = (user) => {
   return {
-    type: Events.emitAddingFriend,
-    friend
+    type: Events.emitResolutionRequest,
+    user
   }
 };
-export const sendingRemovingFriend = (friend) => {
+export const sendingRemovingFriend = (user) => {
   return {
     type: Events.emitRemovingFriend,
-    friend
+    user
   }
 };
 
@@ -44,15 +44,15 @@ export const removedUserRequest = (user) => {
     user
   }
 };
-export const addedUserFriend = (friend) => {
+export const addedUserFriend = (user) => {
   return {
     type: Events.addFriendToUser,
-    friend
+    user
   }
 };
-export const removedUserFriend = (friend) => {
+export const removedUserFriend = (user) => {
   return {
     type: Events.removeFriendFromUser,
-    friend
+    user
   }
 };

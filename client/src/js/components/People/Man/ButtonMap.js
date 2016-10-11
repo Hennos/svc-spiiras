@@ -1,8 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {
-  sendingUserRequest, sendingRemovingRequest,
-  sendingAddingFriend, sendingRemovingFriend
+  sendingUserRequest,
+  sendingAddingRequest, sendingRemovingRequest,
+  sendingRemovingFriend
 } from '../../../actions/user'
 
 import PushButton from './PushButton'
@@ -25,19 +26,20 @@ class ButtonMap extends React.Component {
 
   getCurButtons() {
     const {username, type} = this.props;
-    const {requestMan, disagreeManRequest} = this.props;
-    const {addToFriends, removeFromFriends} = this.props;
+    const {requestManToFriends} = this.props;
+    const {agreeManRequest, disagreeManRequest} = this.props;
+    const {removeFromFriends} = this.props;
     const buttons = {
       requestMan: {
         name: "requestMan",
         image: "fa fa-plus-circle",
-        eventHandler: requestMan,
+        eventHandler: requestManToFriends,
         username
       },
       agreeRequest: {
         name: "agreeRequest",
         image: "fa fa-plus-circle",
-        eventHandler: addToFriends,
+        eventHandler: agreeManRequest,
         username
       },
       disagreeRequest: {
@@ -73,9 +75,9 @@ class ButtonMap extends React.Component {
         ];
       case 'request':
         return [
-          buttons.watchMan,
           buttons.agreeRequest,
-          buttons.disagreeRequest
+          buttons.disagreeRequest,
+          buttons.watchMan
         ];
       case 'other':
         return [
@@ -90,14 +92,14 @@ class ButtonMap extends React.Component {
 
 const mapDispatchManProps = (dispatch) => {
   return {
-    requestMan: (username) => {
+    requestManToFriends: (username) => {
       dispatch(sendingUserRequest(username));
     },
     disagreeManRequest: (username) => {
       dispatch(sendingRemovingRequest(username));
     },
-    addToFriends: (username) => {
-      dispatch(sendingAddingFriend(username));
+    agreeManRequest: (username) => {
+      dispatch(sendingAddingRequest(username));
     },
     removeFromFriends: (username) => {
       dispatch(sendingRemovingFriend(username));

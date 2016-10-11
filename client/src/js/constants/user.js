@@ -5,15 +5,15 @@ export const Events = {
   getUserData: "GET:USER:DATA",
   newUserData: "NEW:USER:DATA",
 
-  addRequestToUser: "ADD:REQUEST:TO:USER",
   emitUserRequest: "EMIT:USER:REQUEST",
+  addRequestToUser: "ADD:REQUEST:TO:USER",
+  emitRejectionRequest: "EMIT:REJECTION:REQUEST",
   removeRequestFromUser: "REMOVE:REQUEST:FROM:USER",
-  emitRemovingRequest: "EMIT:REMOVING:REQUEST",
+  emitResolutionRequest: "EMIT:RESOLUTION:REQUEST",
 
   addFriendToUser: "ADD:FRIEND:TO:USER",
-  emitAddingFriend: "EMIT:ADDING:FRIEND",
-  removeFriendFromUser: "REMOVE:FRIEND:FROM:USER",
-  emitRemovingFriend: "EMIT:REMOVING:FRIEND"
+  emitRemovingFriend: "EMIT:REMOVING:FRIEND",
+  removeFriendFromUser: "REMOVE:FRIEND:FROM:USER"
 };
 
 export const user = {

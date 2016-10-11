@@ -7,8 +7,9 @@ import io from 'socket.io-client'
 import _ from 'lodash'
 import {
   setUserProperties,
-  addedUserFriend,removedUserFriend,
-  addedUserRequest, removedUserRequest
+  addedUserRequest,
+  addedUserFriend, removedUserRequest,
+  removedUserFriend
 } from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
 import {
@@ -46,15 +47,17 @@ class Root {
         this.emitChangeInputValueEvent(action.type, action.value);
         break;
       case EventsUser.emitUserRequest:
-      case EventsUser.emitRemovingRequest:
-        this.emitRequestEvent(action.type, action.user);
+        this.emitFriendRequestEvent(action.type, action.user);
         break;
-      case EventsUser.emitAddingFriend:
+      case EventsUser.emitResolutionRequest:
+      case EventsUser.emitRejectionRequest:
+        this.emitRequestAnswerEvent(action.type, action.user);
+        break;
       case EventsUser.emitRemovingFriend:
-        this.emitFriendEvent(action.type, action.friend);
+        this.emitRemoveFriendEvent(action.type, action.user);
         break;
       case EventsChat.emitAddedSide:
-        this.emitAddedSide(action.type, action.side);
+        this.emitAddedSideEvent(action.type, action.side);
         break;
       case EventsChat.emitCloseConference:
         this.emitCloseConferenceEvent(action.type);
@@ -99,6 +102,7 @@ class Root {
 
   updateAfterAddingFriend = (friend) => {
     this.store.dispatch(addedUserFriend(friend));
+    this.emitChangeInputValueEvent(EventsPeople.emitSearchPeopleInputChange, this.searchPeopleInput);
   };
 
   updateAfterRemovingFriend = (friend) => {
@@ -124,15 +128,19 @@ class Root {
     this.searchPeopleInput = value;
   };
 
-  emitRequestEvent = (type, userName) => {
-    this.connection.emit(type, userName)
-  };
-
-  emitFriendEvent = (type, friendName) => {
+  emitFriendRequestEvent = (type, friendName) => {
     this.connection.emit(type, friendName);
   };
 
-  emitAddedSide = (type, sideName) => {
+  emitRequestAnswerEvent = (type, userName) => {
+    this.connection.emit(type, userName);
+  };
+
+  emitRemoveFriendEvent = (type, friendName) => {
+    this.connection.emit(type, friendName);
+  };
+
+  emitAddedSideEvent = (type, sideName) => {
     this.connection.emit(type, sideName);
   };
 

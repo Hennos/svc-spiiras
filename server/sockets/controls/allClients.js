@@ -17,13 +17,13 @@ var Events = {
     sendingRequestSuccessful: "SENDING:REQUEST:SUCCESSFUL",
     removeRequestFromUserSuccessful: "REMOVE:REQUEST:FROM:USER",
     getAddingRequest: "EMIT:USER:REQUEST",
-    getRemovingRequest: "EMIT:REMOVING:REQUEST"
+    getRemovingRequest: "EMIT:REJECTION:REQUEST"
   },
 
   friends: {
     addFriendToUserSuccessful: "ADD:FRIEND:TO:USER",
     removeFriendFromUserSuccessful: "REMOVE:FRIEND:FROM:USER",
-    getAddingFriend: "EMIT:ADDING:FRIEND",
+    getAddingFriend: "EMIT:RESOLUTION:REQUEST",
     getRemovingFriend: "EMIT:REMOVING:FRIEND"
   },
 
