@@ -97,17 +97,28 @@ class Root {
   updateAfterAddingRequest = (user) => {
     this.store.dispatch(newSearchedPeople([]));
     this.store.dispatch(addedUserRequest(user));
-    this.emitChangeInputValueEvent(EventsPeople.emitSearchPeopleInputChange, this.searchPeopleInput);
+    this.emitChangeInputValueEvent(
+      EventsPeople.emitSearchPeopleInputChange,
+      this.searchPeopleInput
+    );
+  };
+
   };
 
   updateAfterAddingFriend = (friend) => {
     this.store.dispatch(addedUserFriend(friend));
-    this.emitChangeInputValueEvent(EventsPeople.emitSearchPeopleInputChange, this.searchPeopleInput);
+    this.emitChangeInputValueEvent(
+      EventsPeople.emitSearchPeopleInputChange,
+      this.searchPeopleInput
+    );
   };
 
   updateAfterRemovingFriend = (friend) => {
     this.store.dispatch(removedUserFriend(friend));
-    this.emitChangeInputValueEvent(EventsPeople.emitSearchPeopleInputChange, this.searchPeopleInput);
+    this.emitChangeInputValueEvent(
+      EventsPeople.emitSearchPeopleInputChange,
+      this.searchPeopleInput
+    );
   };
 
   updateSearchedPeople = (people) => {
