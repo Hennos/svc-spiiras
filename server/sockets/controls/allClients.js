@@ -86,22 +86,24 @@ function Root(io) {
         .findOne({username: socketUser.username})
         .populate('friends', 'username')
         .populate('requests', 'username')
-        .exec(function (err, populated) {
-          if (err) {
-            throw(err);
-          }
-
+        .exec()
+        .then(function emitMessage(populated) {
           const groups = ['friends', 'requests'];
           groups.forEach(function (group) {
             user[group] = populated[group].map(function (o) {
               return _.pick(o, ['username'])
             });
           });
-          socket.emit(Events.userData.newUserData, user);
+          var message = JSON.stringify(user);
+          socket.emit(Events.userData.newUserData, message);
+        })
+        .catch(function handleError(err) {
+          throw err;
         });
     });
 
-    socket.on(Events.requests.getAddingRequest, function (requestedName) {
+    socket.on(Events.requests.getAddingRequest, function (name) {
+      const requestedName = JSON.parse(name);
       var user;
       userModel.findById(socketUser.id).exec()
         .then(function catchUser(caught) {
@@ -120,9 +122,10 @@ function Root(io) {
         .then(function emitMessage(requested) {
           socket.emit(Events.requests.sendingRequestSuccessful);
           if (clients[requested.username]) {
+            var message = JSON.stringify(user, ['username']);
             clients[requested.username].emit(
               Events.requests.addRequestToUserSuccessful,
-              _.pick(user, ['username'])
+              message
             );
           }
         })
@@ -131,7 +134,8 @@ function Root(io) {
         });
     });
 
-    socket.on(Events.requests.getRemovingRequest, function (requestingName) {
+    socket.on(Events.requests.getRemovingRequest, function (name) {
+      const requestingName = JSON.parse(name);
       var user;
       userModel.findById(socketUser.id).exec()
         .then(function catchUser(caught) {
@@ -148,14 +152,16 @@ function Root(io) {
           return user.save();
         })
         .then(function emitMessage() {
-          socket.emit(Events.removeRequestFromUserSuccessful, user.username);
+          var message = JSON.stringify(user, ['username']);
+          socket.emit(Events.removeRequestFromUserSuccessful, message);
         })
         .catch(function handleError(err) {
           throw err;
         });
     });
 
-    socket.on(Events.friends.getAddingFriend, function (friendName) {
+    socket.on(Events.friends.getAddingFriend, function (name) {
+      const friendName = JSON.parse(name);
       var user, addingFriend;
       userModel.findOne({username: friendName}).exec()
         .then(function catchAdding(caught) {
@@ -193,14 +199,16 @@ function Root(io) {
           return addingFriend.save();
         })
         .then(function emitMessage() {
+          var msgUser = JSON.stringify(addingFriend, ['username']);
+          var msgAdding = JSON.stringify(user, ['username']);
           socket.emit(
             Events.friends.addFriendToUserSuccessful,
-            _.pick(addingFriend, ['username'])
+            msgUser
           );
           if (clients[addingFriend.username]) {
             clients[addingFriend.username].emit(
               Events.friends.addFriendToUserSuccessful,
-              _.pick(user, ['username'])
+              msgAdding
             );
           }
         })
@@ -209,7 +217,8 @@ function Root(io) {
         });
     });
 
-    socket.on(Events.friends.getRemovingFriend, function (friendName) {
+    socket.on(Events.friends.getRemovingFriend, function (name) {
+      const friendName = JSON.parse(name);
       var user, removingFriend;
       userModel.findOne({username: friendName}).exec()
         .then(function catchRemoving(caughtFriend) {
@@ -238,14 +247,16 @@ function Root(io) {
           return removingFriend.save();
         })
         .then(function emitMessage() {
+          var msgUser = JSON.stringify(removingFriend, ['username']);
+          var msgRemoving = JSON.stringify(user, ['username']);
           socket.emit(
             Events.friends.removeFriendFromUserSuccessful,
-            _.pick(removingFriend, ['username'])
+            msgUser
           );
           if (clients[removingFriend.username]) {
             clients[removingFriend.username].emit(
               Events.friends.removeFriendFromUserSuccessful,
-              _.pick(user, ['username'])
+              msgRemoving
             );
           }
         })
@@ -254,9 +265,8 @@ function Root(io) {
         });
     });
 
-    socket.on(Events.search.changePatternSearchPeople, function (pack) {
-      var input = escapeRegExp(pack);
-
+    socket.on(Events.search.changePatternSearchPeople, function (value) {
+      var input = escapeRegExp(JSON.parse(value));
       if (input != '') {
         const patternName = new RegExp('^' + input + '.*', 'i');
         userModel.findOne(
@@ -277,13 +287,15 @@ function Root(io) {
                 if (err) {
                   throw err;
                 }
-                socket.emit(Events.search.changeSearchedPeople, result);
+                var message = JSON.stringify(result);
+                socket.emit(Events.search.changeSearchedPeople, message);
               }
             );
           }
         );
       } else {
-        socket.emit(Events.search.changeSearchedPeople, []);
+        var message = JSON.stringify([]);
+        socket.emit(Events.search.changeSearchedPeople, message);
       }
     });
 

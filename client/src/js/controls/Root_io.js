@@ -87,7 +87,8 @@ class Root {
     console.log('disconnect')
   };
 
-  newUserData = (user) => {
+  newUserData = (data) => {
+    const user = JSON.parse(data);
     this.store.dispatch(setUserProperties(user));
   };
 
@@ -95,7 +96,8 @@ class Root {
     this.connection.emit(EventsUser.getUserData);
   };
 
-  updateAfterAddingRequest = (user) => {
+  updateAfterAddingRequest = (data) => {
+    const user = JSON.parse(data);
     this.store.dispatch(newSearchedPeople([]));
     this.store.dispatch(addedUserRequest(user));
     this.emitChangeInputValueEvent(
@@ -104,7 +106,8 @@ class Root {
     );
   };
 
-  updateAfterRemovingRequest = (requesting) => {
+  updateAfterRemovingRequest = (data) => {
+    const requesting = JSON.parse(data);
     this.store.dispatch(removedUserRequest(requesting));
     this.emitChangeInputValueEvent(
       EventsPeople.emitSearchPeopleInputChange,
@@ -112,7 +115,8 @@ class Root {
     );
   };
 
-  updateAfterAddingFriend = (friend) => {
+  updateAfterAddingFriend = (data) => {
+    const friend = JSON.parse(data);
     this.store.dispatch(addedUserFriend(friend));
     this.emitChangeInputValueEvent(
       EventsPeople.emitSearchPeopleInputChange,
@@ -120,7 +124,8 @@ class Root {
     );
   };
 
-  updateAfterRemovingFriend = (friend) => {
+  updateAfterRemovingFriend = (data) => {
+    const friend = JSON.parse(data);
     this.store.dispatch(removedUserFriend(friend));
     this.emitChangeInputValueEvent(
       EventsPeople.emitSearchPeopleInputChange,
@@ -128,7 +133,8 @@ class Root {
     );
   };
 
-  updateSearchedPeople = (people) => {
+  updateSearchedPeople = (data) => {
+    const people = JSON.parse(data);
     this.store.dispatch(newSearchedPeople(people));
   };
 
@@ -142,20 +148,24 @@ class Root {
   };
 
   emitChangeInputValueEvent = (type, value) => {
-    this.connection.emit(type, value);
+    const message = JSON.stringify(value);
+    this.connection.emit(type, message);
     this.searchPeopleInput = value;
   };
 
   emitFriendRequestEvent = (type, friendName) => {
-    this.connection.emit(type, friendName);
+    const message = JSON.stringify(friendName);
+    this.connection.emit(type, message);
   };
 
   emitRequestAnswerEvent = (type, userName) => {
-    this.connection.emit(type, userName);
+    const message = JSON.stringify(userName);
+    this.connection.emit(type, message);
   };
 
   emitRemoveFriendEvent = (type, friendName) => {
-    this.connection.emit(type, friendName);
+    const message = JSON.stringify(friendName);
+    this.connection.emit(type, message);
   };
 
   emitAddedSideEvent = (type, sideName) => {
