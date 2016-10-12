@@ -21,41 +21,45 @@ const userReducer = (state = initialState, action) => {
 
 function handleUpdateUser(state, action) {
   let updatedUser = action.user;
-  updatedUser.friends = Immutable.Set(updatedUser.friends);
-  updatedUser.requests = Immutable.Set(updatedUser.requests);
+  updatedUser.friends = Immutable.Map(updatedUser.friends);
+  updatedUser.requests = Immutable.Map(updatedUser.requests);
   return state.merge(Immutable.Map(updatedUser));
 }
 
 function handleUserRequest(state, action) {
+  const reqUser = action.user;
   const upRequests = state
     .get(userFields.requests)
-    .add(action.user);
+    .set(reqUser.username, reqUser);
   return state
     .set(userFields.requests, upRequests);
 }
 function handleAddingFriend(state, action) {
+  const addedFriend = action.user;
   const upFriends = state
     .get(userFields.friends)
-    .add(action.user);
+    .set(addedFriend.username, addedFriend);
   const upRequests  = state
     .get(userFields.requests)
-    .filterNot(Object.is.bind(null, action.user));
+    .delete(addedFriend.username);
   return state
     .set(userFields.friends, upFriends)
     .set(userFields.requests, upRequests);
 }
 
 function handleRemovingUserRequest(state, action) {
+  const deletedFriend = action.user;
   let upRequests = state
     .get(userFields.requests)
-    .filterNot(Object.is.bind(null, action.user));
+    .delete(deletedFriend.username);
   return state
     .set(userFields.requests, upRequests);
 }
 function handleRemovingFriend(state, action) {
+  const deletedRequest = action.user;
   let updatedFriends = state
     .get(userFields.friends)
-    .filterNot(Object.is.bind(null, action.user));
+    .delete(deletedRequest.username);
   return state
     .set(userFields.friends, updatedFriends);
 }

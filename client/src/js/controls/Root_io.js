@@ -48,14 +48,14 @@ class Root {
         this.emitChangeInputValueEvent(action.type, action.value);
         break;
       case EventsUser.emitUserRequest:
-        this.emitFriendRequestEvent(action.type, action.user);
+        this.emitFriendRequestEvent(action.type, action.userName);
         break;
       case EventsUser.emitResolutionRequest:
       case EventsUser.emitRejectionRequest:
-        this.emitRequestAnswerEvent(action.type, action.user);
+        this.emitRequestAnswerEvent(action.type, action.userName);
         break;
       case EventsUser.emitRemovingFriend:
-        this.emitRemoveFriendEvent(action.type, action.user);
+        this.emitRemoveFriendEvent(action.type, action.userName);
         break;
       case EventsChat.emitAddedSide:
         this.emitAddedSideEvent(action.type, action.side);
@@ -97,9 +97,9 @@ class Root {
   };
 
   updateAfterAddingRequest = (data) => {
-    const user = JSON.parse(data);
+    const requesting = JSON.parse(data);
     this.store.dispatch(newSearchedPeople([]));
-    this.store.dispatch(addedUserRequest(user));
+    this.store.dispatch(addedUserRequest(requesting));
     this.emitChangeInputValueEvent(
       EventsPeople.emitSearchPeopleInputChange,
       this.searchPeopleInput
@@ -107,8 +107,8 @@ class Root {
   };
 
   updateAfterRemovingRequest = (data) => {
-    const requesting = JSON.parse(data);
-    this.store.dispatch(removedUserRequest(requesting));
+    const requestingName = JSON.parse(data);
+    this.store.dispatch(removedUserRequest(requestingName));
     this.emitChangeInputValueEvent(
       EventsPeople.emitSearchPeopleInputChange,
       this.searchPeopleInput
@@ -125,8 +125,8 @@ class Root {
   };
 
   updateAfterRemovingFriend = (data) => {
-    const friend = JSON.parse(data);
-    this.store.dispatch(removedUserFriend(friend));
+    const friendName = JSON.parse(data);
+    this.store.dispatch(removedUserFriend(friendName));
     this.emitChangeInputValueEvent(
       EventsPeople.emitSearchPeopleInputChange,
       this.searchPeopleInput

@@ -7,28 +7,28 @@ export const setUserProperties = (user) => {
   }
 };
 
-export const sendingUserRequest = (user) => {
+export const sendingUserRequest = (userName) => {
   return {
     type: Events.emitUserRequest,
-    user
+    userName
   }
 };
-export const sendingRemovingRequest = (user) => {
+export const sendingRemovingRequest = (userName) => {
   return {
     type: Events.emitRejectionRequest,
-    user
+    userName
   }
 };
-export const sendingAddingRequest = (user) => {
+export const sendingAddingRequest = (userName) => {
   return {
     type: Events.emitResolutionRequest,
-    user
+    userName
   }
 };
-export const sendingRemovingFriend = (user) => {
+export const sendingRemovingFriend = (userName) => {
   return {
     type: Events.emitRemovingFriend,
-    user
+    userName
   }
 };
 

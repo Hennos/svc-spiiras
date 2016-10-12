@@ -91,7 +91,7 @@ function Root(io) {
           const groups = ['friends', 'requests'];
           groups.forEach(function (group) {
             user[group] = populated[group].map(function (o) {
-              return _.pick(o, ['username'])
+              return [o.username, _.pick(o, ['username'])];
             });
           });
           var message = JSON.stringify(user);
