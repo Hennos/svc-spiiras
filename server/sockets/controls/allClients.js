@@ -131,6 +131,30 @@ function Root(io) {
         });
     });
 
+    socket.on(Events.requests.getRemovingRequest, function (requestingName) {
+      var user;
+      userModel.findById(socketUser.id).exec()
+        .then(function catchUser(caught) {
+          user = caught;
+          return userModel.findOne({username: requestingName}).exec();
+        })
+        .then(function updateUserRequests(requesting) {
+          const posReqInRequests =
+            user.requests.findIndex(_.isEqual.bind(null, requesting._id));
+          if (posReqInRequests != -1) {
+            user.requests.splice(posReqInRequests, 1);
+            user.markModified('requests');
+          }
+          return user.save();
+        })
+        .then(function emitMessage() {
+          socket.emit(Events.removeRequestFromUserSuccessful, user.username);
+        })
+        .catch(function handleError(err) {
+          throw err;
+        });
+    });
+
     socket.on(Events.friends.getAddingFriend, function (friendName) {
       var user, addingFriend;
       userModel.findOne({username: friendName}).exec()
