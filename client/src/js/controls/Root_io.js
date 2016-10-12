@@ -32,6 +32,7 @@ class Root {
     this.connection.on(EventsUser.disconnected, this.afterDisconnection);
     this.connection.on(EventsUser.newUserData, this.newUserData);
     this.connection.on(EventsUser.addRequestToUser, this.updateAfterAddingRequest);
+    this.connection.on(EventsUser.removeRequestFromUser, this.updateAfterRemovingRequest);
     this.connection.on(EventsUser.addFriendToUser, this.updateAfterAddingFriend);
     this.connection.on(EventsUser.removeFriendFromUser, this.updateAfterRemovingFriend);
     this.connection.on(EventsPeople.changeSearchedPeople, this.updateSearchedPeople);
@@ -103,6 +104,12 @@ class Root {
     );
   };
 
+  updateAfterRemovingRequest = (requesting) => {
+    this.store.dispatch(removedUserRequest(requesting));
+    this.emitChangeInputValueEvent(
+      EventsPeople.emitSearchPeopleInputChange,
+      this.searchPeopleInput
+    );
   };
 
   updateAfterAddingFriend = (friend) => {
