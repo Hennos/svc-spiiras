@@ -4,7 +4,6 @@ import {Events as EventsChat} from '../constants/chat'
 import {Events as EventsVideoCamera} from '../constants/videoCamera'
 import {Stream} from '../constants/videoCamera'
 import io from 'socket.io-client'
-import _ from 'lodash'
 import {
   setUserProperties,
   addedUserRequest,

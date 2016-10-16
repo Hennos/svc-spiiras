@@ -266,35 +266,26 @@ function Root(io) {
     });
 
     socket.on(Events.search.changePatternSearchPeople, function (value) {
-      var input = escapeRegExp(JSON.parse(value));
+      const input = escapeRegExp(JSON.parse(value));
       if (input != '') {
-        const patternName = new RegExp('^' + input + '.*', 'i');
-        userModel.findOne(
-          {username: socketUser.username},
-          {_id: 0, username: 1, friends: 1, requests: 1},
-          function (err, user) {
-            if (err) {
-              throw err;
-            }
+        userModel.findById(socketUser.id).exec()
+          .then(function findPeople(user) {
+            const patternName = new RegExp('^' + input + '.*', 'i');
             const patternRelations = _.union(user.friends, user.requests);
-            userModel.find(
-              {
-                username: {$regex: patternName, $ne: user.username},
-                _id: {$nin: patternRelations}
-              },
-              {_id: 0, username: 1},
-              function (err, result) {
-                if (err) {
-                  throw err;
-                }
-                var message = JSON.stringify(result);
-                socket.emit(Events.search.changeSearchedPeople, message);
-              }
-            );
-          }
-        );
+            return userModel.find({
+              username: {$regex: patternName, $ne: user.username},
+              _id: {$nin: patternRelations}
+            }).exec();
+          })
+          .then(function emitMessage(result) {
+            const message = JSON.stringify(result, ['username']);
+            socket.emit(Events.search.changeSearchedPeople, message);
+          })
+          .catch(function handleError(err) {
+            throw err;
+          });
       } else {
-        var message = JSON.stringify([]);
+        const message = JSON.stringify([]);
         socket.emit(Events.search.changeSearchedPeople, message);
       }
     });
@@ -352,17 +343,20 @@ function Root(io) {
     });
 
     socket.on(Events.signaling.handleWebRTCMessage, function (message) {
-      var data = message;
+      var data = JSON.parse(message);
       if ((data.side !== undefined) && (clients[data.side] !== undefined)) {
         var callyClient = clients[data.side];
         data.side = socketUser.username;
-        callyClient.emit(Events.signaling.responseWebRTCMessage, data);
+        callyClient.emit(
+          Events.signaling.responseWebRTCMessage,
+          JSON.stringify(data)
+        );
       } else {
         data.side = socketUser.username;
         socket
           .broadcast
           .to(socket.roomId)
-          .emit(Events.signaling.responseWebRTCMessage, data);
+          .emit(Events.signaling.responseWebRTCMessage, JSON.stringify(data));
       }
     });
   });

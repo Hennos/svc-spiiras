@@ -24,6 +24,8 @@ class P2PController {
   constructor(connection) {
     this.connection = connection;
 
+    this.isInitiator = false;
+
     this.peers = {};
     this.localStream = null;
 
@@ -42,10 +44,12 @@ class P2PController {
     function peersToMap(arrayPeers) {
       let peersMap = {};
       for (let i = 0; i < arrayPeers.length; ++i) {
-        peersMap[arrayPeers[i]] = null;
+        peersMap[arrayPeers[i]] = {};
       }
       return peersMap;
     }
+
+    this.isInitiator = true;
 
     this.peers = peersToMap(peers);
 
@@ -55,10 +59,10 @@ class P2PController {
   };
 
   handleWebRTCMessage = (message) => {
-    const data = message;
+    const data = JSON.parse(message);
     let curSide = data.side;
     if (!this.peers[curSide]) {
-      this.peers.push(curSide);
+      this.peers[curSide] = {};
       this.createPeerConnection(curSide);
     }
     switch (data.type) {
@@ -66,7 +70,7 @@ class P2PController {
         this.peers[curSide].connection
           .setRemoteDescription(new this.RTC.SessionDescription(data.desc))
           .then(() => {
-            this._sendAnswer();
+            this._sendAnswer(curSide);
           })
           .catch(this._logError);
         break;
@@ -166,8 +170,8 @@ class P2PController {
     };
   }
 
-  _sendAnswer(side) {
-    this.peers[side].createAnswer()
+  _sendAnswer = (side) => {
+    this.peers[side].connection.createAnswer()
       .then((answer) => {
         return this.peers[side].connection.setLocalDescription(answer);
       })
@@ -184,7 +188,8 @@ class P2PController {
 
   _emitSignalingMessage = (message) => {
     console.log('Client sending message: ', message);
-    this.connection.emit(EventsChat.emitWebRTCMessage, message);
+    const data = JSON.stringify(message);
+    this.connection.emit(EventsChat.emitWebRTCMessage, data);
   };
 
   _handleIceCandidate = (side, evt) => {
@@ -202,6 +207,8 @@ class P2PController {
   };
 
   _handleNegotiationNeeded = (side) => {
+    if (!this.isInitiator) return null;
+
     let connection = this.peers[side].connection;
     connection.createOffer()
       .then((offer) => {
@@ -230,6 +237,7 @@ class P2PController {
 
   _logError(error) {
     console.log(error.name + ": " + error.message);
+    throw error;
   };
 }
 
