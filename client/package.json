@@ -16,7 +16,6 @@
     "template"
   ],
   "dependencies": {
-    "browser-sync": "2.11.1",
     "immutable": "3.7.6",
     "jeet": "6.1.2",
     "lodash": "3.10.1",

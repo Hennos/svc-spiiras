@@ -69,7 +69,6 @@ class ButtonMap extends React.Component {
     switch (type) {
       case 'friend':
         return [
-          buttons.callFriend,
           buttons.removeFriend,
           buttons.watchMan
         ];
