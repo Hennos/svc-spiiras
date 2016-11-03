@@ -4,13 +4,16 @@ import videoCameraComponent from './videoCamera'
 import user from './user'
 import people from './people'
 import chat from './chat'
-
+import preferences from './userPreferences'
+import adminAccount from './adminAccount'
 const Reducers = combineReducers({
   componentsVisibilityFilter,
   videoCameraComponent,
   user,
   people,
-  chat
+  chat,
+  preferences,
+  adminAccount
 });
 
 export default Reducers;

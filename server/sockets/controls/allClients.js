@@ -12,6 +12,11 @@ var Events = {
     newUserData: "NEW:USER:DATA"
   },
 
+  userChangePreferenses: "EMIT:USER_PROPS_CHANGE:VALUE",
+  userSetPreferences : "GET:USER_PROPS_CHANGE:VALUE",
+  adminAccountChangePreferenses: "EMIT:ADMIN_ACCOUNT_CREATE:VALUE",
+    adminAccountSetPreferences : "GET:ADMIN_ACCOUNT_CREATE:VALUE"
+
   requests: {
     addRequestToUserSuccessful: "ADD:REQUEST:TO:USER",
     sendingRequestSuccessful: "SENDING:REQUEST:SUCCESSFUL",
@@ -359,9 +364,90 @@ function Root(io) {
           .emit(Events.signaling.responseWebRTCMessage, JSON.stringify(data));
       }
     });
-  });
-
+    socket.on(Events.userChangePreferenses, function (pack) {
+      console.log('userChangePreferenses');
+      var input = JSON.parse(pack);
+     userModel.findOne(
+         {username: socket.request.user.username},
+         function (err, user) {
+           if (err) throw err;
+      console.log("in");
+      console.log(input);
+      console.log("user");
+      console.log(user);
+      user.update({$set: {
+        firstName: input.firstName,
+        lastName: input.lastName ,
+        middleName: input.middleName ,
+        country: input.country ,
+        university: input.university ,
+        place: input.place ,
+        school: input.school ,
+        workplace: input.workplace
+      }},
+          function(err, result){
+            if (err){throw err};
+              socket.emit(Events.userSetPreferences, 1);
+          })
+    });
+    });
   //userData
+      socket.on(Events.adminAccountChangePreferenses, function (pack) {
+          console.log("adminAccountChangePreferenses");
+
+          var input = JSON.parse(pack);
+          var curuser;
+          console.log("in");
+
+          userModel.findOne(
+              {username: socket.request.user.username},
+              function (err, curuser) {
+                  console.log("input");
+                  console.log(input);
+
+                  if(!input.username || !input.password){
+                      socket.emit(Events.adminAccountSetPreferences, 2);
+                  }else{
+
+                  var email = input.email;
+                  if(!email){
+                      email = curuser.email;
+                  }
+                  var newuser =(new userModel({
+                          username: input.username,
+                          password: input.password,
+                          email:email,
+                          makecalls: input.makecalls,
+                          addingfriends: input.addingfriends,
+                          forcedchallenge: input.forcedchallenge,
+                          interactiveboard: input.interactiveboard,
+                          passwordexitprofile: input.passwordexitprofile,
+                          passwordmanipulationofaudiovideo: input.passwordmanipulationofaudiovideo
+                  }));
+
+                  console.log("newuser");
+                  console.log(newuser);
+                  console.log("curuser");
+                  console.log(curuser);
+                  newuser.save(function (err) {
+                      if (err){
+                          socket.emit(Events.adminAccountSetPreferences, 3);
+                      }
+                      else{
+                      curuser.admined.push(newuser._id)
+                      curuser.save(function (err) {
+                      console.log('save')
+                          if (err){
+                              socket.emit(Events.adminAccountSetPreferences, 4);
+                          }
+                          else {
+                              console.log('serverOut')
+                              socket.emit(Events.adminAccountSetPreferences, 1);
+                          }});
+                      }});
+
+                  }})
+      });
   return clients;
 
   function getSocketsInRoom(roomId) {
@@ -391,3 +477,5 @@ function Root(io) {
 }
 
 module.exports = Root;
+
+

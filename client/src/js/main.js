@@ -11,7 +11,8 @@ import PeoplesComponent from './components/People/index';
 import ChatComponent from './components/Chat/index';
 import Reducers from './reducers/index';
 import Root_io from './controls/Root_io';
-
+import UserPreferences from './components/UserPreferences/index';
+import AdminAccount from './components/adminAccount/index';
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -28,6 +29,8 @@ class App extends React.Component {
             <PeoplesComponent/>
             <ChatComponent/>
           </div>
+          <UserPreferences/>
+          <AdminAccount/>
         </div>
       </div>
     );
