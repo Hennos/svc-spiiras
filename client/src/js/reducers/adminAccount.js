@@ -7,28 +7,25 @@ import Immutable from 'immutable';
 const adminAccountReducer = (state = initialState, action) => {
 
   switch (action.type) {
-
     case Events.adminAccountSetPreferences:
       var string;
-      switch (action.string){
-        case   1:
+      switch (action.string) {
+        case 1:
           string = 'Пользователь успешно добавлен.';
           break;
-        case   2:
+        case 2:
           string = 'Заполните все необходимые поля.';
           break;
-        case   3:
+        case 3:
           string = 'Невозможно добавить пользователя.';
           break;
-        case   4:
+        case 4:
           string = 'Ошибка подключения к пользовательскому аккаунту. Пользователь добавлен.';
-          break;
-
-
+          break
       }
       console.log(string);
       return state.set(result, string);
-       default:
+    default:
       return state;
   }
 };

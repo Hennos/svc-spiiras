@@ -17,6 +17,7 @@ export const Events = {
 };
 
 export const user = {
+  admined: "admined",
   username: 'username',
   requests: 'requests',
   friends: 'friends',

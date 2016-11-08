@@ -22,5 +22,6 @@ export {
   componentsVisibilityToggles,
   sideMenuToggleKey,
   appComponentsTogglesKey,
+  defaultComponent,
   activeComponent
 }

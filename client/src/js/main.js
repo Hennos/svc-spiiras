@@ -28,9 +28,9 @@ class App extends React.Component {
             <VideoCameraComponent/>
             <PeoplesComponent/>
             <ChatComponent/>
+            <UserPreferences/>
+            <AdminAccount/>
           </div>
-          <UserPreferences/>
-          <AdminAccount/>
         </div>
       </div>
     );
