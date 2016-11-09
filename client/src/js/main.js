@@ -9,10 +9,12 @@ import ToggleMenuButton from './components/SideMenu/ToggleMenuButton';
 import VideoCameraComponent from './components/VideoCamera/index';
 import PeoplesComponent from './components/People/index';
 import ChatComponent from './components/Chat/index';
-import Reducers from './reducers/index';
-import Root_io from './controls/Root_io';
 import UserPreferences from './components/UserPreferences/index';
 import AdminAccount from './components/adminAccount/index';
+
+import Reducers from './reducers/index';
+import Root_io from './controls/Root_io';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -44,7 +46,7 @@ let store = createStore(Reducers,
     root_io.changeEmitterMiddleware,
     root_io.getterMiddleware
   ));
-root_io.setConnection('192.168.0.82:3003', store);
+root_io.setConnection('192.168.0.76:3003', store);
 
 ReactDom.render(
   <Provider store={store}>

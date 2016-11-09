@@ -6,9 +6,8 @@ const componentsVisibilityToggles = {
   chatArea: 'chatAreaVisibilityToggle',
   peopleArea: 'peopleAreaVisibilityToggle',
   userPreferences: 'userPreferencesVisibilityToggle',
-  commonPreferences: 'commonPreferencesVisibilityToggle',
-  cameraAudioPreferences: 'cameraAudioPreferencesVisibilityToggle',
-  administrationAccount: 'administrationAccountVisibilityToggle'
+  administrationAccount: 'administrationAccountVisibilityToggle',
+  cameraAudioPreferences: 'cameraAudioPreferencesVisibilityToggle'
 };
 
 const sideMenuToggleKey = 'sideMenuVisibilityToggle';

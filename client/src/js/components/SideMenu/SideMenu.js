@@ -64,7 +64,7 @@ class SideMenu extends React.Component {
         {
           buttonState: 'off',
           image: 'fa fa-cogs',
-          name: componentsVisibilityToggles.commonPreferences
+          name: componentsVisibilityToggles.administrationAccount
         },
         {
           buttonState: 'off',
