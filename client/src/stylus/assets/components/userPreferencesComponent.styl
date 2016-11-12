@@ -1,10 +1,9 @@
 .userPreferences-component_wrapper
-  background main_light_grey_color
+  background-color main_light_grey_color
   opacity 0.8
   margin-left auto
 
   .UserPreferences-area_wrapper
-    background main_light_grey_color
     display flex
     flex-direction column
     justify-content center
@@ -34,19 +33,20 @@
       display block
       .submitButton
         width 100%
-        text-align: center
+        text-align center
         padding-top 1em
         input[type="button"]
           margin-bottom 1.5em
-          outline: none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
-          border: 1px solid main_dark_grey_color //цвет рамки
-          background: #ffffff
+          outline none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
+          border 1px solid main_middle_dark_grey_color //цвет рамки
+          background-color #ffffff
           text-align center
           font-size: 1em
 
-        width: 100% // ширина на свое усмотрение
       .module_wrapper
         display table
+        padding 0.5em 0
+
         .name_block
           p
           display table-cell
@@ -59,19 +59,13 @@
           //padding-left 50%
           display table-cell
           input[type="text"]
-
-
            width 10em
-           border: 2px solid main_light_grey_color //цвет рамки
-           border-width 2px 0px 2px 0px
-           border-radius: 0 //закругление углов (общее)  //закругление углов (Google Chrome)  //закругление углов (FireFox)
-           -khtml-border-radius 0 //закругление углов (Safari)
 
-           background: #ffffff !important // желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым
+           border 0
+           background-color: #ffffff !important // желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым
            outline: none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
            height: 1.4em // высота на свое усмотрение
            color: black //цвет шрифта в обычном состоянии
            font-size: 1.3em // Размер шрифта
            &:focus
-             border-bottom 2px solid main_dark_grey_color
-
+             box-shadow 1px 1px 1px main_dark_grey_color
