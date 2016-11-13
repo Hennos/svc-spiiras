@@ -1,7 +1,10 @@
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {activeComponent as activeComponent, componentsVisibilityToggles as togglesComponent} from '../../constants/visibility'
+import {
+  activeComponent,
+  componentsVisibilityToggles as togglesComponent
+} from '../../constants/visibility'
 
 import VideoCameraComponent from '../VideoCamera/index';
 import PeoplesComponent from '../People/index';
@@ -23,10 +26,10 @@ class ComponentWrapper extends React.Component {
   }
 
   render() {
-    const {} = this.props;
+    const {active} = this.props;
     return (
       <div className="wrapper_components">
-        {visibleComponentMap.get(activeComponent)}
+        {visibleComponentMap.get(active)}
       </div>
     )
   }
@@ -34,7 +37,7 @@ class ComponentWrapper extends React.Component {
 
 const mapStateProps = (state, ownProps) => {
   return {
-    activeComponent: state.componentsVisibilityFilter
+    active: state.componentsVisibilityFilter
       .get(activeComponent)
   }
 };
