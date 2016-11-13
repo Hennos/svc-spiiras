@@ -1,16 +1,15 @@
-import {TOGGLE_COMPONENT_VISIBILITY } from '../constants/visibility'
-import {TOGGLE_SIDE_MENU_VISIBILITY} from '../constants/visibility'
+import {Events } from '../constants/visibility'
 
 export const toggleVisibilityAppComponent = (id) => {
   return {
-    type: TOGGLE_COMPONENT_VISIBILITY,
+    type: Events.toggleComponentVisibility,
     id
   }
 };
 
 export const toggleVisibilitySideMenu = (id) => {
   return {
-    type: TOGGLE_SIDE_MENU_VISIBILITY,
+    type: Events.toggleSideMenuVisibility,
     id
   }
 };

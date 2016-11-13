@@ -1,5 +1,7 @@
-const TOGGLE_COMPONENT_VISIBILITY = 'TOGGLE_COMPONENT_VISIBILITY';
-const TOGGLE_SIDE_MENU_VISIBILITY = 'TOGGLE_SIDE_MENU_VISIBILITY';
+const Events = {
+  toggleComponentVisibility: 'TOGGLE_COMPONENT_VISIBILITY',
+  toggleSideMenuVisibility: 'TOGGLE_SIDE_MENU_VISIBILITY'
+};
 
 const componentsVisibilityToggles = {
   videoCamera: 'videoCameraVisibilityToggle',
@@ -16,8 +18,7 @@ const defaultComponent = componentsVisibilityToggles.administrationAccount;
 const activeComponent = "activeComponent";
 
 export {
-  TOGGLE_COMPONENT_VISIBILITY,
-  TOGGLE_SIDE_MENU_VISIBILITY,
+  Events,
   componentsVisibilityToggles,
   sideMenuToggleKey,
   appComponentsTogglesKey,
