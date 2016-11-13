@@ -13,7 +13,6 @@ const componentsVisibilityToggles = {
 };
 
 const sideMenuToggleKey = 'sideMenuVisibilityToggle';
-const appComponentsTogglesKey = 'appComponentsVisibilityToggles';
 const defaultComponent = componentsVisibilityToggles.administrationAccount;
 const activeComponent = "activeComponent";
 
@@ -21,7 +20,6 @@ export {
   Events,
   componentsVisibilityToggles,
   sideMenuToggleKey,
-  appComponentsTogglesKey,
   defaultComponent,
   activeComponent
 }
