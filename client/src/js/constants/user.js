@@ -13,7 +13,11 @@ export const Events = {
 
   addFriendToUser: "ADD:FRIEND:TO:USER",
   emitRemovingFriend: "EMIT:REMOVING:FRIEND",
-  removeFriendFromUser: "REMOVE:FRIEND:FROM:USER"
+  removeFriendFromUser: "REMOVE:FRIEND:FROM:USER",
+
+  userChangePreferenсes: "EMIT:USER_PROPS_CHANGE:VALUE",
+  userSetPreferences: "GET:USER_PROPS_CHANGE:VALUE",
+  userPreferencesSetValue: "SET:USER_PROPS:VALUE"
 };
 
 export const user = {
