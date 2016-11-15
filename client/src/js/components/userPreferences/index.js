@@ -48,7 +48,8 @@ class UserPreferences extends React.Component {
   render() {
     const {fields, changePreferences} = this.props;
     return (
-        <div className="UserPreferences-area_wrapper">
+      <div className="userPreferences-component_wrapper">
+        <div className="userPreferences-area_wrapper">
           <div className="name_wrapper">
             <div className="name">
               <p>Настройки пользователя</p>
