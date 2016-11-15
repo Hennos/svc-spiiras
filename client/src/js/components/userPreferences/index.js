@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
+
 import {user as userFields} from '../../constants/user'
 import {Events} from '../../constants/userPreferences'
 import {
@@ -8,6 +9,37 @@ import {
   userSetPreferences,
   userPreferencesSetValue
 } from '../../actions/userPreferences'
+
+import UserSettingArea from './UserSettingArea'
+
+const setAreaMap = [
+  {
+    title: "Имя",
+    name: userFields.status.fields.firstName
+  }, {
+    title: "Фамилия",
+    name: userFields.status.fields.lastName
+  }, {
+    title: "Отчество",
+    name: userFields.status.fields.middleName
+  }, {
+    title: "Страна",
+    name: userFields.status.fields.country
+  }, {
+    title: "Населенный пункт",
+    name: userFields.status.fields.place
+  }, {
+    title: "Университет",
+    name: userFields.status.fields.university
+  }, {
+    title: "Школа",
+    name: userFields.status.fields.school
+  }, {
+    title: "Место работы",
+    name: userFields.status.fields.workplace
+  }
+];
+
 class UserPreferences extends React.Component {
   constructor(props) {
     super(props);
@@ -22,15 +54,10 @@ class UserPreferences extends React.Component {
               <p>Настройки пользователя</p>
             </div>
           </div>
-          <div className="UserPreferences_wrapper">
-            {this.UserSettingsArea("Имя", "firstName", values[0], this.userOnchangeInput)}
-            {this.UserSettingsArea("Фамилия", "lastName", values[1], this.userOnchangeInput)}
-            {this.UserSettingsArea("Отчество", "middleName", values[2], this.userOnchangeInput)}
-            {this.UserSettingsArea("Страна", "country", values[3], this.userOnchangeInput)}
-            {this.UserSettingsArea("Населенный пункт", "place", values[4], this.userOnchangeInput)}
-            {this.UserSettingsArea("Университет", "university", values[5], this.userOnchangeInput)}
-            {this.UserSettingsArea("Школа", "school", values[6], this.userOnchangeInput)}
-            {this.UserSettingsArea("Место работы", "workplace", values[7], this.userOnchangeInput)}
+          <div className="userPreferences_wrapper">
+            {setAreaMap.map(area =>
+              <UserSettingArea key={area.name} {...area} baseValue={fields[area.name]}/>
+            )}
             <div className="submitButton">
               <input type="button" name="Submit" value="Принять" onClick={changePreferences.bind(this)}/>
             </div>
@@ -38,21 +65,6 @@ class UserPreferences extends React.Component {
         </div>
       </div>
     );
-  }
-
-  UserSettingsArea = (title, setname, basevalue, fn)=> {
-    //console.log(basevalue);
-    return ( <div className="module_wrapper">
-      <div className="name_block">
-        <p>{title}</p>
-        <p>{basevalue}</p>
-      </div>
-      <div className="input_block">
-        <input ref={setname} type="text" name={setname} value={basevalue} onChange={fn}/>
-      </div>
-    </div>)
-
-
   }
 }
 
