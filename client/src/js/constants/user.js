@@ -21,8 +21,18 @@ export const user = {
   username: 'username',
   requests: 'requests',
   friends: 'friends',
-  place: 'place',
-  firstName: 'firstName',
   image: 'image',
-  lastName: 'lastName'
+  status: {
+    id: 'status',
+    fields: {
+      firstName: 'firstName',
+      lastName: 'lastName',
+      middleName: 'middleName',
+      country: 'country',
+      university: 'university',
+      school: 'school',
+      workplace: 'workplace',
+      place: 'place'
+    }
+  }
 };
