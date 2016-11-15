@@ -41,4 +41,3 @@ const mapDispatchToSideMenuProps = (dispatch) => {
 };
 
 export default connect(null, mapDispatchToSideMenuProps)(ToggleMenuButton);
-
