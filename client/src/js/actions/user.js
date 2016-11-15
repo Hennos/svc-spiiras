@@ -7,25 +7,25 @@ export const setUserProperties = (user) => {
   }
 };
 
-export const sendingUserRequest = (userName) => {
+export const sendUserRequest = (userName) => {
   return {
     type: Events.emitUserRequest,
     userName
   }
 };
-export const sendingRemovingRequest = (userName) => {
+export const sendRemovingRequest = (userName) => {
   return {
     type: Events.emitRejectionRequest,
     userName
   }
 };
-export const sendingAddingRequest = (userName) => {
+export const sendAddingRequest = (userName) => {
   return {
     type: Events.emitResolutionRequest,
     userName
   }
 };
-export const sendingRemovingFriend = (userName) => {
+export const sendRemovingFriend = (userName) => {
   return {
     type: Events.emitRemovingFriend,
     userName
@@ -57,10 +57,10 @@ export const removedUserFriend = (user) => {
   }
 };
 
-export const userChangePreferences = (object) => {
+export const sendChangingPreferences = (changes) => {
   return {
-    type: Events.userChangePreferenсes,
-    object
+    type: Events.emitChangesPreferenсes,
+    changes
   }
 };
 export const userSetPreferences = (object) => {
