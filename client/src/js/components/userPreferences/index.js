@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {user as userFields} from '../../constants/user'
-import {userPrefsValues as valFields} from '../../constants/userPreferences'
 import {Events} from '../../constants/userPreferences'
 import {
   userChangePreferences,
@@ -15,9 +14,7 @@ class UserPreferences extends React.Component {
   }
 
   render() {
-    const {visible, title, user, values, userChangePreferenses, userOnchangeInput} = this.props;
-    console.log(user);
-    console.log(values);
+    const {fields, changePreferences} = this.props;
     return (
         <div className="UserPreferences-area_wrapper">
           <div className="name_wrapper">
@@ -35,7 +32,7 @@ class UserPreferences extends React.Component {
             {this.UserSettingsArea("Школа", "school", values[6], this.userOnchangeInput)}
             {this.UserSettingsArea("Место работы", "workplace", values[7], this.userOnchangeInput)}
             <div className="submitButton">
-              <input type="button" name="Submit" value="Принять" onClick={this.userChangePreferenses}/>
+              <input type="button" name="Submit" value="Принять" onClick={changePreferences.bind(this)}/>
             </div>
           </div>
         </div>
@@ -76,12 +73,12 @@ const mapDispatchProps = (dispatch) => {
   };
 };
 
-const mapStateUserPreferencesProps = (state, ownProps) => {
-  //console.log(state);
+const mapStateProps = (state, ownProps) => {
   return {
-    values: state.preferences.toArray(),
-    user: state.user
+    fields: state.user
+      .get(userFields.status.id)
+      .toJS()
   };
 };
 
-export default connect(mapStateUserPreferencesProps, mapDispatchUserPreferencesProps)(UserPreferences);
+export default connect(mapStateProps, mapDispatchProps)(UserPreferences);
