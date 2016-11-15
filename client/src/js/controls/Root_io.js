@@ -9,7 +9,7 @@ import {
   setUserProperties,
   addedUserRequest,
   addedUserFriend, removedUserRequest,
-  removedUserFriend
+  removedUserFriend,
   userSetPreferences
 } from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
