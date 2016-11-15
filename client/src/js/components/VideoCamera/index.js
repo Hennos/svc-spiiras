@@ -1,7 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {componentsVisibilityToggles} from '../../constants/visibility'
-import {appComponentsTogglesKey} from '../../constants/visibility'
 import {Parameters} from  '../../constants/videoCamera';
 import {loadVideoCamera, toggleVideoCameraState} from '../../actions/videoCamera';
 import Camera from '../../controls/Camera'
@@ -28,9 +26,9 @@ class VideoCameraComponent extends React.Component {
   }
 
   render() {
-    const {isWorking, visible, onButtonCameraClick, isLoading} = this.props;
+    const {isWorking, onButtonCameraClick, isLoading} = this.props;
     return (
-      <div className={"video-camera-component_wrapper" + (visible ? " display_block" : " display_none")}>
+      <div className="video-camera-component_wrapper display_block">
         <div className="video_wrapper">
           <video id="camera-video" />
         </div>
@@ -58,9 +56,6 @@ const mapDispatchVideoCameraProps = (dispatch) => {
 
 const mapStateVideoCameraProps = (state, ownProps) => {
   return {
-    visible: state.componentsVisibilityFilter
-      .get(appComponentsTogglesKey)
-      .get(componentsVisibilityToggles.videoCamera),
     isWorking: state.videoCameraComponent
       .get(Parameters.isWorking),
     isLoading: state.videoCameraComponent

@@ -1,7 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {componentsVisibilityToggles} from '../../constants/visibility'
-import {appComponentsTogglesKey} from '../../constants/visibility'
 import {user as userFields} from '../../constants/user'
 import {people as peopleAction} from '../../constants/people'
 import {gettingSearchPeopleInput} from  '../../actions/people'
@@ -14,9 +12,9 @@ class People extends React.Component {
   }
 
   render() {
-    const {visible, friends, people, requests, inputValueChange} = this.props;
+    const {friends, people, requests, inputValueChange} = this.props;
     return (
-      <div className={"friends-component_wrapper" + (visible ? "" : " display_none")}>
+      <div className="friends-component_wrapper">
         <div className="search-area_wrapper">
           <div className="name_wrapper">
             <p>Поиск</p>
@@ -48,9 +46,6 @@ const mapDispatchPeoplesProps = (dispatch) => {
 
 const mapStatePeoplesProps = (state, ownProps) => {
   return {
-    visible: state.componentsVisibilityFilter
-      .get(appComponentsTogglesKey)
-      .get(componentsVisibilityToggles.peopleArea),
     friends: state.user
       .get(userFields.friends)
       .toArray(),

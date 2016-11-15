@@ -3,8 +3,6 @@ import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import {user as userFields} from '../../constants/user'
 import {userPrefsValues as valFields} from '../../constants/userPreferences'
-import {componentsVisibilityToggles} from '../../constants/visibility'
-import {appComponentsTogglesKey} from '../../constants/visibility'
 import {Events} from '../../constants/userPreferences'
 import {userChangePreferenses, userSetPreferences, userPreferencesSetValue } from '../../actions/userPreferences'
 class UserPreferences extends React.Component {
@@ -17,7 +15,6 @@ class UserPreferences extends React.Component {
     console.log(user);
     console.log(values);
     return (
-      <div className={"userPreferences-component_wrapper" + (visible ? "" : " display_none ")}>
         <div className="UserPreferences-area_wrapper">
           <div className="name_wrapper">
             <div className="name">
@@ -87,9 +84,6 @@ const mapDispatchUserPreferencesProps = (dispatch) => {
 const mapStateUserPreferencesProps = (state, ownProps) => {
   //console.log(state);
   return {
-    visible: state.componentsVisibilityFilter
-      .get(appComponentsTogglesKey)
-      .get(componentsVisibilityToggles.userPreferences),
     values: state.preferences.toArray(),
     user: state.user
   };

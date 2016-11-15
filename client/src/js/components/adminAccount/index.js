@@ -1,8 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
-import {componentsVisibilityToggles} from '../../constants/visibility'
-import {appComponentsTogglesKey} from '../../constants/visibility'
 import {changeuserfromadmin} from '../../constants/adminAccount'
 import {result} from '../../constants/adminAccount'
 import {user as userFields} from '../../constants/user'
@@ -20,7 +18,6 @@ class adminAccount extends React.Component {
     const {visible, title, admined, result,  adminAccountChangePreferenses} = this.props;
     console.log(result);
     return (
-      <div className={"admin-acc-component_wrapper" + (visible ? "" : " display_none")}>
         <div className="admin-acc-block-component-wrapper">
           <div className="adminAccount-area_wrapper">
             <div className="name_wrapper">
@@ -136,14 +133,9 @@ const mapDispatchAdminAccountProps = (dispatch) => {
 const mapStateAdminAccountProps = (state, ownProps) => {
   console.log(state.user.get(userFields.admined));
   return {
-    visible: state.componentsVisibilityFilter
-      .get(appComponentsTogglesKey)
-      .get(componentsVisibilityToggles.administrationAccount),
     result: state.adminAccount.get(result),
     admined: state.user
       .get(userFields.admined)
-
-
   };
 };
 
