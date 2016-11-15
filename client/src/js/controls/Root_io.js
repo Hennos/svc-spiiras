@@ -14,7 +14,7 @@ import {
 } from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
 import {userSetPreferences} from '../actions/userPreferences'
-import {adminAccountChangePreferenses,adminAccountSetPreferences} from '../actions/adminAccount'
+import {adminAccountChangePreferences,adminAccountSetPreferences} from '../actions/adminAccount'
 import {
   addSidesToConference, removeSideFromConference,
   closeConference
@@ -62,12 +62,12 @@ class Root {
       case EventsUser.emitRemovingFriend:
         this.emitRemoveFriendEvent(action.type, action.userName);
         break;
-        case EventsUserPreferences.userChangePreferenses:
+        case EventsUserPreferences.userChangePreferenсes:
           console.log(action.type);
           console.log(action.object);
           this.emitUserPreferences(action.type, action.object);
           break;
-        case EventsAdminAccount.adminAccountChangePreferenses:
+        case EventsAdminAccount.adminAccountChangePreferences:
           console.log(action.type);
           console.log(action.object);
           this.emitAccountChangePreferenses(action.type, action.object);
@@ -105,7 +105,7 @@ class Root {
   newUserData = (data) => {
     const user = JSON.parse(data);
     this.store.dispatch(setUserProperties(user));
-    this.store.dispatch(userSetPreferences(JSON.parse(user)));
+    this.store.dispatch(userSetPreferences(user));
   };
 
   getUserData = () => {
@@ -134,7 +134,7 @@ class Root {
   adminAccountSetPreferences= (data) => {
     console.log(data);
     this.store.dispatch(adminAccountSetPreferences(data));
-    getUserData();
+    this.getUserData();
   };
 
   updateAfterAddingFriend = (data) => {
