@@ -4,7 +4,11 @@ import {connect} from 'react-redux';
 import {user as userFields} from '../../constants/user'
 import {userPrefsValues as valFields} from '../../constants/userPreferences'
 import {Events} from '../../constants/userPreferences'
-import {userChangePreferenses, userSetPreferences, userPreferencesSetValue } from '../../actions/userPreferences'
+import {
+  userChangePreferences,
+  userSetPreferences,
+  userPreferencesSetValue
+} from '../../actions/userPreferences'
 class UserPreferences extends React.Component {
   constructor(props) {
     super(props);
@@ -53,31 +57,22 @@ class UserPreferences extends React.Component {
 
 
   }
-  userOnchangeInput = (event)=> {
-    console.log(event);
-    this.props.dispatch(userPreferencesSetValue({name: event.target.name, val: event.target.value}));
-  }
-  userChangePreferenses = (event)=> {
-    //console.log(this.refs.firstName.value);
-    //console.log(this);
-    this.props.dispatch(userChangePreferenses({
-      firstName: this.refs.firstName.value,
-      lastName: this.refs.lastName.value,
-      middleName: this.refs.middleName.value,
-      country: this.refs.country.value,
-      place: this.refs.place.value,
-      university: this.refs.university.value,
-      school: this.refs.school.value,
-      workplace: this.refs.workplace.value
-    }));
-
-  }
 }
 
-const mapDispatchUserPreferencesProps = (dispatch) => {
-
+const mapDispatchProps = (dispatch) => {
   return {
-    dispatch
+    changePreferences: (event) => {
+      dispatch(userChangePreferences({
+        firstName: this.refs.firstName.value,
+        lastName: this.refs.lastName.value,
+        middleName: this.refs.middleName.value,
+        country: this.refs.country.value,
+        place: this.refs.place.value,
+        university: this.refs.university.value,
+        school: this.refs.school.value,
+        workplace: this.refs.workplace.value
+      }));
+    }
   };
 };
 
