@@ -1,8 +1,8 @@
 import {Events} from '../constants/userPreferences'
 
-export const userChangePreferenses = (object) => {
+export const userChangePreferences = (object) => {
   return {
-    type: Events.userChangePreferenses,
+    type: Events.userChangePreferenсes,
     object
   }
 };
