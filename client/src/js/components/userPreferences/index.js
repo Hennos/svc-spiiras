@@ -2,13 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 
+import {Events} from '../../constants/user'
 import {user as userFields} from '../../constants/user'
-import {Events} from '../../constants/userPreferences'
+
 import {
   userChangePreferences,
   userSetPreferences,
   userPreferencesSetValue
-} from '../../actions/userPreferences'
+} from '../../actions/user'
 
 import UserSettingArea from './UserSettingArea'
 

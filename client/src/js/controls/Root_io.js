@@ -2,7 +2,6 @@ import {Events as EventsUser} from '../constants/user'
 import {Events as EventsPeople} from '../constants/people'
 import {Events as EventsChat} from '../constants/chat'
 import {Events as EventsVideoCamera} from '../constants/videoCamera'
-import {Events as EventsUserPreferences} from '../constants/userPreferences'
 import {Events as EventsAdminAccount} from '../constants/adminAccount'
 import {Stream} from '../constants/videoCamera'
 import io from 'socket.io-client'
@@ -11,9 +10,9 @@ import {
   addedUserRequest,
   addedUserFriend, removedUserRequest,
   removedUserFriend
+  userSetPreferences
 } from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
-import {userSetPreferences} from '../actions/userPreferences'
 import {adminAccountChangePreferences,adminAccountSetPreferences} from '../actions/adminAccount'
 import {
   addSidesToConference, removeSideFromConference,
@@ -39,7 +38,7 @@ class Root {
     this.connection.on(EventsUser.addFriendToUser, this.updateAfterAddingFriend);
     this.connection.on(EventsUser.removeFriendFromUser, this.updateAfterRemovingFriend);
     this.connection.on(EventsPeople.changeSearchedPeople, this.updateSearchedPeople);
-    this.connection.on(EventsUserPreferences.userSetPreferences, this.userSetPreferences);
+    this.connection.on(EventsUser.userSetPreferences, this.userSetPreferences);
     this.connection.on(EventsAdminAccount.adminAccountSetPreferences, this.adminAccountSetPreferences);
     this.connection.on(EventsChat.addSides, this.pushSidesToConference);
     this.connection.on(EventsChat.removeSide, this.eraseSideFromConference);
@@ -62,7 +61,7 @@ class Root {
       case EventsUser.emitRemovingFriend:
         this.emitRemoveFriendEvent(action.type, action.userName);
         break;
-        case EventsUserPreferences.userChangePreferenсes:
+        case EventsUser.userChangePreferenсes:
           console.log(action.type);
           console.log(action.object);
           this.emitUserPreferences(action.type, action.object);
