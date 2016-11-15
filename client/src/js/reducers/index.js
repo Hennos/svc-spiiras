@@ -4,7 +4,6 @@ import videoCameraComponent from './videoCamera'
 import user from './user'
 import people from './people'
 import chat from './chat'
-import preferences from './userPreferences'
 import adminAccount from './adminAccount'
 const Reducers = combineReducers({
   componentsVisibilityFilter,
@@ -12,7 +11,6 @@ const Reducers = combineReducers({
   user,
   people,
   chat,
-  preferences,
   adminAccount
 });
 
