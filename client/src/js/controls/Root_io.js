@@ -1,10 +1,12 @@
+import io from 'socket.io-client'
+
 import {Events as EventsUser} from '../constants/user'
 import {Events as EventsPeople} from '../constants/people'
 import {Events as EventsChat} from '../constants/chat'
 import {Events as EventsVideoCamera} from '../constants/videoCamera'
 import {Events as EventsAdminAccount} from '../constants/adminAccount'
 import {Stream} from '../constants/videoCamera'
-import io from 'socket.io-client'
+
 import {
   setUserProperties,
   addedUserRequest,
@@ -130,7 +132,7 @@ class Root {
     );
   };
 
-  adminAccountSetPreferences= (data) => {
+  adminAccountSetPreferences = (data) => {
     console.log(data);
     this.store.dispatch(adminAccountSetPreferences(data));
     this.getUserData();
