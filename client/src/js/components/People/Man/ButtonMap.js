@@ -1,9 +1,9 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {
-  sendingUserRequest,
-  sendingAddingRequest, sendingRemovingRequest,
-  sendingRemovingFriend
+  sendUserRequest,
+  sendAddingRequest, sendRemovingRequest,
+  sendRemovingFriend
 } from '../../../actions/user'
 
 import PushButton from './PushButton'
@@ -92,16 +92,16 @@ class ButtonMap extends React.Component {
 const mapDispatchManProps = (dispatch) => {
   return {
     requestManToFriends: (username) => {
-      dispatch(sendingUserRequest(username));
+      dispatch(sendUserRequest(username));
     },
     disagreeManRequest: (username) => {
-      dispatch(sendingRemovingRequest(username));
+      dispatch(sendRemovingRequest(username));
     },
     agreeManRequest: (username) => {
-      dispatch(sendingAddingRequest(username));
+      dispatch(sendAddingRequest(username));
     },
     removeFromFriends: (username) => {
-      dispatch(sendingRemovingFriend(username));
+      dispatch(sendRemovingFriend(username));
     }
   }
 };
