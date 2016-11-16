@@ -26,8 +26,8 @@ export const user = {
   requests: 'requests',
   friends: 'friends',
   image: 'image',
-  status: {
-    id: 'status',
+  preferences: {
+    id: 'preferences',
     fields: {
       firstName: 'firstName',
       lastName: 'lastName',

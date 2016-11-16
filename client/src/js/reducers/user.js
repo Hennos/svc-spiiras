@@ -23,6 +23,7 @@ function handleUpdateUser(state, action) {
   let updatedUser = action.user;
   updatedUser.friends = Immutable.Map(updatedUser.friends);
   updatedUser.requests = Immutable.Map(updatedUser.requests);
+  updatedUser.preferences = Immutable.Map(updatedUser.preferences);
   return state.merge(Immutable.Map(updatedUser));
 }
 

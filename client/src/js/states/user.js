@@ -7,8 +7,8 @@ export const state = Immutable.Map([
   [userFields.admined, Immutable.Set()],
   [userFields.requests, Immutable.Map()],
   [userFields.friends, Immutable.Map()],
-  [userFields.status.id, Immutable.Map(
-    Object.keys(userFields.status.fields)
+  [userFields.preferences.id, Immutable.Map(
+    Object.keys(userFields.preferences.fields)
       .map((elem) => {
         return [elem, null];
       })

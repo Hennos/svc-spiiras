@@ -16,28 +16,28 @@ import UserSettingArea from './UserSettingArea'
 const setAreaMap = [
   {
     title: "Имя",
-    name: userFields.status.fields.firstName
+    name: userFields.preferences.fields.firstName
   }, {
     title: "Фамилия",
-    name: userFields.status.fields.lastName
+    name: userFields.preferences.fields.lastName
   }, {
     title: "Отчество",
-    name: userFields.status.fields.middleName
+    name: userFields.preferences.fields.middleName
   }, {
     title: "Страна",
-    name: userFields.status.fields.country
+    name: userFields.preferences.fields.country
   }, {
     title: "Населенный пункт",
-    name: userFields.status.fields.place
+    name: userFields.preferences.fields.place
   }, {
     title: "Университет",
-    name: userFields.status.fields.university
+    name: userFields.preferences.fields.university
   }, {
     title: "Школа",
-    name: userFields.status.fields.school
+    name: userFields.preferences.fields.school
   }, {
     title: "Место работы",
-    name: userFields.status.fields.workplace
+    name: userFields.preferences.fields.workplace
   }
 ];
 
@@ -90,7 +90,7 @@ const mapDispatchProps = (dispatch) => {
 const mapStateProps = (state, ownProps) => {
   return {
     fields: state.user
-      .get(userFields.status.id)
+      .get(userFields.preferences.id)
       .toJS()
   };
 };
