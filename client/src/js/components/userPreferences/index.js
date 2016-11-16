@@ -6,9 +6,9 @@ import {Events} from '../../constants/user'
 import {user as userFields} from '../../constants/user'
 
 import {
-  userChangePreferences,
-  userSetPreferences,
-  userPreferencesSetValue
+  sendChangingPreferences,
+  getNewUserPreferences,
+  setNewUserPreferences
 } from '../../actions/user'
 
 import UserSettingArea from './UserSettingArea'
@@ -44,10 +44,12 @@ const setAreaMap = [
 class UserPreferences extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {settings: {}, test: "test"};
   }
 
   render() {
-    const {fields, changePreferences} = this.props;
+    const {fields} = this.props;
     return (
       <div className="userPreferences-component_wrapper">
         <div className="userPreferences-area_wrapper">
@@ -58,31 +60,46 @@ class UserPreferences extends React.Component {
           </div>
           <div className="userPreferences_wrapper">
             {setAreaMap.map(area =>
-              <UserSettingArea key={area.name} {...area} baseValue={fields[area.name]}/>
+              <UserSettingArea
+                key={area.name} {...area} baseValue={fields[area.name]}
+                onChange={this.onInputPreference}
+              />
             )}
             <div className="submitButton">
-              <input type="button" name="Submit" value="Принять" onClick={changePreferences.bind(this)}/>
+              <input
+                type="button" name="Submit" value="Принять"
+                onClick={this.onSubmitPreference}/>
             </div>
           </div>
         </div>
       </div>
     );
   }
+
+  onInputPreference = (event) => {
+    const inputName  = event.target.name,
+          inputValue = event.target.value;
+    this.setState((prevState) => {
+      let postSettings = Object.assign({}, prevState.settings);
+      if (inputValue) {
+        postSettings[inputName] = inputValue;
+      } else {
+        delete postSettings[inputName];
+      }
+      return {settings: postSettings};
+    });
+  };
+
+  onSubmitPreference = () =>
+    this.props.changePreferences(Object.assign({}, this.state.settings));
+
 }
+
 
 const mapDispatchProps = (dispatch) => {
   return {
-    changePreferences: (event) => {
-      dispatch(userChangePreferences({
-        firstName: this.refs.firstName.value,
-        lastName: this.refs.lastName.value,
-        middleName: this.refs.middleName.value,
-        country: this.refs.country.value,
-        place: this.refs.place.value,
-        university: this.refs.university.value,
-        school: this.refs.school.value,
-        workplace: this.refs.workplace.value
-      }));
+    changePreferences: (changes) => {
+      dispatch(sendChangingPreferences(changes));
     }
   };
 };

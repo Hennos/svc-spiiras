@@ -15,9 +15,9 @@ export const Events = {
   emitRemovingFriend: "EMIT:REMOVING:FRIEND",
   removeFriendFromUser: "REMOVE:FRIEND:FROM:USER",
 
-  emitChangesPreferenсes: "EMIT:USER_PROPS_CHANGE:VALUE",
-  userSetPreferences: "GET:USER_PROPS_CHANGE:VALUE",
-  userPreferencesSetValue: "SET:USER_PROPS:VALUE"
+  emitChangePreferences: "EMIT:USER:PROPS:CHANGE:VALUES",
+  getChangePreferences: "GET:USER:PREFERENCE:VALUES",
+  setChangePreferences: "SET:USER:PREFERENCE:VALUES"
 };
 
 export const user = {

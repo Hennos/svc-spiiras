@@ -59,19 +59,19 @@ export const removedUserFriend = (user) => {
 
 export const sendChangingPreferences = (changes) => {
   return {
-    type: Events.emitChangesPreferenсes,
+    type: Events.emitChangePreferences,
     changes
   }
 };
-export const userSetPreferences = (object) => {
+export const getNewUserPreferences = (changes) => {
   return {
-    type: Events.userSetPreferences,
-    object
+    type: Events.getChangePreferences,
+    changes
   }
 };
-export const userPreferencesSetValue = (object) => {
+export const setNewUserPreferences = (changes) => {
   return {
-    type: Events.userPreferencesSetValue,
-    object
+    type: Events.setChangePreferences,
+    changes
   }
 };

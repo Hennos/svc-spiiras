@@ -6,7 +6,7 @@ class UserSettingArea extends React.Component {
   }
 
   render() {
-    const {title, name, baseValue} = this.props;
+    const {title, name, baseValue, onChange} = this.props;
     return (
       <div className="module_wrapper">
         <div className="name_block">
@@ -14,7 +14,7 @@ class UserSettingArea extends React.Component {
           <p>{baseValue}</p>
         </div>
         <div className="input_block">
-          <input type="text" name={name} value={baseValue}/>
+          <input type="text" name={name} value={baseValue} onChange={onChange}/>
         </div>
       </div>
     )

@@ -14,6 +14,8 @@ const userReducer = (state = initialState, action) => {
       return handleRemovingUserRequest(state, action);
     case Events.removeFriendFromUser:
       return handleRemovingFriend(state,action);
+    case Events.setChangePreferences:
+      return handleSettingPreferences(state, action);
     default:
       return state;
   }
@@ -63,6 +65,12 @@ function handleRemovingFriend(state, action) {
     .delete(deletedRequest.username);
   return state
     .set(userFields.friends, updatedFriends);
+}
+
+function handleSettingPreferences(state, action) {
+  const changesPreferences = Immutable.Map(action.changes);
+  return state
+    .set(userFields.preferences.id, changesPreferences);
 }
 
 export default userReducer;

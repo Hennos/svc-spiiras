@@ -12,7 +12,7 @@ import {
   addedUserRequest,
   addedUserFriend, removedUserRequest,
   removedUserFriend,
-  userSetPreferences
+  getNewUserPreferences
 } from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
 import {adminAccountChangePreferences,adminAccountSetPreferences} from '../actions/adminAccount'
@@ -40,7 +40,7 @@ class Root {
     this.connection.on(EventsUser.addFriendToUser, this.updateAfterAddingFriend);
     this.connection.on(EventsUser.removeFriendFromUser, this.updateAfterRemovingFriend);
     this.connection.on(EventsPeople.changeSearchedPeople, this.updateSearchedPeople);
-    this.connection.on(EventsUser.userSetPreferences, this.userSetPreferences);
+    this.connection.on(EventsUser.userSetPreferences, this.getNewUserPreferences);
     this.connection.on(EventsAdminAccount.adminAccountSetPreferences, this.adminAccountSetPreferences);
     this.connection.on(EventsChat.addSides, this.pushSidesToConference);
     this.connection.on(EventsChat.removeSide, this.eraseSideFromConference);
@@ -63,11 +63,10 @@ class Root {
       case EventsUser.emitRemovingFriend:
         this.emitRemoveFriendEvent(action.type, action.userName);
         break;
-        case EventsUser.userChangePreferenсes:
-          console.log(action.type);
-          console.log(action.object);
-          this.emitUserPreferences(action.type, action.object);
-          break;
+      case EventsUser.emitChangePreferences:
+        console.log(action.changes);
+        this.emitUserChangePreferences(action.type, action.changes);
+        break;
         case EventsAdminAccount.adminAccountChangePreferences:
           console.log(action.type);
           console.log(action.object);
@@ -106,7 +105,7 @@ class Root {
   newUserData = (data) => {
     const user = JSON.parse(data);
     this.store.dispatch(setUserProperties(user));
-    this.store.dispatch(userSetPreferences(user));
+    this.store.dispatch(getNewUserPreferences(user));
   };
 
   getUserData = () => {
@@ -189,6 +188,11 @@ class Root {
   emitRemoveFriendEvent = (type, friendName) => {
     const message = JSON.stringify(friendName);
     this.connection.emit(type, message);
+  };
+
+  emitUserChangePreferences = (type, changes) => {
+    const message = JSON.stringify(changes);
+    this.connection.emit(type, message)
   };
 
   emitAddedSideEvent = (type, sideName) => {
