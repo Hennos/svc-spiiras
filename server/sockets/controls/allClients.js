@@ -9,11 +9,11 @@ const Events = {
 
   userData: {
     getUserData: "GET:USER:DATA",
-    newUserData: "NEW:USER:DATA"
+    newUserData: "NEW:USER:DATA",
+    getChangeUserPreferences: "EMIT:USER:PROPS:CHANGE:VALUES",
+    sendSetUserPreferences: "GET:USER:PREFERENCE:VALUES"
   },
 
-  userChangePreferenses: "EMIT:USER_PROPS_CHANGE:VALUE",
-  userSetPreferences : "GET:USER_PROPS_CHANGE:VALUE",
   adminAccountChangePreferenses: "EMIT:ADMIN_ACCOUNT_CREATE:VALUE",
   adminAccountSetPreferences : "GET:ADMIN_ACCOUNT_CREATE:VALUE",
 
@@ -59,7 +59,6 @@ var userModel = require('../../mongoose/models/user');
 function Root(io) {
   var clients = {};
 
-  //connection
   io.on(Events.base.connected, function (socket) {
     console.log("this work");
     var socketUser = socket.request.user;
@@ -101,6 +100,25 @@ function Root(io) {
           });
           var message = JSON.stringify(user);
           socket.emit(Events.userData.newUserData, message);
+        })
+        .catch(function handleError(err) {
+          throw err;
+        });
+    });
+
+    socket.on(Events.userData.getChangeUserPreferences, function (preferences) {
+      const newPreferences = JSON.parse(preferences);
+      if (Object.keys(newPreferences).length === 0) {
+        return false;
+      }
+      userModel.findById(socketUser.id).exec()
+        .then(function updatePreferences(user) {
+          user.preferences = Object.assign(user.preferences, newPreferences);
+          user.markModified();
+          return user.save();
+        })
+        .then(function emitMessage() {
+          socket.emit(Events.userData.sendSetUserPreferences, preferences);
         })
         .catch(function handleError(err) {
           throw err;
@@ -365,39 +383,6 @@ function Root(io) {
       }
     });
 
-    socket.on(Events.userChangePreferenses, function (pack) {
-      console.log('userChangePreferenses');
-      var input = JSON.parse(pack);
-      userModel.findOne(
-        {username: socket.request.user.username},
-        function (err, user) {
-          if (err) {
-            throw err;
-          }
-          console.log("in");
-          console.log(input);
-          console.log("user");
-          console.log(user);
-          user.update({
-              $set: {
-                firstName: input.firstName,
-                lastName: input.lastName,
-                middleName: input.middleName,
-                country: input.country,
-                university: input.university,
-                place: input.place,
-                school: input.school,
-                workplace: input.workplace
-              }
-            },
-            function (err, result) {
-              if (err) {
-                throw err;
-              }
-              socket.emit(Events.userSetPreferences, 1);
-            })
-        });
-    });
     //userData
     socket.on(Events.adminAccountChangePreferenses, function (pack) {
       console.log("adminAccountChangePreferenses");
@@ -461,8 +446,8 @@ function Root(io) {
     return clients;
 
     function getSocketsInRoom(roomId) {
-      var res = []
-        , room = io.sockets.adapter.rooms[roomId];
+      var res  = [],
+          room = io.sockets.adapter.rooms[roomId];
       if (room) {
         for (var id in room.sockets) {
           res.push(io.sockets.adapter.nsp.connected[id]);
