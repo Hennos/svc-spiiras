@@ -12,7 +12,8 @@ import {
   addedUserRequest,
   addedUserFriend, removedUserRequest,
   removedUserFriend,
-  getNewUserPreferences
+  getNewUserPreferences,
+  setNewUserPreferences
 } from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
 import {adminAccountChangePreferences,adminAccountSetPreferences} from '../actions/adminAccount'
@@ -39,8 +40,8 @@ class Root {
     this.connection.on(EventsUser.removeRequestFromUser, this.updateAfterRemovingRequest);
     this.connection.on(EventsUser.addFriendToUser, this.updateAfterAddingFriend);
     this.connection.on(EventsUser.removeFriendFromUser, this.updateAfterRemovingFriend);
+    this.connection.on(EventsUser.getChangePreferences, this.sendChangeUserPreferences);
     this.connection.on(EventsPeople.changeSearchedPeople, this.updateSearchedPeople);
-    this.connection.on(EventsUser.userSetPreferences, this.getNewUserPreferences);
     this.connection.on(EventsAdminAccount.adminAccountSetPreferences, this.adminAccountSetPreferences);
     this.connection.on(EventsChat.addSides, this.pushSidesToConference);
     this.connection.on(EventsChat.removeSide, this.eraseSideFromConference);
@@ -153,6 +154,11 @@ class Root {
       EventsPeople.emitSearchPeopleInputChange,
       this.searchPeopleInput
     );
+  };
+
+  sendChangeUserPreferences = (data) => {
+    const changes = JSON.parse(data);
+    this.store.dispatch(setNewUserPreferences(changes));
   };
 
   updateSearchedPeople = (data) => {
