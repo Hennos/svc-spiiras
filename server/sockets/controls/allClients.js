@@ -446,8 +446,8 @@ function Root(io) {
     return clients;
 
     function getSocketsInRoom(roomId) {
-      var res  = [],
-          room = io.sockets.adapter.rooms[roomId];
+      var res = [],
+        room = io.sockets.adapter.rooms[roomId];
       if (room) {
         for (var id in room.sockets) {
           res.push(io.sockets.adapter.nsp.connected[id]);
