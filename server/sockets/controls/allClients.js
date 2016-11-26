@@ -127,7 +127,7 @@ function Root(io) {
       userModel.findById(socketUser.id).exec()
         .then(function updatePreferences(user) {
           user.preferences = Object.assign(user.preferences, newPreferences);
-          user.markModified();
+          user.markModified('preferences');
           return user.save();
         })
         .then(function emitMessage() {
