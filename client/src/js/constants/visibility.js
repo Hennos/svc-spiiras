@@ -13,7 +13,7 @@ const componentsVisibilityToggles = {
 };
 
 const sideMenuToggleKey = 'sideMenuVisibilityToggle';
-const defaultComponent = componentsVisibilityToggles.administrationAccount;
+const defaultComponent = componentsVisibilityToggles.peopleArea;
 const activeComponent = "activeComponent";
 
 export {
