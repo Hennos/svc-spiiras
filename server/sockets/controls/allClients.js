@@ -470,6 +470,8 @@ function Root(io) {
       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
   });
+
+  return clients;
 }
 
 module.exports = Root;
