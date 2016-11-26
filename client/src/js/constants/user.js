@@ -21,7 +21,7 @@ export const Events = {
 };
 
 export const user = {
-  admined: "admined",
+  admin: "admin",
   username: 'username',
   requests: 'requests',
   friends: 'friends',
