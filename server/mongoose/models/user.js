@@ -3,8 +3,6 @@ var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
 var User = new Schema({
-  admin: {type: Boolean, required: true},
-
   username: {type: String, required: true, unique: true},
   email: {type: String, required: true, unique: true},
 
@@ -40,38 +38,46 @@ var User = new Schema({
     default: []
   },
 
+  admin: {type: Boolean, required: true, default: false},
+
+  admined: {
+    type: [{
+      type: Schema.Types.ObjectId, ref: 'User',
+      unique: true
+    }],
+    default: []
+  },
+
   permission: {
-    type: {
-      makeCalls: {
-        type: Boolean,
-        default: true,
-        required: true
-      },
-      addingFriends: {
-        type: Boolean,
-        default: true,
-        required: true
-      },
-      forcedChallenge: {
-        type: Boolean,
-        default: true,
-        required: true
-      },
-      interactiveBoard: {
-        type: Boolean,
-        default: true,
-        required: true
-      },
-      passwordExitProfile: {
-        type: Boolean,
-        default: true,
-        required: true
-      },
-      passwordManipulationOfAudioVideo: {
-        type: Boolean,
-        default: true,
-        required: true
-      }
+    makeCalls: {
+      type: Boolean,
+      default: true,
+      required: true
+    },
+    addingFriends: {
+      type: Boolean,
+      default: true,
+      required: true
+    },
+    forcedCall: {
+      type: Boolean,
+      default:true,
+      required: true
+    },
+    interactiveBoard: {
+      type: Boolean,
+      default: true,
+      required: true
+    },
+    passwordExitProfile: {
+      type: Boolean,
+      default: true,
+      required: true
+    },
+    passwordManipulationOfAudioVideo: {
+      type: Boolean,
+      default: true,
+      required: true
     }
   }
 });
