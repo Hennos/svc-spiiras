@@ -135,7 +135,7 @@ function Root(io) {
         })
         .then(function updateRequested(requested) {
           const relSenderByRequests =
-            requested.requests.some(_.isEqual.bind(null, user._id));
+            matchArrayVal(requested.requests, user._id);
           if (!relSenderByRequests) {
             requested.requests.push(user._id);
             requested.markModified('requests');
@@ -196,7 +196,7 @@ function Root(io) {
         })
         .then(function updateUserFriends() {
           const relAddingByFriends =
-            user.friends.some(_.isEqual.bind(null, addingFriend._id));
+            matchArrayVal(user.friends, addingFriend._id);
           if (!relAddingByFriends) {
             user.friends.push(addingFriend._id);
             user.markModified('friends');
@@ -214,7 +214,7 @@ function Root(io) {
         })
         .then(function updateAddingFriends() {
           const relUserByFriends =
-            addingFriend.friends.some(_.isEqual.bind(null, user._id));
+            matchArrayVal(addingFriend.friends, user._id);
           if (!relUserByFriends) {
             addingFriend.friends.push(user._id);
             addingFriend.markModified('friends');
@@ -468,6 +468,13 @@ function Root(io) {
 
     function escapeRegExp(string) {
       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+    function matchArrayVal(array, value) {
+      return array.some(_.isEqual.bind(null, value));
+    }
+
+    function posArrayVal(array, value) {
+      return array.findIndex(_.isEqual.bind(null, value));
     }
   });
 
