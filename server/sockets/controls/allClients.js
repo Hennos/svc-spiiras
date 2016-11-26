@@ -103,15 +103,24 @@ function Root(io) {
         .findOne({username: socketUser.username})
         .populate('friends', 'username')
         .populate('requests', 'username')
+        .populate('admined', 'username')
         .exec()
         .then(function emitMessage(populated) {
-          const groups = ['friends', 'requests'];
+          user = Object.assign(
+            user, _.pick(populated, [
+              'admin',
+              'username',
+              'preferences',
+              'permission'
+            ])
+          );
+          const groups = ['friends', 'requests', 'admined'];
           groups.forEach(function (group) {
             user[group] = populated[group].map(function (o) {
               return [o.username, _.pick(o, ['username'])];
             });
           });
-          var message = JSON.stringify(user);
+          const message = JSON.stringify(user);
           socket.emit(Events.userData.newUserData, message);
         })
         .catch(function handleError(err) {
@@ -455,9 +464,6 @@ function Root(io) {
           }
         });
     });
-
-    return clients;
-
     function getSocketsInRoom(roomId) {
       var res = [],
         room = io.sockets.adapter.rooms[roomId];
