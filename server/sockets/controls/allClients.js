@@ -54,6 +54,19 @@ const Events = {
   }
 };
 
+const Constants = {
+  user: {
+    permission: {
+      makeCalls: 'makeCalls',
+      addingFriends: 'addingFriends',
+      forcedCall: "forcedCall",
+      interactiveBoard: "interactiveBoard",
+      passwordExitProfile: 'passwordExitProfile',
+      passwordManipulationOfAudioVideo: 'passwordManipulationOfAudioVideo'
+    }
+  }
+};
+
 var userModel = require('../../mongoose/models/user');
 
 function Root(io) {
