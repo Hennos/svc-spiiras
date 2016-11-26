@@ -3,16 +3,7 @@ export const Events = {
   adminAccountSetPreferences : "GET:ADMIN_ACCOUNT_CREATE:VALUE"
 
 };
-export const changeuserfromadmin = {
-  username: 'username',
-  password: 'password',
-  makecalls: 'makecalls',
-  addingfriends: 'addingfriends',
-  forcedchallenge:"forcedchallenge",
-  interactiveboard:"interactiveboard",
-  passwordexitprofile:'passwordexitprofile',
-  passwordmanipulationofaudiovideo:'passwordmanipulationofaudiovideo'
-};
-export const result = {
-  result: 'result'
+
+export const adminAccount = {
+  admined: "admined"
 };

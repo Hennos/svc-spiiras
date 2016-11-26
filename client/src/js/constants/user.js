@@ -38,5 +38,16 @@ export const user = {
       workplace: 'workplace',
       place: 'place'
     }
+  },
+  permission: {
+    id: 'permission',
+    fields: {
+      makeCalls: 'makeCalls',
+      addingFriends: 'addingFriends',
+      forcedCall: "forcedCall",
+      interactiveBoard: "interactiveBoard",
+      passwordExitProfile: 'passwordExitProfile',
+      passwordManipulationOfAudioVideo: 'passwordManipulationOfAudioVideo'
+    }
   }
 };
