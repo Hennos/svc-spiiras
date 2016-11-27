@@ -8,7 +8,7 @@ import {Events as EventsAdminAccount} from '../constants/adminAccount'
 import {Stream} from '../constants/videoCamera'
 
 import {
-  setUserProperties,
+  setUserStatus,
   addedUserRequest,
   addedUserFriend, removedUserRequest,
   removedUserFriend,
@@ -99,8 +99,8 @@ class Root {
   };
 
   newUserData = (data) => {
-    const user = JSON.parse(data);
-    this.store.dispatch(setUserProperties(user));
+    const {admined, ...userStatus} = JSON.parse(data);
+    this.store.dispatch(setUserStatus(userStatus));
   };
 
   getUserData = () => {

@@ -1,6 +1,6 @@
 import {Events} from '../constants/user'
 
-export const setUserProperties = (user) => {
+export const setUserStatus = (user) => {
   return {
     type: Events.newUserData,
     user
