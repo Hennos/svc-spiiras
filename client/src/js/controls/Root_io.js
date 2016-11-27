@@ -4,7 +4,7 @@ import {Events as EventsUser} from '../constants/user'
 import {Events as EventsPeople} from '../constants/people'
 import {Events as EventsChat} from '../constants/chat'
 import {Events as EventsVideoCamera} from '../constants/videoCamera'
-import {Events as EventsAdminAccount} from '../constants/adminAccount'
+import {Events as EventsAdmin} from '../constants/adminAccount'
 import {Stream} from '../constants/videoCamera'
 
 import {
