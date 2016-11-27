@@ -13,7 +13,7 @@ const userReducer = (state = initialState, action) => {
     case Events.removeRequestFromUser:
       return handleRemovingUserRequest(state, action);
     case Events.removeFriendFromUser:
-      return handleRemovingFriend(state,action);
+      return handleRemovingFriend(state, action);
     case Events.setChangePreferences:
       return handleSettingPreferences(state, action);
     default:
@@ -47,7 +47,7 @@ function handleAddingFriend(state, action) {
   const upFriends = state
     .get(userFields.friends)
     .set(addedFriend.username, addedFriend);
-  const upRequests  = state
+  const upRequests = state
     .get(userFields.requests)
     .delete(addedFriend.username);
   return state
