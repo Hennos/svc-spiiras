@@ -24,15 +24,13 @@ class adminAccount extends React.Component {
     const {admined} = this.props;
     return (
       <div className="admin-acc-component_wrapper">
-        <div className="admin-acc-block-component-wrapper">
-          <div className="admined_user_wrapper">
-            <CreationCtrlAccArea
-              onChangeInputName={event => this.setGeneralInputState(event.target)}
-              onChangePermission={event => this.setPermissionState(event.target)}
-              onSubmit={() => this.pushCtrlAccount(this.state)}
-            />
-            <ShowingCtrlAccArea admined={admined}/>
-          </div>
+        <div className="admined_user_wrapper">
+          <CreationCtrlAccArea
+            onChangeInputName={event => this.setGeneralInputState(event.target)}
+            onChangePermission={event => this.setPermissionState(event.target)}
+            onSubmit={() => this.pushCtrlAccount(this.state)}
+          />
+          <ShowingCtrlAccArea admined={admined}/>
         </div>
       </div>
     );
