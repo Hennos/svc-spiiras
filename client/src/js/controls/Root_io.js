@@ -12,7 +12,6 @@ import {
   addedUserRequest,
   addedUserFriend, removedUserRequest,
   removedUserFriend,
-  getNewUserPreferences,
   setNewUserPreferences
 } from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
@@ -102,7 +101,6 @@ class Root {
   newUserData = (data) => {
     const user = JSON.parse(data);
     this.store.dispatch(setUserProperties(user));
-    this.store.dispatch(getNewUserPreferences(user));
   };
 
   getUserData = () => {

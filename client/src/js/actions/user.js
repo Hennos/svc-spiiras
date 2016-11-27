@@ -63,12 +63,6 @@ export const sendChangingPreferences = (changes) => {
     changes
   }
 };
-export const getNewUserPreferences = (changes) => {
-  return {
-    type: Events.getChangePreferences,
-    changes
-  }
-};
 export const setNewUserPreferences = (changes) => {
   return {
     type: Events.setChangePreferences,
