@@ -15,7 +15,11 @@ import {
   setNewUserPreferences
 } from  '../actions/user'
 import {newSearchedPeople} from '../actions/people'
-import {adminAccountChangePreferences,adminAccountSetPreferences} from '../actions/adminAccount'
+import {
+  addCreatedCtrlAcc,
+  deleteRemovedCtrlAcc,
+  setAdminStatus
+} from '../actions/adminAccount'
 import {
   addSidesToConference, removeSideFromConference,
   closeConference
@@ -40,8 +44,9 @@ class Root {
     this.connection.on(EventsUser.addFriendToUser, this.updateAfterAddingFriend);
     this.connection.on(EventsUser.removeFriendFromUser, this.updateAfterRemovingFriend);
     this.connection.on(EventsUser.getChangePreferences, this.sendChangeUserPreferences);
+    this.connection.on(EventsAdmin.getCreateCtrlAcc, this.sendCreatedCtrlAcc);
+    this.connection.on(EventsAdmin.getRemoveCtrlAcc, this.sendRemovedCtrlAcc);
     this.connection.on(EventsPeople.changeSearchedPeople, this.updateSearchedPeople);
-    this.connection.on(EventsAdminAccount.adminAccountSetPreferences, this.adminAccountSetPreferences);
     this.connection.on(EventsChat.addSides, this.pushSidesToConference);
     this.connection.on(EventsChat.removeSide, this.eraseSideFromConference);
 
@@ -63,11 +68,12 @@ class Root {
         console.log(action.changes);
         this.emitUserChangePreferences(action.type, action.changes);
         break;
-        case EventsAdminAccount.adminAccountChangePreferences:
-          console.log(action.type);
-          console.log(action.object);
-          this.emitAccountChangePreferenses(action.type, action.object);
-          break;
+      case EventsAdmin.emitCreateCtrlAccount:
+        this.emitCreateAccount(action.type, action.object);
+        break;
+      case EventsAdmin.emitRemoveCtrlAccount:
+        this.emitRemoveAccount(action.type, action.removing);
+        break;
       case EventsChat.emitAddedSide:
         this.emitAddedSideEvent(action.type, action.side);
         break;
@@ -100,7 +106,9 @@ class Root {
 
   newUserData = (data) => {
     const {admined, ...userStatus} = JSON.parse(data);
+    const adminStatus = {admined};
     this.store.dispatch(setUserStatus(userStatus));
+    this.store.dispatch(setAdminStatus(adminStatus));
   };
 
   getUserData = () => {
@@ -155,6 +163,21 @@ class Root {
     this.store.dispatch(setNewUserPreferences(changes));
   };
 
+  sendAdminStatus = (data) => {
+    const status = JSON.parse(data);
+    this.store.dispatch(setAdminStatus(status));
+  };
+
+  sendCreatedCtrlAcc = (data) => {
+    const account = JSON.parse(data);
+    this.store.dispatch(addCreatedCtrlAcc(account));
+  };
+
+  sendRemovedCtrlAcc = (data) => {
+    const removed = JSON.parse(data);
+    this.store.dispatch(deleteRemovedCtrlAcc(removed));
+  };
+
   updateSearchedPeople = (data) => {
     const people = JSON.parse(data);
     this.store.dispatch(newSearchedPeople(people));
@@ -183,6 +206,16 @@ class Root {
   emitUserChangePreferences = (type, changes) => {
     const message = JSON.stringify(changes);
     this.connection.emit(type, message)
+  };
+
+  emitCreateAccount = (type, status) => {
+    const message = JSON.stringify(status);
+    this.connection.emit(type, message);
+  };
+
+  emitRemoveAccount = (type, nameAcc) => {
+    const message = JSON.stringify(nameAcc);
+    this.connection.emit(type, message);
   };
 
   emitAddedSideEvent = (type, sideName) => {

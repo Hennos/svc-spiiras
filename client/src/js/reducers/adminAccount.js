@@ -1,33 +1,45 @@
-import {Events} from '../constants/adminAccount'
-import {changeuserfromadmin, result} from '../constants/adminAccount'
-
-import {state as initialState} from '../states/adminAccount'
 import Immutable from 'immutable';
 
-const adminAccountReducer = (state = initialState, action) => {
+import {Events} from '../constants/adminAccount'
+import {adminAccount as adminFields} from '../constants/adminAccount'
 
+import {state as initialState} from '../states/adminAccount'
+
+const adminAccountReducer = (state = initialState, action) => {
   switch (action.type) {
-    case Events.adminAccountSetPreferences:
-      var string;
-      switch (action.string) {
-        case 1:
-          string = 'Пользователь успешно добавлен.';
-          break;
-        case 2:
-          string = 'Заполните все необходимые поля.';
-          break;
-        case 3:
-          string = 'Невозможно добавить пользователя.';
-          break;
-        case 4:
-          string = 'Ошибка подключения к пользовательскому аккаунту. Пользователь добавлен.';
-          break
-      }
-      console.log(string);
-      return state.set(result, string);
+    case Events.getAdminStatus:
+      return handleAdminStatus(state, action);
+    case Events.getCreateCtrlAcc:
+      return handleCreatedCtrlAcc(state, action);
+    case Events.getRemoveCtrlAcc:
+      return handleRemovedCtrlAcc(state, action);
     default:
       return state;
   }
 };
+
+function handleAdminStatus(state, action) {
+  let updatedAdmin = action.status;
+  updatedAdmin.admined = Immutable.Map(updatedAdmin.admined);
+  return state.merge(Immutable.Map(updatedAdmin));
+}
+
+function handleCreatedCtrlAcc(state, action) {
+  const createdCtrlAcc = action.account;
+  const upAdmined = state
+    .get(adminFields.admined)
+    .set(createdCtrlAcc.username, createdCtrlAcc);
+  return state
+    .set(adminFields.admined, upAdmined);
+}
+
+function handleRemovedCtrlAcc(state, action) {
+  const removedCtrlAcc = action.removed;
+  const upAdmined = state
+    .get(adminFields.admined)
+    .delete(removedCtrlAcc);
+  return state
+    .set(adminFields.admined, upAdmined);
+}
 
 export default adminAccountReducer;
