@@ -25,7 +25,12 @@ function handleUpdateUser(state, action) {
   let updatedUser = action.user;
   updatedUser.friends = Immutable.Map(updatedUser.friends);
   updatedUser.requests = Immutable.Map(updatedUser.requests);
-  updatedUser.preferences = Immutable.Map(updatedUser.preferences);
+  updatedUser.preferences =
+    state.get(userFields.preferences.id)
+      .merge(Immutable.Map(updatedUser.preferences));
+  updatedUser.permission =
+    state.get(userFields.permission.id)
+      .merge(Immutable.Map(updatedUser.permission));
   return state.merge(Immutable.Map(updatedUser));
 }
 
