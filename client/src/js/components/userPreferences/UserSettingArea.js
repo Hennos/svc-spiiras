@@ -14,7 +14,7 @@ class UserSettingArea extends React.Component {
           <p>{baseValue}</p>
         </div>
         <div className="input_block">
-          <input type="text" name={name} value={baseValue} onChange={onChange}/>
+          <input type="text" name={name} onChange={onChange}/>
         </div>
       </div>
     )

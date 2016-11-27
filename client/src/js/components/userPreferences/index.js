@@ -5,11 +5,7 @@ import {connect} from 'react-redux';
 import {Events} from '../../constants/user'
 import {user as userFields} from '../../constants/user'
 
-import {
-  sendChangingPreferences,
-  getNewUserPreferences,
-  setNewUserPreferences
-} from '../../actions/user'
+import {sendChangingPreferences} from '../../actions/user'
 
 import UserSettingArea from './UserSettingArea'
 
@@ -104,7 +100,7 @@ const mapDispatchProps = (dispatch) => {
   };
 };
 
-const mapStateProps = (state, ownProps) => {
+const mapStateProps = (state) => {
   return {
     fields: state.user
       .get(userFields.preferences.id)
