@@ -14,8 +14,12 @@ const Events = {
     sendSetUserPreferences: "GET:USER:PREFERENCE:VALUES"
   },
 
-  adminAccountChangePreferenses: "EMIT:ADMIN_ACCOUNT_CREATE:VALUE",
-  adminAccountSetPreferences : "GET:ADMIN_ACCOUNT_CREATE:VALUE",
+  adminAccount: {
+    getCreateCtrlAccount: "EMIT:ADMIN:ACCOUNT:CREATE:VALUE",
+    getRemoveCtrlAccount: "EMIT:REMOVE:CONTROL:ACCOUNT",
+    sendCreateCtrlAcc: "GET:CREATE:CONTROL:ACCOUNT",
+    sendRemoveCtrlAcc: "GET:REMOVE:CONTROL:ACCOUNT"
+  },
 
   requests: {
     addRequestToUserSuccessful: "ADD:REQUEST:TO:USER",
@@ -310,6 +314,64 @@ function Root(io) {
         });
     });
 
+    socket.on(Events.adminAccount.getCreateCtrlAccount, function (pack) {
+      const ctrlAccData = JSON.parse(pack);
+      ctrlAccData.permission = Object.assign(
+        reduceMap(Object.keys(Constants.user.permission), false), ctrlAccData.permission);
+      userModel.register(new userModel({
+        username: ctrlAccData.username,
+        email: ctrlAccData.email,
+        permission: Object.assign({}, ctrlAccData.permission)
+      }), ctrlAccData.password, function (error, account) {
+        if (error) {
+          return console.error(error);
+        }
+        userModel.findById(socketUser.id).exec()
+          .then(function addCtrlAccToUser(user) {
+            user.admined.push(account.id);
+            user.markModified('admined');
+            return user.save();
+          })
+          .then(function emitMessage() {
+            const msgCtrlAccount = JSON.stringify(
+              _.pick(account, ['username', 'email', 'permission'])
+            );
+            socket.emit(Events.adminAccount.sendCreateCtrlAcc, msgCtrlAccount);
+          })
+          .catch(function handleError(err) {
+            throw err;
+          });
+      });
+    });
+
+    socket.on(Events.adminAccount.getRemoveCtrlAccount, function (pack) {
+      const ctrlAccName = JSON.parse(pack);
+      var removingCtrlAcc;
+      userModel.findOne({username: ctrlAccName}).exec
+        .then(function catchRemoving(caughtCtrlAcc) {
+          removingCtrlAcc = caughtCtrlAcc;
+          return userModel.findById(socketUser.id).exec()
+        })
+        .then(function updateUserAdmined(caughtUser) {
+          const posRemovingInAdmined = posArrayVal(caughtUser.admined, removingCtrlAcc.id);
+          if (posRemovingInAdmined != -1) {
+            caughtUser.admined.splice(posRemovingInAdmined, 1);
+            caughtUser.markModified('admined');
+          }
+          return caughtUser.save();
+        })
+        .then(function removeCtrlAcc() {
+          return userModel.remove({username: removingCtrlAcc}).exec()
+        })
+        .then(function emitMessage() {
+          const msgCtrlAcc = JSON.stringify(removingCtrlAcc);
+          socket.emit(Events.adminAccount.sendRemoveCtrlAcc, msgCtrlAcc);
+        })
+        .catch(function handleError(err) {
+          throw err;
+        });
+    });
+
     socket.on(Events.search.changePatternSearchPeople, function (value) {
       const input = escapeRegExp(JSON.parse(value));
       if (input != '') {
@@ -405,65 +467,6 @@ function Root(io) {
       }
     });
 
-    //userData
-    socket.on(Events.adminAccountChangePreferenses, function (pack) {
-      console.log("adminAccountChangePreferenses");
-      var input = JSON.parse(pack);
-      var curuser;
-      console.log("in");
-
-      userModel.findOne(
-        {username: socket.request.user.username},
-        function (err, curuser) {
-          console.log("input");
-          console.log(input);
-
-          if (!input.username || !input.password) {
-            socket.emit(Events.adminAccountSetPreferences, 2);
-          } else {
-
-            var email = input.email;
-            if (!email) {
-              email = curuser.email;
-            }
-            var newuser = (new userModel({
-              username: input.username,
-              password: input.password,
-              email: email,
-              makecalls: input.makecalls,
-              addingfriends: input.addingfriends,
-              forcedchallenge: input.forcedchallenge,
-              interactiveboard: input.interactiveboard,
-              passwordexitprofile: input.passwordexitprofile,
-              passwordmanipulationofaudiovideo: input.passwordmanipulationofaudiovideo
-            }));
-
-            console.log("newuser");
-            console.log(newuser);
-            console.log("curuser");
-            console.log(curuser);
-            newuser.save(function (err) {
-              if (err) {
-                socket.emit(Events.adminAccountSetPreferences, 3);
-              }
-              else {
-                curuser.admined.push(newuser._id)
-                curuser.save(function (err) {
-                  console.log('save')
-                  if (err) {
-                    socket.emit(Events.adminAccountSetPreferences, 4);
-                  }
-                  else {
-                    console.log('serverOut')
-                    socket.emit(Events.adminAccountSetPreferences, 1);
-                  }
-                });
-              }
-            });
-
-          }
-        });
-    });
     function getSocketsInRoom(roomId) {
       var res = [],
         room = io.sockets.adapter.rooms[roomId];
@@ -488,6 +491,15 @@ function Root(io) {
     function escapeRegExp(string) {
       return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
+
+    function reduceMap(fields, value) {
+      return fields.reduce(function (previous, property) {
+        var current = Object.assign({}, previous);
+        current[property] = value;
+        return current;
+      }, {});
+    }
+
     function matchArrayVal(array, value) {
       return array.some(_.isEqual.bind(null, value));
     }
