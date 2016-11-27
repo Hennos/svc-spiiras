@@ -175,18 +175,8 @@ class Root {
     this.searchPeopleInput = value;
   };
 
-  emitFriendRequestEvent = (type, friendName) => {
-    const message = JSON.stringify(friendName);
-    this.connection.emit(type, message);
-  };
-
   emitRelationsEvent = (type, userName) => {
     const message = JSON.stringify(userName);
-    this.connection.emit(type, message);
-  };
-
-  emitRemoveFriendEvent = (type, friendName) => {
-    const message = JSON.stringify(friendName);
     this.connection.emit(type, message);
   };
 
