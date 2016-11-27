@@ -55,14 +55,10 @@ class Root {
         this.emitChangeInputValueEvent(action.type, action.value);
         break;
       case EventsUser.emitUserRequest:
-        this.emitFriendRequestEvent(action.type, action.userName);
-        break;
       case EventsUser.emitResolutionRequest:
       case EventsUser.emitRejectionRequest:
-        this.emitRequestAnswerEvent(action.type, action.userName);
-        break;
       case EventsUser.emitRemovingFriend:
-        this.emitRemoveFriendEvent(action.type, action.userName);
+        this.emitRelationsEvent(action.type, action.userName);
         break;
       case EventsUser.emitChangePreferences:
         console.log(action.changes);
@@ -186,7 +182,7 @@ class Root {
     this.connection.emit(type, message);
   };
 
-  emitRequestAnswerEvent = (type, userName) => {
+  emitRelationsEvent = (type, userName) => {
     const message = JSON.stringify(userName);
     this.connection.emit(type, message);
   };
