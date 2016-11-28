@@ -114,6 +114,8 @@
         flex-direction column
 
         .control-account
+          width 15em
+
           padding 0.5em
 
           display flex
@@ -123,6 +125,9 @@
           box-shadow 1px 1px 1px main_middle_dark_grey_color
 
           .img_place
+            flex-grow 1
+
+            padding 0.3em
 
             img, p
               border-radius 100%
@@ -143,18 +148,19 @@
               border 2px solid main_middle_grey_color
 
           .username_place
-            padding 0 0.5em
+            flex-grow 2
 
-          .button_wrapper
-            margin-left auto
             padding 0.3em
 
+          .button_wrapper
+            flex-grow 1
+
             .button
-              text-align center
+              text-align right
+
+              padding 0.3em
 
               p
-                display block
-
                 padding 0.6em 0.7em
 
                 border 2px solid main_middle_dark_grey_color
