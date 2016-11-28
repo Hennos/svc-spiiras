@@ -347,7 +347,7 @@ function Root(io) {
     socket.on(Events.adminAccount.getRemoveCtrlAccount, function (pack) {
       const ctrlAccName = JSON.parse(pack);
       var removingCtrlAcc;
-      userModel.findOne({username: ctrlAccName}).exec
+      userModel.findOne({username: ctrlAccName}).exec()
         .then(function catchRemoving(caughtCtrlAcc) {
           removingCtrlAcc = caughtCtrlAcc;
           return userModel.findById(socketUser.id).exec()
