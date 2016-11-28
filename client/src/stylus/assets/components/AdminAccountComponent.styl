@@ -83,6 +83,11 @@
             .checkbox_block
               display inline-block
 
+              input[type="checkbox"]
+
+                &:hover, &:active
+                  cursor pointer
+
 
         .submitButton
           text-align: center
@@ -93,6 +98,9 @@
             border: 1px solid main_dark_grey_color
             background: #ffffff
             font-size: 1em
+
+            &:hover, &:active
+              cursor pointer
 
     .admined_user
       flex-grow 1
