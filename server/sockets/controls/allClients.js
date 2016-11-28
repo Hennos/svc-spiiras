@@ -364,7 +364,7 @@ function Root(io) {
           return removingCtrlAcc.remove()
         })
         .then(function emitMessage() {
-          const msgCtrlAcc = JSON.stringify(removingCtrlAcc);
+          const msgCtrlAcc = JSON.stringify(ctrlAccName);
           socket.emit(Events.adminAccount.sendRemoveCtrlAcc, msgCtrlAcc);
         })
         .catch(function handleError(err) {
