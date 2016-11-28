@@ -1,42 +1,32 @@
 .userPreferences-component_wrapper
   background-color main_light_grey_color
   opacity 0.8
-  margin-left auto
 
   .userPreferences-area_wrapper
     display flex
     flex-direction column
-    justify-content center
+    align-items center
 
-    border-width 0 0 2px 0
-    border-color main_middle_grey_color
-    border-style solid
-    width auto
-
-    padding 1em
+    padding 0.5em
 
     .name_wrapper
-      width 100%
-      padding-bottom 1em
+      padding 0.5em
 
       .name
-        width 90%
-        margin-left auto
 
         p
-          display block
-          padding-bottom 0.2em
           font-weight bold
 
     .userPreferences_wrapper
-      width 100%
-      display block
+
       .submitButton
-        width 100%
         text-align center
-        padding-top 1em
+
+        padding 1em
+
         input[type="button"]
-          margin-bottom 1.5em
+          width 7.5em
+
           outline none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
           border 1px solid main_middle_dark_grey_color //цвет рамки
           background-color #ffffff
@@ -46,15 +36,15 @@
       .module_wrapper
         display flex
 
-        padding 0.5em 0
+        padding 0.5em
 
         .name_block
-          width 30%
-
-          padding-bottom 0.2em
+          padding 0.25em
           font-weight bold
+
         .input_block
-          width 70%
+          padding 0.25em
+          margin-left auto
 
           input[type="text"]
            width 10em
