@@ -4,10 +4,13 @@ import {NameArea} from './NameArea'
 import {ImageArea} from './ImageArea'
 import {DeleteAccButton} from './DeleteAccButton'
 
-export const CtrlAccount = (props) => (
-  <div className="control-account">
-    <ImageArea value={props.image}/>
-    <NameArea value={props.username}/>
-    <DeleteAccButton onClick={props.deleteCtrlAccount}/>
-  </div>
-);
+export const CtrlAccount =
+  ({username, onDeleteAccount, ...props}) => (
+    <div className="control-account">
+      <ImageArea value={props.image}/>
+      <NameArea value={username}/>
+      <DeleteAccButton onClick={() => onDeleteAccount(username)}/>
+    </div>
+  );
+
+

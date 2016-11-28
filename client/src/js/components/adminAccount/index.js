@@ -34,8 +34,8 @@ class adminAccount extends React.Component {
             onSubmit={() => this.pushCtrlAccount(this.state)}
           />
           <ShowingCtrlAccArea
-            admined={admined}
-            deleteCtrlAccount={() => this.deleteCtrlAccount(event.target)}
+            accounts={admined}
+            onDeleteAccount={this.deleteCtrlAccount}
           />
         </div>
       </div>
@@ -72,8 +72,8 @@ class adminAccount extends React.Component {
       this.setState({failCreation: true});
   };
 
-  deleteCtrlAccount = ({value}) =>
-    this.props.deleteCtrlAccount(value);
+  deleteCtrlAccount = (userName) =>
+    this.props.deleteCtrlAccount(userName);
 }
 
 const mapDispatchAdminAccountProps = (dispatch) => {
