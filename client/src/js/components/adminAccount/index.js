@@ -4,7 +4,10 @@ import {connect} from 'react-redux';
 import {adminAccount as adminField} from '../../constants/adminAccount'
 import {Events} from '../../constants/adminAccount'
 
-import {emitCreateCtrlAccount} from '../../actions/adminAccount'
+import {
+  emitCreateCtrlAccount,
+  emitRemoveCtrlAccount
+}from '../../actions/adminAccount'
 
 import {CreationCtrlAccArea} from './CreationCtrlAccArea'
 import {ShowingCtrlAccArea} from './ShowingCtrlAccArea'
@@ -30,7 +33,10 @@ class adminAccount extends React.Component {
             onChangePermission={event => this.setPermissionState(event.target)}
             onSubmit={() => this.pushCtrlAccount(this.state)}
           />
-          <ShowingCtrlAccArea admined={admined}/>
+          <ShowingCtrlAccArea
+            admined={admined}
+            deleteCtrlAccount={() => this.deleteCtrlAccount(event.target)}
+          />
         </div>
       </div>
     );
@@ -64,13 +70,19 @@ class adminAccount extends React.Component {
       this.props.createCtrlAccount({email, password, username, permission})
       :
       this.setState({failCreation: true});
-  }
+  };
+
+  deleteCtrlAccount = ({value}) =>
+    this.props.deleteCtrlAccount(value);
 }
 
 const mapDispatchAdminAccountProps = (dispatch) => {
   return {
     createCtrlAccount: (status)=> {
       dispatch(emitCreateCtrlAccount(status));
+    },
+    deleteCtrlAccount: (userName)=> {
+      dispatch(emitRemoveCtrlAccount(userName));
     }
   };
 };

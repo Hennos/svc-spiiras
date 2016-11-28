@@ -6,7 +6,7 @@ import {SubmitButton} from './SubmitButton'
 
 export const FormArea =
   ({onChangeInputName, onChangePermission, onSubmit}) => (
-    <div className="adminAccount_wrapper">
+    <div className="creating_form_wrapper">
       <InputNameArea onChange={onChangeInputName}/>
       <SetPermissionArea onChange={onChangePermission}/>
       <SubmitButton

@@ -1,13 +1,10 @@
 import React from 'react'
 
-import {CtrlAccount} from './CtrlAccount'
+import {HeaderArea} from './HeaderArea'
+import {CtrlAccountsArea} from './CtrlAccountsArea/index'
 
-export const ShowingCtrlAccArea = ({admined}) => (
+export const ShowingCtrlAccArea = ({admined, ...props}) => (
   <div className="admined_user">
-    {admined.length > 0 ?
-      admined.map(entry => <CtrlAccount key={entry.username} {...entry}/>)
-      :
-      <p>У вас пока нет контролируемых аккаунтов</p>
-    }
+    <CtrlAccountsArea accounts={admined} />
   </div>
 );

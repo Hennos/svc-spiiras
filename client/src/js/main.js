@@ -16,7 +16,7 @@ let store = createStore(Reducers,
     root_io.changeEmitterMiddleware,
     root_io.getterMiddleware
   ));
-root_io.setConnection('192.168.0.76:3003', store);
+root_io.setConnection("localhost:3003", store);
 
 ReactDom.render(
   <Provider store={store}>

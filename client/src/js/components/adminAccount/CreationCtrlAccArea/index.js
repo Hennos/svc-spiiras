@@ -4,8 +4,8 @@ import {HeaderArea} from './HeaderArea'
 import {FormArea} from './FormArea/index'
 
 export const CreationCtrlAccArea = (props) => (
-    <div className="adminAccount-area_wrapper">
-      <HeaderArea title="Административные настройки пользователя"/>
+    <div className="account-creating_wrapper">
+      <HeaderArea title="Создание нового аккаунта:"/>
       <FormArea {...props}/>
     </div>
   );

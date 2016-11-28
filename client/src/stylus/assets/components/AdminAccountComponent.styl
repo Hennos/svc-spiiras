@@ -1,11 +1,23 @@
 .admin-acc-component_wrapper
-  background main_light_grey_color
   opacity 0.8
 
   .admined_user_wrapper
     display flex
+    flex-wrap wrap
 
-    .adminAccount_wrapper
+    .account-creating_wrapper
+      flex-grow 1
+
+      display flex
+      flex-direction column
+      align-items flex-start
+
+      margin 0.5em
+      padding 0.5em
+
+      background main_light_grey_color
+
+      box-shadow 1px 1px 1px main_middle_dark_grey_color
 
       .name_wrapper
 
@@ -14,61 +26,145 @@
 
           p
             display block
-            padding-bottom 0.2em
+            padding 0.2em
             font-weight bold
 
-      .input_wrapper
-        padding-top 2em
+      .creating_form_wrapper
+        align-self center
 
-        .name_block
-          display inline-block
-          padding-right 1em
-          text-align center
+        padding 0.5em
 
-          p
-            padding-bottom 0.2em
+        .name-input
+          padding 0.25em 0
+
+          .input_wrapper
+            padding 0.25em 0
+            margin 0 auto
+
+            .name_block
+              padding-left 0.2em
+
+              p
+                padding-bottom 0.2em
+                font-weight bold
+
+            .input_block
+              display inline-block
+              text-align: right
+
+              input[type="text"]
+                width 10em
+
+                border: 0
+                background: #ffffff !important
+                outline: none
+                height: 1.4em
+                color: black
+                font-size: 1.3em
+
+                &:focus
+                  box-shadow inset 0 0 3px 0 main_dark_grey_color
+
+        .permission_wrapper
+          padding 0.25em 0
+
+          .header_block
             font-weight bold
 
-        .input_block
-          display inline-block
-          text-align: right
+          .checkbox_wrapper
+            padding 0.3em 0 0.3em 1em
 
-          input[type="text"]
-            width 10em
-            border: 2px solid main_light_grey_color //цвет рамки
-            border-width 2px 0px 2px 0px
-            border-radius: 0 //закругление углов (общее)  //закругление углов (Google Chrome)  //закругление углов (FireFox)
-            -khtml-border-radius 0 //закругление углов (Safari)
+            .name_block
+              display inline-block
+              padding-right 0.5em
 
-            background: #ffffff !important // желательно прописывать, так как в Chrome при сохранных данных оно может быть желтым
-            outline: none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
-            height: 1.4em // высота на свое усмотрение
-            color: black //цвет шрифта в обычном состоянии
-            font-size: 1.3em // Размер шрифта
+              width 15em
 
-            &:focus
-              border-bottom 2px solid main_dark_grey_color
+            .checkbox_block
+              display inline-block
 
-      .submitButton
-        text-align: center
-        padding-right 20%
-        padding-top 1em
-        input[type="button"]
-          margin-bottom 1.5em
-          outline: none // удаляет обводку в браузерах хром(желтая) и сафари(синяя)
-          border: 1px solid main_dark_grey_color //цвет рамки
-          background: #ffffff
-          text-align center
-          font-size: 1em
 
-      .checkbox_wrapper
-        padding-top 1em
+        .submitButton
+          text-align: center
+          padding 1em 0
 
-        .name_block
-          display inline-block
-
-        .checkbox_block
-          display inline-block
+          input[type="button"]
+            outline: none
+            border: 1px solid main_dark_grey_color
+            background: #ffffff
+            font-size: 1em
 
     .admined_user
-      padding 0.5em
+      flex-grow 1
+
+      margin 0.5em
+
+      .name_wrapper
+
+        .name
+          margin-left auto
+
+          p
+            display block
+            padding 0.2em
+            font-weight bold
+
+      .control-accounts-wrapper
+        display flex
+        flex-direction column
+
+        .control-account
+          padding 0.5em
+
+          display flex
+          align-items center
+
+          background-color main_light_grey_color
+          box-shadow 1px 1px 1px main_middle_dark_grey_color
+
+          .img_place
+
+            img, p
+              border-radius 100%
+
+            p
+              text-align center
+              padding 0.1em 0.2em
+              border 2px dashed main_middle_dark_grey_color
+              font-size 2em
+              color main_middle_dark_grey_color
+              margin 0 auto
+
+            img
+              display block
+              border-radius 100%
+              width 50%
+              height auto
+              border 2px solid main_middle_grey_color
+
+          .username_place
+            padding 0 0.5em
+
+          .button_wrapper
+            margin-left auto
+            padding 0.3em
+
+            .button
+              text-align center
+
+              p
+                display block
+
+                padding 0.6em 0.7em
+
+                border 2px solid main_middle_dark_grey_color
+                border-radius 100%
+
+                background-color main_middle_grey_color
+
+                font-size 1em
+
+                &:hover, &:active
+                  cursor pointer
+                  box-shadow inset 0 0 10px 0 main_middle_dark_grey_color
+
