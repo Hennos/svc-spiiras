@@ -353,7 +353,7 @@ function Root(io) {
           return userModel.findById(socketUser.id).exec()
         })
         .then(function updateUserAdmined(caughtUser) {
-          const posRemovingInAdmined = posArrayVal(caughtUser.admined, removingCtrlAcc.id);
+          const posRemovingInAdmined = posArrayVal(caughtUser.admined, removingCtrlAcc._id);
           if (posRemovingInAdmined != -1) {
             caughtUser.admined.splice(posRemovingInAdmined, 1);
             caughtUser.markModified('admined');
@@ -361,7 +361,7 @@ function Root(io) {
           return caughtUser.save();
         })
         .then(function removeCtrlAcc() {
-          return userModel.remove({username: removingCtrlAcc}).exec()
+          return removingCtrlAcc.remove()
         })
         .then(function emitMessage() {
           const msgCtrlAcc = JSON.stringify(removingCtrlAcc);
