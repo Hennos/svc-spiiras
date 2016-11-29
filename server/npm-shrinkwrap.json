@@ -1652,6 +1652,11 @@
       "version": "1.8.3",
       "from": "underscore@>=1.8.3 <2.0.0",
       "resolved": "https://registry.npmjs.org/underscore/-/underscore-1.8.3.tgz"
+    },
+    "validate.js": {
+      "version": "0.11.1",
+      "from": "validate.js@latest",
+      "resolved": "https://registry.npmjs.org/validate.js/-/validate.js-0.11.1.tgz"
     }
   }
 }
