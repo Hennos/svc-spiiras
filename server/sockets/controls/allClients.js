@@ -156,8 +156,7 @@ function Root(io) {
           return userModel.findOne({username: requestedName}).exec();
         })
         .then(function updateRequested(requested) {
-          const relSenderByRequests =
-            matchArrayVal(requested.requests, user._id);
+          const relSenderByRequests = matchArrayVal(requested.requests, user._id);
           if (!relSenderByRequests) {
             requested.requests.push(user._id);
             requested.markModified('requests');
@@ -186,8 +185,7 @@ function Root(io) {
           return userModel.findOne({username: requestingName}).exec();
         })
         .then(function updateUserRequests(requesting) {
-          const posReqInRequests =
-            user.requests.findIndex(_.isEqual.bind(null, requesting._id));
+          const posReqInRequests = posArrayVal(user.requests, requesting._id);
           if (posReqInRequests != -1) {
             user.requests.splice(posReqInRequests, 1);
             user.markModified('requests');
@@ -213,8 +211,7 @@ function Root(io) {
           return user = caught;
         })
         .then(function updateUserFriends() {
-          const relAddingByFriends =
-            matchArrayVal(user.friends, addingFriend._id);
+          const relAddingByFriends = matchArrayVal(user.friends, addingFriend._id);
           if (!relAddingByFriends) {
             user.friends.push(addingFriend._id);
             user.markModified('friends');
@@ -222,8 +219,7 @@ function Root(io) {
           return user.save();
         })
         .then(function updateUserRequests() {
-          const posAddingInRequests =
-            user.requests.findIndex(_.isEqual.bind(null, addingFriend._id));
+          const posAddingInRequests = posArrayVal(user.requests, addingFriend._id);
           if (posAddingInRequests != -1) {
             user.requests.splice(posAddingInRequests, 1);
             user.markModified('requests');
@@ -231,8 +227,7 @@ function Root(io) {
           return user.save();
         })
         .then(function updateAddingFriends() {
-          const relUserByFriends =
-            matchArrayVal(addingFriend.friends, user._id);
+          const relUserByFriends = matchArrayVal(addingFriend.friends, user._id);
           if (!relUserByFriends) {
             addingFriend.friends.push(user._id);
             addingFriend.markModified('friends');
@@ -268,8 +263,7 @@ function Root(io) {
           user = caughtUser;
         })
         .then(function updateUserFriends() {
-          const posRemovingInFriends =
-            user.friends.findIndex(_.isEqual.bind(null, removingFriend._id));
+          const posRemovingInFriends = posArrayVal(user.friends, removingFriend._id);
           if (posRemovingInFriends != -1) {
             user.friends.splice(posRemovingInFriends, 1);
             user.markModified('friends');
@@ -277,8 +271,7 @@ function Root(io) {
           return user.save();
         })
         .then(function updateRemovingFriends() {
-          const posUserInFriends =
-            removingFriend.friends.findIndex(_.isEqual.bind(null, user._id));
+          const posUserInFriends = posArrayVal(removingFriend.friends, user._id);
           if (posUserInFriends != -1) {
             removingFriend.friends.splice(posUserInFriends, 1);
             removingFriend.markModified('friends');
