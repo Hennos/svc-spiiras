@@ -127,9 +127,7 @@ function Root(io) {
           const message = JSON.stringify(user);
           socket.emit(Events.userData.newUserData, message);
         })
-        .catch(function handleError(err) {
-          throw err;
-        });
+        .catch(handleError);
     });
 
     socket.on(Events.userData.getChangeUserPreferences, function (preferences) {
@@ -146,9 +144,7 @@ function Root(io) {
         .then(function emitMessage() {
           socket.emit(Events.userData.sendSetUserPreferences, preferences);
         })
-        .catch(function handleError(err) {
-          throw err;
-        });
+        .catch(handleError);
     });
 
     socket.on(Events.requests.getAddingRequest, function (name) {
@@ -178,9 +174,7 @@ function Root(io) {
             );
           }
         })
-        .catch(function handleError(err) {
-          throw err;
-        });
+        .catch(handleError);
     });
 
     socket.on(Events.requests.getRemovingRequest, function (name) {
@@ -204,9 +198,7 @@ function Root(io) {
           var message = JSON.stringify(user, ['username']);
           socket.emit(Events.removeRequestFromUserSuccessful, message);
         })
-        .catch(function handleError(err) {
-          throw err;
-        });
+        .catch(handleError);
     });
 
     socket.on(Events.friends.getAddingFriend, function (name) {
@@ -261,9 +253,7 @@ function Root(io) {
             );
           }
         })
-        .catch(function handleError(err) {
-          throw err;
-        });
+        .catch(handleError);
     });
 
     socket.on(Events.friends.getRemovingFriend, function (name) {
@@ -309,9 +299,7 @@ function Root(io) {
             );
           }
         })
-        .catch(function handleError(err) {
-          throw err;
-        });
+        .catch(handleError);
     });
 
     socket.on(Events.adminAccount.getCreateCtrlAccount, function (pack) {
@@ -338,9 +326,7 @@ function Root(io) {
             );
             socket.emit(Events.adminAccount.sendCreateCtrlAcc, msgCtrlAccount);
           })
-          .catch(function handleError(err) {
-            throw err;
-          });
+          .catch(handleError);
       });
     });
 
@@ -367,9 +353,7 @@ function Root(io) {
           const msgCtrlAcc = JSON.stringify(ctrlAccName);
           socket.emit(Events.adminAccount.sendRemoveCtrlAcc, msgCtrlAcc);
         })
-        .catch(function handleError(err) {
-          throw err;
-        });
+        .catch(handleError);
     });
 
     socket.on(Events.search.changePatternSearchPeople, function (value) {
@@ -388,9 +372,7 @@ function Root(io) {
             const message = JSON.stringify(result, ['username']);
             socket.emit(Events.search.changeSearchedPeople, message);
           })
-          .catch(function handleError(err) {
-            throw err;
-          });
+          .catch(handleError);
       } else {
         const message = JSON.stringify([]);
         socket.emit(Events.search.changeSearchedPeople, message);
@@ -428,11 +410,11 @@ function Root(io) {
       getSocketsInRoom(caused.roomId).forEach(function (elem) {
         elem.leave(caused.roomId, function (err) {
           if (err) {
-            throw err;
+            handleError(err);
           }
           elem.join(socket.roomId, function (err) {
             if (err) {
-              throw err;
+              handleError(err);
             }
             elem.roomId = socket.roomId;
           });
@@ -467,6 +449,11 @@ function Root(io) {
       }
     });
 
+    function handleError(err) {
+      console.error(err);
+      next(err);
+    }
+
     function getSocketsInRoom(roomId) {
       var res = [],
         room = io.sockets.adapter.rooms[roomId];
@@ -482,7 +469,7 @@ function Root(io) {
       var roomId = crypto.randomBytes(32).toString('hex');
       socket.join(roomId, function (err) {
         if (err) {
-          throw err;
+          handleError(err);
         }
         socket.roomId = roomId;
       });
