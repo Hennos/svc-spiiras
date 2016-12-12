@@ -1,22 +1,143 @@
+triangle_right_shift = 18px
+bottom_triangle_size = 10px
+
+  exit_password_element_form_size = 20px
+
 .header
   background-color main_white_color
-  max-width 100%
+  width 100%
   border-bottom 1px solid main_middle_dark_grey_color
 
-  .navigation
-    display block
-    max-width 100%
-    text-align right
-    clearfix()
-    .linkWrapper
-      display inline-block
-      text-align center
-      padding 1em 2%
-      a
-        color main_black_color
-        text-decoration none
+  .toggle-side-menu-area
+    absolute top left
+    padding 0.8em 1.9em
+
+    .button
+      padding 0
+
+      p
+        width auto
+        margin 0 auto
+        padding 0
+        font-size 1.4em
+        border none
+        box-shadow none
+
         &:hover, &:active
+          border none
           color main_cyan_color
+          box-shadow none
+
+  .navigation
+    width 100%
+    text-align right
+
+    .links
+      display inline-block
+      clearfix()
+
+      .linkWrapper
+        display inline-block
+        text-align center
+        padding 1em
+
+        a
+          color main_black_color
+          text-decoration none
+          &:hover, &:active
+            color main_cyan_color
+
+        .exit-area
+
+          .exit-button-area
+
+            .exit-password-form-area
+              margin 11px 0
+
+              position absolute
+
+              z-index 100
+
+              right 10px
+
+              width 220px
+
+              background-color main_white_color
+
+              border 1px solid main_light_dark_grey_color
+              box-shadow 0 1px 1px main_light_dark_grey_color
+
+              .exit-password-form
+                padding 0.5em
+
+                .exit-password-input-label
+
+                  input[type="password"]
+                    height exit_password_element_form_size
+
+                    margin 5px 0
+                    padding 2px 5px
+
+                    border: 0
+                    background: #ffffff !important
+                    outline: none
+                    color: black
+
+                    box-shadow inset 0 0 2px 0 main_dark_grey_color
+
+                  .status-area
+                    font-size exit_password_element_form_size
+                    text-align left
+
+                    .status-message
+                      padding 0 5px
+                      font-size 14px
+
+                input[type="submit"]
+                  height exit_password_element_form_size
+
+                  margin 5px 0
+
+                  border 0
+                  border-radius 2px
+
+                  outline: none
+                  background: #ffffff
+
+                  box-shadow 0 0 2px 0 main_dark_grey_color
+
+                  &:hover, &:active
+                    cursor pointer
+
+              &::before
+                position absolute
+
+                right triangle_right_shift
+
+                content ''
+
+                bottom 100%
+
+                width 0
+                height 0
+
+                border (bottom_triangle_size + 1) solid transparent
+                border-bottom (bottom_triangle_size + 1) solid #787f83
+
+              &::after
+                position absolute
+
+                right triangle_right_shift + 1
+
+                content ''
+
+                bottom 100%
+
+                width 0
+                height 0
+
+                border bottom_triangle_size solid transparent
+                border-bottom bottom_triangle_size solid white
 
 
 
