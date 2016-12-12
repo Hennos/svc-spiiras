@@ -1,7 +1,7 @@
 import React from 'react'
 
-import SideMenu from '../SideMenu/SideMenu';
-import ToggleMenuButton from '../SideMenu/ToggleMenuButton';
+import Header from '../Header/index'
+import SideMenu from '../SideMenu/index';
 import ComponentWrapper from '../ComponentWrapper/index'
 
 class App extends React.Component {
@@ -12,7 +12,7 @@ class App extends React.Component {
   render() {
     return (
       <div className="main_wrapper">
-        <ToggleMenuButton/>
+        <Header/>
         <div className="content_wrapper">
           <SideMenu/>
           <ComponentWrapper/>
