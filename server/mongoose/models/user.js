@@ -71,12 +71,12 @@ var User = new Schema({
     },
     passwordExitProfile: {
       type: Boolean,
-      default: true,
+      default: false,
       required: true
     },
     passwordManipulationOfAudioVideo: {
       type: Boolean,
-      default: true,
+      default: false,
       required: true
     }
   }
