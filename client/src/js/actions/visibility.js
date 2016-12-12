@@ -7,10 +7,9 @@ export const toggleVisibilityAppComponent = (id) => {
   }
 };
 
-export const toggleVisibilitySideMenu = (id) => {
+export const toggleVisibilitySideMenu = () => {
   return {
-    type: Events.toggleSideMenuVisibility,
-    id
+    type: Events.toggleSideMenuVisibility
   }
 };
 
