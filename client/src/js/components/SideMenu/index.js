@@ -47,35 +47,29 @@ class SideMenu extends React.Component {
     return {
       videochat_block: [
         {
-          buttonState: 'off',
-          image: 'fa fa-video-camera',
+          view: 'fa fa-video-camera',
           name: componentsVisibilityToggles.videoCamera
         },
         {
-          buttonState: 'off',
-          image: 'fa fa-weixin',
+          view: 'fa fa-weixin',
           name: componentsVisibilityToggles.chatArea
         },
         {
-          buttonState: 'off',
-          image: 'fa fa-users',
+          view: 'fa fa-users',
           name: componentsVisibilityToggles.peopleArea
         }
       ],
       controls_block: [
         {
-          buttonState: 'off',
-          image: 'fa fa-user',
+          view: 'fa fa-user',
           name: componentsVisibilityToggles.userPreferences
         },
         {
-          buttonState: 'off',
-          image: 'fa fa-cogs',
+          view: 'fa fa-cogs',
           name: componentsVisibilityToggles.administrationAccount
         },
         {
-          buttonState: 'off',
-          image: 'fa fa-sliders',
+          view: 'fa fa-sliders',
           name: componentsVisibilityToggles.cameraAudioPreferences
         }
       ]

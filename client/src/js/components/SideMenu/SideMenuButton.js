@@ -1,18 +1,11 @@
 import React from 'react'
 
-class SideMenuButton extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    const {onClick, buttonState, image, name} = this.props;
-    return (
-      <div className={"button " + buttonState} onClick={onClick}>
-        <p className={image} />
-      </div>
-    );
-  }
-}
+const SideMenuButton = ({onClick, view}) => (
+  <div className="button_wrapper">
+    <div className="button" onClick={onClick}>
+      <p className={view}/>
+    </div>
+  </div>
+);
 
 export default SideMenuButton;
