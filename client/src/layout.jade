@@ -17,6 +17,7 @@ html(lang="ru")
 
     block head
   body(class="page-#{title}")
-    include header
+    if (title != 'chat')
+      include header
     block content
     block additional_scripts
