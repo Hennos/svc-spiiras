@@ -1,90 +1,24 @@
 var crypto = require('crypto');
+var validate = require('validate.js');
 var _ = require('lodash');
 
-const Events = {
-  base: {
-    connected: 'connection',
-    disconnect: 'disconnect'
-  },
-
-  userData: {
-    getUserData: "GET:USER:DATA",
-    newUserData: "NEW:USER:DATA",
-    getChangeUserPreferences: "EMIT:USER:PROPS:CHANGE:VALUES",
-    sendSetUserPreferences: "GET:USER:PREFERENCE:VALUES"
-  },
-
-  adminAccount: {
-    getCreateCtrlAccount: "EMIT:ADMIN:ACCOUNT:CREATE:VALUE",
-    getRemoveCtrlAccount: "EMIT:REMOVE:CONTROL:ACCOUNT",
-    sendCreateCtrlAcc: "GET:CREATE:CONTROL:ACCOUNT",
-    sendRemoveCtrlAcc: "GET:REMOVE:CONTROL:ACCOUNT"
-  },
-
-  requests: {
-    addRequestToUserSuccessful: "ADD:REQUEST:TO:USER",
-    sendingRequestSuccessful: "SENDING:REQUEST:SUCCESSFUL",
-    removeRequestFromUserSuccessful: "REMOVE:REQUEST:FROM:USER",
-    getAddingRequest: "EMIT:USER:REQUEST",
-    getRemovingRequest: "EMIT:REJECTION:REQUEST"
-  },
-
-  friends: {
-    addFriendToUserSuccessful: "ADD:FRIEND:TO:USER",
-    removeFriendFromUserSuccessful: "REMOVE:FRIEND:FROM:USER",
-    getAddingFriend: "EMIT:RESOLUTION:REQUEST",
-    getRemovingFriend: "EMIT:REMOVING:FRIEND"
-  },
-
-  search: {
-    changeSearchedPeople: "NEW:SEARCH_PEOPLE:PEOPLE",
-    changePatternSearchPeople: "EMIT:SEARCH:PEOPLE:INPUT:CHANGE"
-  },
-
-  conference: {
-    callerAddToConference: "EMIT:ADDED:SIDE",
-    sideChangeConference: "ADD:SIDES:TO:CONFERENCE",
-    sideLeaveConference: "REMOVE:SIDE:FROM:CONFERENCE",
-    callerCloseConference: "EMIT:CLOSE:CONFERENCE",
-    closeConference: "CLOSE:CONFERENCE",
-    sideAlreadyCalled: "SIDE:ALREADY:CALLED",
-    sideNotAvailable: "SIDE:NOT:AVAILABLE",
-    sendNewPeers: "SEND:NEW:PEERS"
-  },
-
-  signaling: {
-    handleWebRTCMessage: "WEB:RTC:MESSAGE",
-    responseWebRTCMessage: "WEB:RTC:RESPONSE:MESSAGE"
-  }
-};
-
-const Constants = {
-  user: {
-    permission: {
-      makeCalls: 'makeCalls',
-      addingFriends: 'addingFriends',
-      forcedCall: "forcedCall",
-      interactiveBoard: "interactiveBoard",
-      passwordExitProfile: 'passwordExitProfile',
-      passwordManipulationOfAudioVideo: 'passwordManipulationOfAudioVideo'
-    }
-  }
-};
+const events = require('../../constants/events');
+const userFields = require('../../constants/fields').user;
 
 var userModel = require('../../mongoose/models/user');
 
 function Root(io) {
   var clients = {};
 
-  io.on(Events.base.connected, function (socket) {
+  io.on(events.base.connected, function (socket) {
     console.log("this work");
     var socketUser = socket.request.user;
     if (clients[socketUser.username]) {
       clients[socketUser.username]
         .broadcast
         .to(clients[socketUser.username].roomId)
-        .emit(Events.conference.sideLeaveConference, socketUser.username);
-      clients[socketUser.username].emit(Events.conference.closeConference);
+        .emit(events.conference.sideLeaveConference, socketUser.username);
+      clients[socketUser.username].emit(events.conference.closeConference);
       clients[socketUser.username].disconnect(true);
       return clients;
     }
@@ -93,15 +27,15 @@ function Root(io) {
 
     refreshSocketsRoom(socket);
 
-    socket.on(Events.base.disconnect, function () {
+    socket.on(events.base.disconnect, function () {
       socket
         .broadcast
         .to(socket.roomId)
-        .emit(Events.conference.sideLeaveConference, socketUser.username);
+        .emit(events.conference.sideLeaveConference, socketUser.username);
       delete clients[socketUser.username];
     });
 
-    socket.on(Events.userData.getUserData, function () {
+    socket.on(events.userData.getUserData, function () {
       var user = {};
       userModel
         .findOne({username: socketUser.username})
@@ -125,12 +59,12 @@ function Root(io) {
             });
           });
           const message = JSON.stringify(user);
-          socket.emit(Events.userData.newUserData, message);
+          socket.emit(events.userData.newUserData, message);
         })
         .catch(handleError);
     });
 
-    socket.on(Events.userData.getChangeUserPreferences, function (preferences) {
+    socket.on(events.userData.getChangeUserPreferences, function (preferences) {
       const newPreferences = JSON.parse(preferences);
       if (Object.keys(newPreferences).length === 0) {
         return false;
@@ -142,12 +76,12 @@ function Root(io) {
           return user.save();
         })
         .then(function emitMessage() {
-          socket.emit(Events.userData.sendSetUserPreferences, preferences);
+          socket.emit(events.userData.sendSetUserPreferences, preferences);
         })
         .catch(handleError);
     });
 
-    socket.on(Events.requests.getAddingRequest, function (name) {
+    socket.on(events.requests.getAddingRequest, function (name) {
       const requestedName = JSON.parse(name);
       var user;
       userModel.findById(socketUser.id).exec()
@@ -164,11 +98,11 @@ function Root(io) {
           return requested.save();
         })
         .then(function emitMessage(requested) {
-          socket.emit(Events.requests.sendingRequestSuccessful);
+          socket.emit(events.requests.sendingRequestSuccessful);
           if (clients[requested.username]) {
             var message = JSON.stringify(user, ['username']);
             clients[requested.username].emit(
-              Events.requests.addRequestToUserSuccessful,
+              events.requests.addRequestToUserSuccessful,
               message
             );
           }
@@ -176,7 +110,7 @@ function Root(io) {
         .catch(handleError);
     });
 
-    socket.on(Events.requests.getRemovingRequest, function (name) {
+    socket.on(events.requests.getRemovingRequest, function (name) {
       const requestingName = JSON.parse(name);
       var user;
       userModel.findById(socketUser.id).exec()
@@ -194,12 +128,12 @@ function Root(io) {
         })
         .then(function emitMessage() {
           var message = JSON.stringify(user, ['username']);
-          socket.emit(Events.removeRequestFromUserSuccessful, message);
+          socket.emit(events.removeRequestFromUserSuccessful, message);
         })
         .catch(handleError);
     });
 
-    socket.on(Events.friends.getAddingFriend, function (name) {
+    socket.on(events.friends.getAddingFriend, function (name) {
       const friendName = JSON.parse(name);
       var user, addingFriend;
       userModel.findOne({username: friendName}).exec()
@@ -238,12 +172,12 @@ function Root(io) {
           var msgUser = JSON.stringify(addingFriend, ['username']);
           var msgAdding = JSON.stringify(user, ['username']);
           socket.emit(
-            Events.friends.addFriendToUserSuccessful,
+            events.friends.addFriendToUserSuccessful,
             msgUser
           );
           if (clients[addingFriend.username]) {
             clients[addingFriend.username].emit(
-              Events.friends.addFriendToUserSuccessful,
+              events.friends.addFriendToUserSuccessful,
               msgAdding
             );
           }
@@ -251,7 +185,7 @@ function Root(io) {
         .catch(handleError);
     });
 
-    socket.on(Events.friends.getRemovingFriend, function (name) {
+    socket.on(events.friends.getRemovingFriend, function (name) {
       const friendName = JSON.parse(name);
       var user, removingFriend;
       userModel.findOne({username: friendName}).exec()
@@ -282,12 +216,12 @@ function Root(io) {
           var msgUser = JSON.stringify(removingFriend, ['username']);
           var msgRemoving = JSON.stringify(user, ['username']);
           socket.emit(
-            Events.friends.removeFriendFromUserSuccessful,
+            events.friends.removeFriendFromUserSuccessful,
             msgUser
           );
           if (clients[removingFriend.username]) {
             clients[removingFriend.username].emit(
-              Events.friends.removeFriendFromUserSuccessful,
+              events.friends.removeFriendFromUserSuccessful,
               msgRemoving
             );
           }
@@ -295,10 +229,10 @@ function Root(io) {
         .catch(handleError);
     });
 
-    socket.on(Events.adminAccount.getCreateCtrlAccount, function (pack) {
+    socket.on(events.adminAccount.getCreateCtrlAccount, function (pack) {
       const ctrlAccData = JSON.parse(pack);
       ctrlAccData.permission = Object.assign(
-        reduceMap(Object.keys(Constants.user.permission), false), ctrlAccData.permission);
+        reduceMap(Object.keys(userFields.permission), false), ctrlAccData.permission);
       userModel.register(new userModel({
         username: ctrlAccData.username,
         email: ctrlAccData.email,
@@ -317,13 +251,13 @@ function Root(io) {
             const msgCtrlAccount = JSON.stringify(
               _.pick(account, ['username', 'email', 'permission'])
             );
-            socket.emit(Events.adminAccount.sendCreateCtrlAcc, msgCtrlAccount);
+            socket.emit(events.adminAccount.sendCreateCtrlAcc, msgCtrlAccount);
           })
           .catch(handleError);
       });
     });
 
-    socket.on(Events.adminAccount.getRemoveCtrlAccount, function (pack) {
+    socket.on(events.adminAccount.getRemoveCtrlAccount, function (pack) {
       const ctrlAccName = JSON.parse(pack);
       var removingCtrlAcc;
       userModel.findOne({username: ctrlAccName}).exec()
@@ -344,12 +278,12 @@ function Root(io) {
         })
         .then(function emitMessage() {
           const msgCtrlAcc = JSON.stringify(ctrlAccName);
-          socket.emit(Events.adminAccount.sendRemoveCtrlAcc, msgCtrlAcc);
+          socket.emit(events.adminAccount.sendRemoveCtrlAcc, msgCtrlAcc);
         })
         .catch(handleError);
     });
 
-    socket.on(Events.search.changePatternSearchPeople, function (value) {
+    socket.on(events.search.changePatternSearchPeople, function (value) {
       const input = escapeRegExp(JSON.parse(value));
       if (input != '') {
         userModel.findById(socketUser.id).exec()
@@ -363,39 +297,39 @@ function Root(io) {
           })
           .then(function emitMessage(result) {
             const message = JSON.stringify(result, ['username']);
-            socket.emit(Events.search.changeSearchedPeople, message);
+            socket.emit(events.search.changeSearchedPeople, message);
           })
           .catch(handleError);
       } else {
         const message = JSON.stringify([]);
-        socket.emit(Events.search.changeSearchedPeople, message);
+        socket.emit(events.search.changeSearchedPeople, message);
       }
     });
 
-    socket.on(Events.conference.callerAddToConference, function (side) {
+    socket.on(events.conference.callerAddToConference, function (side) {
       var caused = clients[side];
       if (!caused) {
-        socket.emit(Events.conference.sideNotAvailable);
+        socket.emit(events.conference.sideNotAvailable);
         return false;
       }
       if (caused.roomId === socket.roomId) {
-        socket.emit(Events.conference.sideAlreadyCalled);
+        socket.emit(events.conference.sideAlreadyCalled);
         return false;
       }
       io.to(caused.roomId).emit(
-        Events.conference.sideChangeConference,
+        events.conference.sideChangeConference,
         getSocketsInRoom(socket.roomId).map(function (iterSocket) {
           return _.pick(iterSocket.request.user, ['username']);
         })
       );
       io.to(socket.roomId).emit(
-        Events.conference.sendNewPeers,
+        events.conference.sendNewPeers,
         getSocketsInRoom(caused.roomId).map(function (iterSocket) {
           return iterSocket.request.user.username;
         })
       );
       io.to(socket.roomId).emit(
-        Events.conference.sideChangeConference,
+        events.conference.sideChangeConference,
         getSocketsInRoom(caused.roomId).map(function (iterSocket) {
           return _.pick(iterSocket.request.user, ['username']);
         })
@@ -415,22 +349,22 @@ function Root(io) {
       });
     });
 
-    socket.on(Events.conference.callerCloseConference, function () {
+    socket.on(events.conference.callerCloseConference, function () {
       socket
         .broadcast
         .to(socket.roomId)
-        .emit(Events.conference.sideLeaveConference, socketUser.username);
+        .emit(events.conference.sideLeaveConference, socketUser.username);
       socket.leave(socket.roomId);
       refreshSocketsRoom(socket);
     });
 
-    socket.on(Events.signaling.handleWebRTCMessage, function (message) {
+    socket.on(events.signaling.handleWebRTCMessage, function (message) {
       var data = JSON.parse(message);
       if ((data.side !== undefined) && (clients[data.side] !== undefined)) {
         var callyClient = clients[data.side];
         data.side = socketUser.username;
         callyClient.emit(
-          Events.signaling.responseWebRTCMessage,
+          events.signaling.responseWebRTCMessage,
           JSON.stringify(data)
         );
       } else {
@@ -438,7 +372,7 @@ function Root(io) {
         socket
           .broadcast
           .to(socket.roomId)
-          .emit(Events.signaling.responseWebRTCMessage, JSON.stringify(data));
+          .emit(events.signaling.responseWebRTCMessage, JSON.stringify(data));
       }
     });
 
