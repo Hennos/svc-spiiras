@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET login page. */
+/* GET chat page. */
 router.get('/', function (req, res, next) {
   if (req.isAuthenticated()) {
-    res.render('chat', {userEnabled: true});
+    res.render('chat', {title: 'chat'});
   }
   else {
-    res.redirect('/login');
+    res.render('login', {title: 'login'});
   }
 });
 
