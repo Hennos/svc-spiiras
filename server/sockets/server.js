@@ -1,4 +1,3 @@
-var User = require('../mongoose/models/user');
 var nconf = require('nconf');
 //var uuid = require('node-uuid');
 
