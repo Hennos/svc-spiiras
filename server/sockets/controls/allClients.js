@@ -378,7 +378,7 @@ function Root(io) {
 
     function handleError(err) {
       console.error(err);
-      next(err);
+      throw err;
     }
 
     function getSocketsInRoom(roomId) {
