@@ -2,8 +2,8 @@ import React from 'react'
 
 import {user as userFields} from '../../../../../constants/user'
 
-import {PermissionHeader} from './PermissionHeader'
-import {CheckboxWrapper} from './CheckboxWrapper'
+import {SetPermissionHeader} from './SetPermissionHeader'
+import {PermissionWrapper} from './PermissionWrapper'
 import {AdminCheckbox} from './AdminCheckbox'
 
 const permission = userFields.permission.fields;
@@ -47,10 +47,10 @@ const checkboxMap = [{
 
 export const SetPermissionArea = ({onChange}) => (
   <div className="permission_wrapper">
-    <PermissionHeader title="Разрешения:"/>
+    <SetPermissionHeader title="Разрешения:"/>
     {checkboxMap.map(
       entry =>
-        <CheckboxWrapper
+        <PermissionWrapper
           key={entry.props.name}
           child={entry.view}
           onChange={onChange}
