@@ -31,7 +31,7 @@ class adminAccount extends React.Component {
           <CreationCtrlAccArea
             onChangeInputName={event => this.setGeneralInputState(event.target)}
             onChangePermission={event => this.setPermissionState(event.target)}
-            onSubmit={() => this.pushCtrlAccount(this.state)}
+            onSubmit={() => this.pushCtrlAccount()}
           />
           <ShowingCtrlAccArea
             accounts={admined}
@@ -53,18 +53,19 @@ class adminAccount extends React.Component {
       return {general: postInputs};
     });
 
-  setPermissionState = ({name, checked}) =>
+  setPermissionState = ({name, value}) =>
     this.setState((prevState) => {
       let postPermission = Object.assign({}, prevState.permission);
-      if (checked) {
-        postPermission[name] = checked;
+      if (value) {
+        postPermission[name] = value;
       } else {
         delete postPermission[name];
       }
       return {permission: postPermission};
     });
 
-  pushCtrlAccount = ({general, permission}) => {
+  pushCtrlAccount = () => {
+    const {general, permission} = this.state;
     const {email, password, username} = general;
     return (email && password && username) ?
       this.props.createCtrlAccount({email, password, username, permission})
