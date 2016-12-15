@@ -1,6 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
+import _ from 'lodash';
+
 import {adminAccount as adminField} from '../../constants/adminAccount'
 import {Events} from '../../constants/adminAccount'
 
@@ -31,7 +33,7 @@ class adminAccount extends React.Component {
           <CreationCtrlAccArea
             onChangeInputName={event => this.setGeneralInputState(event.target)}
             onChangePermission={event => this.setPermissionState(event.target)}
-            onSubmit={() => this.pushCtrlAccount()}
+            onSubmit={this.pushCtrlAccount}
           />
           <ShowingCtrlAccArea
             accounts={admined}
@@ -44,7 +46,7 @@ class adminAccount extends React.Component {
 
   setGeneralInputState = ({name, value}) =>
     this.setState((prevState) => {
-      let postInputs = Object.assign({}, prevState.general);
+      let postInputs = _.cloneDeep(prevState.general);
       if (value) {
         postInputs[name] = value;
       } else {
@@ -55,7 +57,7 @@ class adminAccount extends React.Component {
 
   setPermissionState = ({name, value}) =>
     this.setState((prevState) => {
-      let postPermission = Object.assign({}, prevState.permission);
+      let postPermission = _.cloneDeep(prevState.permission);
       if (value) {
         postPermission[name] = value;
       } else {
