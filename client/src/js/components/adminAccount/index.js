@@ -31,8 +31,8 @@ class adminAccount extends React.Component {
       <div className="admin-acc-component_wrapper">
         <div className="admined-user-wrapper">
           <CreationCtrlAccArea
-            onChangeInputName={event => this.setGeneralInputState(event.target)}
-            onChangePermission={event => this.setPermissionState(event.target)}
+            onChangeInputName={this.setGeneralInputState}
+            onChangePermission={this.setPermissionState}
             onSubmit={this.pushCtrlAccount}
           />
           <ShowingCtrlAccArea

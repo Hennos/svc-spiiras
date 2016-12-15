@@ -6,7 +6,7 @@ export const AdminCheckbox = ({title, name, onChange}) => (
       <p>{title}</p>
     </div>
     <div className="checkbox_block">
-      <input type="checkbox" name={name} onChange={onChange}/>
+      <input type="checkbox" name={name} onChange={(events) => onChange(events.target)}/>
     </div>
   </div>
 );
