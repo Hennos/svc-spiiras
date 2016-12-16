@@ -44,7 +44,7 @@ class adminAccount extends React.Component {
     );
   }
 
-  setGeneralInputState = ({name, value}) =>
+  setGeneralInputState = (name, value) =>
     this.setState((prevState) => {
       let postInputs = _.cloneDeep(prevState.general);
       if (value) {
@@ -55,7 +55,7 @@ class adminAccount extends React.Component {
       return {general: postInputs};
     });
 
-  setPermissionState = ({name, value}) =>
+  setPermissionState = (name, value) =>
     this.setState((prevState) => {
       let postPermission = _.cloneDeep(prevState.permission);
       if (value) {
