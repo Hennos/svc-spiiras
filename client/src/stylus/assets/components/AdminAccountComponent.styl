@@ -31,8 +31,6 @@
             font-weight bold
 
       .creating_form_wrapper
-        align-self center
-
         padding 0.25em
         margin 0 1em
 
@@ -76,43 +74,46 @@
           .permission-wrapper
             margin 0 1em
 
-          .base-permission-area
-              display flex
+            .permission-area
 
-              padding 0.3em 0 0.3em 0
+              .base-permission-area
+                display flex
 
-              .name_block
-                padding-right 0.5em
+                padding 0.3em 0 0.3em 0
 
-                width 15em
+                .name_block
+                  padding-right 0.5em
 
-              .checkbox_block
+                  width 15em
 
-                input[type="checkbox"]
+                .checkbox_block
 
-                  &:hover, &:active
-                    cursor pointer
+                  input[type="checkbox"]
 
-            .pass-permission-area
-              display flex
-              flex-direction column
+                    &:hover, &:active
+                      cursor pointer
 
-              .input_block
+              .pass-permission-area
+                display flex
+                flex-direction column
 
-                input[type="text"]
-                  width 100%
+                .input_block
 
-                  border: 0
-                  background: #ffffff !important
-                  outline: none
-                  height: 1.4em
-                  color: black
-                  font-size: 1.3em
+                  input[type="text"]
+                    padding-left 5px
+                    padding-right 5px
 
-                  box-shadow inset 0 0 3px 0 main_dark_grey_color
+                    border: 0
+                    background: #ffffff !important
+                    outline: none
+                    height: 1.4em
+                    color: black
+                    font-size: 1.3em
 
-.submitButton
-          text-align: center
+                    box-shadow inset 0 0 3px 0 main_dark_grey_color
+
+        .submitButton
+          text-align center
           padding 1em 0
 
           input[type="button"]
