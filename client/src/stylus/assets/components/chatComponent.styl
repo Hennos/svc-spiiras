@@ -95,7 +95,10 @@
         .search_wrapper
 
           input[type="text"]
-            width 100%
+            padding-left 5px
+            padding-right 5px
+
+            width calc(100% - 10px)
 
             border-width 0
             border-radius: 1px
@@ -105,8 +108,8 @@
             height 1.4em
             color black
             font-size 1.3em
-            &:focus
-              box-shadow inset 0 0 3px 0 main_dark_grey_color
+
+            box-shadow inset 0 0 3px 0 main_dark_grey_color
 
       .friends-area_wrapper
         background main_light_grey_color

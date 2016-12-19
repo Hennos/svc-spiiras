@@ -53,7 +53,10 @@
               text-align: right
 
               input[type="text"]
-                width 10em
+                padding-left 5px
+                padding-right 5px
+
+                width calc(100% - 10px)
 
                 border: 0
                 background: #ffffff !important
@@ -62,8 +65,7 @@
                 color: black
                 font-size: 1.3em
 
-                &:focus
-                  box-shadow inset 0 0 3px 0 main_dark_grey_color
+                box-shadow inset 0 0 3px 0 main_dark_grey_color
 
         .set-permission-wrapper
           padding 0.25em 0
@@ -102,6 +104,8 @@
                   input[type="text"]
                     padding-left 5px
                     padding-right 5px
+
+                    width calc(100% - 10px)
 
                     border: 0
                     background: #ffffff !important
