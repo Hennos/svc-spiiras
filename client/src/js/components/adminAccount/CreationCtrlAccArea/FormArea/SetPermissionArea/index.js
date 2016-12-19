@@ -4,7 +4,8 @@ import {user as userFields} from '../../../../../constants/user'
 
 import {SetPermissionHeader} from './SetPermissionHeader'
 import {PermissionWrapper} from './PermissionWrapper'
-import {AdminCheckbox} from './AdminCheckbox'
+import {BasePermission} from './Permission/BasePermission/index'
+import {PassPermission} from './Permission/PassPermission'
 
 const permission = userFields.permission.fields;
 const checkboxMap = [{
@@ -12,50 +13,42 @@ const checkboxMap = [{
     title: "Совершать вызовы",
     name: permission.makeCalls
   },
-  view: AdminCheckbox
+  view: BasePermission
 }, {
   props: {
     title: "Принудительный вызов",
     name: permission.forcedCall
   },
-  view: AdminCheckbox
+  view: BasePermission
 }, {
   props: {
     title: "Взаимодействие с интерактивной доской",
     name: permission.interactiveBoard
   },
-  view: AdminCheckbox
+  view: BasePermission
 }, {
   props: {
     title: "Добавлять друзей",
     name: permission.addingFriends
   },
-  view: AdminCheckbox
+  view: BasePermission
 }, {
   props: {
     title: "Запрашивать пароль при попытке выхода из профиля",
     name: permission.passwordExitProfile
   },
-  view: AdminCheckbox
+  view: PassPermission
 }, {
   props: {
     title: "Запрашивать пароль при манипуляции аудио/видео потоком",
     name: permission.passwordManipulationOfAudioVideo
   },
-  view: AdminCheckbox
+  view: PassPermission
 }];
 
 export const SetPermissionArea = ({onChange}) => (
-  <div className="permission_wrapper">
+  <div className="set-permission-wrapper">
     <SetPermissionHeader title="Разрешения:"/>
-    {checkboxMap.map(
-      entry =>
-        <PermissionWrapper
-          key={entry.props.name}
-          child={entry.view}
-          onChange={onChange}
-          {...entry.props}
-        />
-    )}
+    <PermissionWrapper permission={checkboxMap} onChange={onChange}/>
   </div>
 );

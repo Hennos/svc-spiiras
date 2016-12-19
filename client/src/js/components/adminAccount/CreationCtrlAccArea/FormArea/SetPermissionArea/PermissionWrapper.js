@@ -1,7 +1,17 @@
 import React from 'react';
 
-export const PermissionWrapper = ({child, ...props}) => (
+import {Permission} from './Permission/index'
+
+export const PermissionWrapper = ({permission, onChange}) => (
   <div className="permission-wrapper">
-    {child(props)}
+    {permission.map(
+      entry =>
+        <Permission
+          key={entry.props.name}
+          child={entry.view}
+          onChange={onChange}
+          {...entry.props}
+        />
+    )}
   </div>
 );

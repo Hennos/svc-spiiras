@@ -3,9 +3,9 @@ import React from 'react'
 import {AdminInput} from './AdminInput'
 
 const InputsMap = [
-  {title: "Логин", name: "username", type: "text"},
-  {title: "Пароль", name: "password", type: "text"},
-  {title: "Email", name: "email", type: "text"}
+  {title: "Логин", name: "username"},
+  {title: "Пароль", name: "password"},
+  {title: "Email", name: "email"}
 ];
 
 export const InputNameArea = ({onChange}) => (
