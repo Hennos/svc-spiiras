@@ -61,7 +61,7 @@ var User = new Schema({
     },
     forcedCall: {
       type: Boolean,
-      default:true,
+      default: true,
       required: true
     },
     interactiveBoard: {
@@ -70,12 +70,20 @@ var User = new Schema({
       required: true
     },
     passwordExitProfile: {
-      type: Boolean,
+      type: {
+        password: {type: String, required: true},
+        hash: {type: String, required: true},
+        salt: {type: String, required: true}
+      },
       default: false,
       required: true
     },
     passwordManipulationOfAudioVideo: {
-      type: Boolean,
+      type: {
+        password: {type: String, required: true},
+        hash: {type: String, required: true},
+        salt: {type: String, required: true}
+      },
       default: false,
       required: true
     }
