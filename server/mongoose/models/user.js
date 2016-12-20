@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
+var Permission = require('./permission');
+
 var User = new Schema({
   username: {type: String, required: true, unique: true},
   email: {type: String, required: true, unique: true},
@@ -48,45 +50,10 @@ var User = new Schema({
     default: []
   },
 
-  permission: {
-    makeCalls: {
-      type: Boolean,
-      default: true,
-      required: true
-    },
-    addingFriends: {
-      type: Boolean,
-      default: true,
-      required: true
-    },
-    forcedCall: {
-      type: Boolean,
-      default: true,
-      required: true
-    },
-    interactiveBoard: {
-      type: Boolean,
-      default: true,
-      required: true
-    },
-    passwordExitProfile: {
-      type: {
-        password: {type: String, required: true},
-        hash: {type: String, required: true},
-        salt: {type: String, required: true}
-      },
-      default: false,
-      required: true
-    },
-    passwordManipulationOfAudioVideo: {
-      type: {
-        password: {type: String, required: true},
-        hash: {type: String, required: true},
-        salt: {type: String, required: true}
-      },
-      default: false,
-      required: true
-    }
+  controlled: {
+    type: Permission,
+    default: false,
+    required: true
   }
 });
 
