@@ -17,13 +17,16 @@ Password.methods.encryptPassword = function(password) {
   return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 };
 
-Password.virtual('password')
+Password.virtual('value')
   .set(function (password) {
     this._plainPassword = password;
     this.salt = Math.random() + '';
     this.hashedPassword = this.encryptPassword(password);
   })
-  .get(function() { return this._plainPassword});
+  .get(function() {
+      return this._plainPassword || null;
+    }
+  );
 
 Password.methods.checkPassword = function(password) {
   return this.encryptPassword(password) === this.hashedPassword;

@@ -50,12 +50,16 @@ var User = new Schema({
     default: []
   },
 
-  controlled: {
-    type: Permission,
-    default: false,
-    required: true
-  }
+  _permission: Permission
 });
+
+User.virtual('permission')
+  .set(function (permission) {
+    this._permission = new Permission(permission);
+  })
+  .get(function () {
+    return this._permission || null;
+  });
 
 User.plugin(passportLocalMongoose);
 module.exports = mongoose.model('User', User);
