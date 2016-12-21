@@ -32,4 +32,4 @@ Password.methods.checkPassword = function(password) {
   return this.encryptPassword(password) === this.hashedPassword;
 };
 
-module.exports = mongoose.model('Password', Password);
+module.exports = Password;

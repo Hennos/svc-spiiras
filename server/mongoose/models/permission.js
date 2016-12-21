@@ -55,4 +55,4 @@ Password.methods.checkCtrlPassword = function (ctrl, password) {
   }
 };
 
-module.exports = mongoose.model('Permission', Permission);
+module.exports = Permission;
