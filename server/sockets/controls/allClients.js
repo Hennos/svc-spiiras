@@ -127,7 +127,7 @@ function Root(io) {
         })
         .then(function emitMessage() {
           var message = JSON.stringify(user, ['username']);
-          socket.emit(events.removeRequestFromUserSuccessful, message);
+          socket.emit(events.requests.removeRequestFromUserSuccessful, message);
         })
         .catch(handleError);
     });
