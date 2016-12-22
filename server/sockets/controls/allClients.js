@@ -229,8 +229,6 @@ function Root(io) {
 
     socket.on(events.adminAccount.getCreateCtrlAccount, function (pack) {
       const ctrlAccData = JSON.parse(pack);
-      ctrlAccData.permission = Object.assign(
-        reduceMap(Object.keys(userFields.permission), false), ctrlAccData.permission);
       userModel.register(new userModel({
         username: ctrlAccData.username,
         email: ctrlAccData.email,
