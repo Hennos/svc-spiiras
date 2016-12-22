@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
+var _  = require('lodash');
+
 var Permission = require('./permission');
 
 var User = new Schema({
@@ -59,10 +61,14 @@ var User = new Schema({
 
 User.virtual('permission')
   .set(function (permission) {
-    this._permission = new Permission(permission);
+    this._permission = permission;
   })
   .get(function () {
-    return this._permission || null;
+    const fields = require('../../constants/fields').user.permission;
+    const self = this;
+    return _.mapValues(fields, function (field) {
+      return self._permission[field];
+    });
   });
 
 User.plugin(passportLocalMongoose);
