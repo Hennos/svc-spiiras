@@ -47,7 +47,7 @@ Permission.virtual(fields.passwordManipulationOfAudioVideo)
     return (this._passwordManipulationOfAudioVideo.value) ? true : false;
   });
 
-Password.methods.checkCtrlPassword = function (ctrl, password) {
+Permission.methods.checkCtrlPassword = function (ctrl, password) {
   if (Object.defineProperties(this, ctrl)) {
     return this[ctrl].checkPassword(password);
   } else {
