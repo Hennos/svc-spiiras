@@ -50,7 +50,11 @@ var User = new Schema({
     default: []
   },
 
-  _permission: Permission
+  _permission: {
+    type: Permission,
+    default: Permission,
+    required: true
+  }
 });
 
 User.virtual('permission')
