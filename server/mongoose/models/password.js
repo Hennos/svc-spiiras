@@ -10,6 +10,10 @@ var Password = new Schema({
   salt: {
     type: String,
     required: true
+  },
+  created: {
+    type: Date,
+    default: Date.now
   }
 });
 
