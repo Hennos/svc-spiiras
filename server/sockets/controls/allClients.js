@@ -3,7 +3,6 @@ var validate = require('validate.js');
 var _ = require('lodash');
 
 const events = require('../../constants/events');
-const userFields = require('../../constants/fields').user;
 
 var userModel = require('../../mongoose/models/user');
 
