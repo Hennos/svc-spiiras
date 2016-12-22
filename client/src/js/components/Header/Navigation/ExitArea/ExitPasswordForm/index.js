@@ -78,7 +78,7 @@ class ExitPasswordForm extends React.Component {
 
     exitRequest.timeout = 10000;
 
-    exitRequest.open('GET', '/logout/submit?' + params, true);
+    exitRequest.open('POST', '/logout/submit?' + params, true);
 
     exitRequest.onreadystatechange = () => {
       if (exitRequest.readyState != 4) return;

@@ -17,13 +17,13 @@ router.get('/', function (req, res, next) {
   return res.redirect('/index');
 });
 
-//router.get('/submit', function (req, res, next) {
-//  if (req.isAuthenticated()) {
-//    return res.redirect('/index');
-//  }
-//  else {
-//    res.render('login', {title: 'login'});
-//  }
-//});
+router.post('/submit', function (req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect('/index');
+  }
+  else {
+    res.render('login', {title: 'login'});
+  }
+});
 
 module.exports = router;
