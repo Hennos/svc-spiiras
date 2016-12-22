@@ -36,7 +36,6 @@ function Root(io) {
     });
 
     socket.on(events.userData.getUserData, function () {
-      var user = {};
       userModel
         .findOne({username: socketUser.username})
         .populate('friends', 'username')
@@ -44,8 +43,8 @@ function Root(io) {
         .populate('admined', 'username')
         .exec()
         .then(function emitMessage(populated) {
-          user = Object.assign(
-            user, _.pick(populated, [
+          var user = Object.assign(
+            {}, _.pick(populated, [
               'admin',
               'username',
               'preferences',
