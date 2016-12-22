@@ -33,18 +33,30 @@ var Permission = new Schema({
 
 Permission.virtual(fields.passwordExitProfile)
   .set(function (password) {
-    this._passwordExitProfile = new Password({value: password});
+    if (password) {
+      this._passwordExitProfile = {value: password}
+    }
   })
   .get(function () {
-    return (this._passwordExitProfile.value) ? true : false;
+    if (this._passwordExitProfile) {
+      return this._passwordExitProfile.value;
+    } else {
+      return false;
+    }
   });
 
 Permission.virtual(fields.passwordManipulationOfAudioVideo)
   .set(function (password) {
-    this._passwordManipulationOfAudioVideo = new Password({value: password});
+    if (password) {
+      this._passwordManipulationOfAudioVideo = {value: password};
+    }
   })
   .get(function () {
-    return (this._passwordManipulationOfAudioVideo.value) ? true : false;
+    if (this._passwordManipulationOfAudioVideo) {
+      return this._passwordManipulationOfAudioVideo.value;
+    } else {
+      return false;
+    }
   });
 
 Permission.methods.checkCtrlPassword = function (ctrl, password) {
