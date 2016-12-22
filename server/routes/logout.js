@@ -6,12 +6,12 @@ var _ = require('lodash');
 const permission = require('../constants/fields').user.permission;
 
 /* GET logout page. */
-router.get('/', function (req, res) {
+router.get('/', function (req, res, next) {
   if (req.isAuthenticated()) {
-//    if (!_.get(req.user.permission, permission.passwordExitProfile, false)) {
+    if (!_.get(req.user.permission, permission.passwordExitProfile, false)) {
       req.logout();
       return res.redirect('/login');
-//   }
+    }
   }
 
   return res.redirect('/index');
