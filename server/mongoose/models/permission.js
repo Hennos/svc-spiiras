@@ -39,7 +39,7 @@ Permission.virtual(fields.passwordExitProfile)
   })
   .get(function () {
     if (this._passwordExitProfile) {
-      return this._passwordExitProfile.value;
+      return this._passwordExitProfile.password || false;
     } else {
       return false;
     }
@@ -53,7 +53,7 @@ Permission.virtual(fields.passwordManipulationOfAudioVideo)
   })
   .get(function () {
     if (this._passwordManipulationOfAudioVideo) {
-      return this._passwordManipulationOfAudioVideo.value;
+      return this._passwordManipulationOfAudioVideo.password || false;
     } else {
       return false;
     }
