@@ -21,7 +21,7 @@ Password.methods.encryptPassword = function(password) {
   return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 };
 
-Password.virtual('value')
+Password.virtual('password')
   .set(function (password) {
     this._plainPassword = password;
     this.salt = Math.random() + '';

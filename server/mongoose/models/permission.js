@@ -34,7 +34,7 @@ var Permission = new Schema({
 Permission.virtual(fields.passwordExitProfile)
   .set(function (password) {
     if (password) {
-      this._passwordExitProfile = {value: password}
+      this._passwordExitProfile = {password: password}
     }
   })
   .get(function () {
@@ -48,7 +48,7 @@ Permission.virtual(fields.passwordExitProfile)
 Permission.virtual(fields.passwordManipulationOfAudioVideo)
   .set(function (password) {
     if (password) {
-      this._passwordManipulationOfAudioVideo = {value: password};
+      this._passwordManipulationOfAudioVideo = {password: password};
     }
   })
   .get(function () {
