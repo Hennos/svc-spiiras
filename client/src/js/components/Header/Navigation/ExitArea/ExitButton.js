@@ -27,7 +27,7 @@ class ExitButton extends React.Component {
   };
 
   handleFormOutFocus = () => {
-    const closeForm = () => this.setState({activeForm: true});
+    const closeForm = () => this.setState({activeForm: false});
     this.setState({closeFormTimer: setTimeout(closeForm, 7500)});
   };
 
