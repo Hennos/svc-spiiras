@@ -11,6 +11,7 @@ export const FormArea =
       <SetPermissionArea onChange={onChangePermission}/>
       <SubmitButton
         name='Submit' value="Создать аккаунт"
-        onClick={onSubmit}/>
+        onClick={onSubmit}
+      />
     </div>
   );
