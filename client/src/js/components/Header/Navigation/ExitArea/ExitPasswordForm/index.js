@@ -72,13 +72,15 @@ class ExitPasswordForm extends React.Component {
 
     this.setState({loading: true});
 
-    const params = "exit-password=" + encodeURIComponent(this.state.value);
+    const body = "exit=" + encodeURIComponent(this.state.value);
 
     let exitRequest = new XMLHttpRequest();
 
     exitRequest.timeout = 10000;
 
-    exitRequest.open('POST', '/logout/submit?' + params, true);
+    exitRequest.open('POST', '/logout/submit', true);
+
+    exitRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
 
     exitRequest.onreadystatechange = () => {
       if (exitRequest.readyState != 4) return;
@@ -104,7 +106,7 @@ class ExitPasswordForm extends React.Component {
       });
     };
 
-    exitRequest.send();
+    exitRequest.send(body);
   };
 
   _resPasswordStatus = (status) =>
