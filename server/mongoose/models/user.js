@@ -72,5 +72,14 @@ User.virtual('permission')
     });
   });
 
+User.methods.checkUserExit = function (password) {
+  const result = this._permission.checkCtrlPassword(fields.permission.passwordExitProfile, password);
+  if (result === null) {
+    return true;
+  } else {
+    return result;
+  }
+};
+
 User.plugin(passportLocalMongoose);
 module.exports = mongoose.model('User', User);
