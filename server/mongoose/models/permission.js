@@ -60,8 +60,9 @@ Permission.virtual(fields.passwordManipulationOfAudioVideo)
   });
 
 Permission.methods.checkCtrlPassword = function (ctrl, password) {
-  if (Object.defineProperties(this, ctrl)) {
-    return this[ctrl].checkPassword(password);
+  const path = '_' + ctrl;
+  if (this[path]) {
+    return this[path].checkPassword(password);
   } else {
     return null;
   }
