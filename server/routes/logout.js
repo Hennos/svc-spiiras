@@ -19,7 +19,11 @@ router.get('/', function (req, res, next) {
 
 router.post('/submit', function (req, res, next) {
   if (req.isAuthenticated()) {
-    return res.redirect('/index');
+    if (req.user.checkUserExit(req.body.exit)) {
+      req.logout();
+      return res.redirect('login');
+    }
+    return res.sendStatus(403);
   }
   else {
     res.render('login', {title: 'login'});
