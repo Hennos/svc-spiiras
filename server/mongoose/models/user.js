@@ -2,7 +2,9 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var passportLocalMongoose = require('passport-local-mongoose');
 
-var _  = require('lodash');
+const fields = require('../../constants/fields').user;
+
+var _ = require('lodash');
 
 var Permission = require('./permission');
 
@@ -64,9 +66,8 @@ User.virtual('permission')
     this._permission = permission;
   })
   .get(function () {
-    const fields = require('../../constants/fields').user.permission;
     const self = this;
-    return _.mapValues(fields, function (field) {
+    return _.mapValues(fields.permission, function (field) {
       return self._permission[field];
     });
   });
