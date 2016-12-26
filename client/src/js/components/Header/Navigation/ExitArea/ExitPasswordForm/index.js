@@ -91,7 +91,7 @@ class ExitPasswordForm extends React.Component {
         case 200:
           this.setState({status: RESPONSE.SUCCESS});
           break;
-        case 406:
+        case 403:
           this.setState({status: RESPONSE.BAD_PASSWORD});
           break;
         default:
