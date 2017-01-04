@@ -20,7 +20,7 @@ var events = {
     sendRemoveCtrlAcc: "GET:REMOVE:CONTROL:ACCOUNT",
 
     getChangeCtrlPermissions: "EMIT:NEW:CTRL:PERMISSIONS",
-    sendNewCtrlPermissions: "GET:NEW:CTRL:PERMISSIONS"
+    sendNewCtrlPermissions: "GET:NEW:USER:PERMISSIONS"
   },
 
   requests: {
