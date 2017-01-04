@@ -228,6 +228,7 @@ function Root(io) {
     });
 
     socket.on(events.adminAccount.getCreateCtrlAccount, function (pack) {
+      //Необходиом добавить разрешения на изменение аккаунта
       const ctrlAccData = JSON.parse(pack);
       userModel.register(new userModel({
         username: ctrlAccData.username,
@@ -254,6 +255,7 @@ function Root(io) {
     });
 
     socket.on(events.adminAccount.getRemoveCtrlAccount, function (pack) {
+      //Необходиом добавить разрешения на изменение аккаунта
       const ctrlAccName = JSON.parse(pack);
       var removingCtrlAcc;
       userModel.findOne({username: ctrlAccName}).exec()
@@ -277,6 +279,30 @@ function Root(io) {
           socket.emit(events.adminAccount.sendRemoveCtrlAcc, msgCtrlAcc);
         })
         .catch(handleError);
+    });
+
+    socket.on(events.adminAccount.getChangeCtrlPermissions, function (pack) {
+      //Необходиом добавить разрешения на изменение аккаунта
+      const data = JSON.parse(pack);
+      if (_.has(data, ['name', 'value'])) {
+        const ctrlAccName = data.name;
+        const newPermissions = data.value;
+        userModel.findOne({username: ctrlAccName}).exec()
+          .then(function setPermissions(caughtCtrlAcc) {
+            caughtCtrlAcc.permission = newPermissions;
+            caughtCtrlAcc.markModified('permission');
+            return caughtCtrlAcc.save();
+          })
+          .then(function emitMessage() {
+            if (clients[ctrlAccName]) {
+              clients[ctrlAccName].emit(
+                events.adminAccount.sendNewCtrlPermissions,
+                newPermissions
+              );
+            }
+          })
+          .catch(handleError);
+      }
     });
 
     socket.on(events.search.changePatternSearchPeople, function (value) {
