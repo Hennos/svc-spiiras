@@ -1,7 +1,7 @@
 import React from 'react'
 
-export const NameArea = ({value}) => (
+export const NameArea = ({name}) => (
   <div className="username_place">
-    <p>{value}</p>
+    <p>{name}</p>
   </div>
 );

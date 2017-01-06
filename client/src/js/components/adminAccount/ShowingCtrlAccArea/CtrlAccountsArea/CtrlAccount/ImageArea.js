@@ -1,9 +1,9 @@
 import React from 'react'
 
-export const ImageArea = ({value}) => (
-  <div className="img_place">
-    {(value) ?
-      <img src={value} alt="Нет изображения"/>
+export const ImageArea = ({image}) => (
+  <div className="img-place">
+    {(image) ?
+      <img src={image} alt="?"/>
       :
       <p className="fa fa-question-circle" />
     }
