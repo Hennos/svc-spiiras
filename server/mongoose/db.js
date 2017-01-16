@@ -1,7 +1,7 @@
-var nconf = require('nconf');
+var config = require('nconf');
 var mongoose = require('mongoose');
 
-var options = nconf.get('database');
+var options = config.get('database');
 
 mongoose.Promise = global.Promise;
 

@@ -11,7 +11,8 @@ var nconf = require('nconf');
 nconf
   .argv()
   .env()
-  .file({file: './config/config.json'});
+  .file({file: __dirname+'/config/config.json'});
+
 var flash = require('connect-flash');
 
 // routes
