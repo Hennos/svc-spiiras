@@ -3,7 +3,7 @@ import {toggleVideoCameraState} from '../actions/videoCamera'
 'use strict';
 
 class Camera {
-  constructor({videoID, constraints}) {
+  constructor({constraints}) {
     // for old browsers
     if (navigator.mediaDevices === undefined) {
       navigator.mediaDevices = {};
@@ -13,8 +13,6 @@ class Camera {
     }
 
     //constraints of camera
-    this.videoID = videoID;
-    this.videoArea = null;
     this.constraints = constraints;
   }
 
@@ -50,18 +48,14 @@ class Camera {
         .then(
           stream => {
             let videoTracks = stream.getVideoTracks();
-            if (!this.videoArea) {
-              this.videoArea = document.getElementById(this.videoID);
-            }
-
             console.log('Using video device: ' + videoTracks[0].label);
             stream.onended = ()=> console.log('Stream ended');
 
             this.stream = stream;
-            this.videoArea.src = window.URL.createObjectURL(stream);
-            this.videoArea.onloadedmetadata = (e)=> {
-              this.videoArea.play();
-            };
+            //this.videoArea.src = window.URL.createObjectURL(stream);
+            //this.videoArea.onloadedmetadata = (e)=> {
+            //  this.videoArea.play();
+            //};
 
             if (dispatch) {
               dispatch(toggleVideoCameraState(stream));
@@ -75,8 +69,6 @@ class Camera {
           console.log(err);
         });
     } else {
-      this.videoArea.pause();
-      this.videoArea.src = '';
       this.stream.getVideoTracks()[0].stop();
       this.stream = null;
       if (dispatch) dispatch(toggleVideoCameraState());

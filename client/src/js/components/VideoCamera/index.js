@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {Stream} from '../../constants/videoCamera';
 import {Parameters} from  '../../constants/videoCamera';
 import {loadVideoCamera, toggleVideoCameraState} from '../../actions/videoCamera';
 import Camera from '../../controls/Camera'
@@ -26,11 +27,17 @@ class VideoCameraComponent extends React.Component {
   }
 
   render() {
-    const {isWorking, onButtonCameraClick, isLoading} = this.props;
+    const {isWorking, onButtonCameraClick, isLoading, stream} = this.props;
     return (
       <div className="video-camera-component_wrapper display_block">
         <div className="video_wrapper">
-          <video id="camera-video" />
+          <video
+            id="camera-video"
+            src={this.getMediaStream(stream)}
+            onLoadedMetadata={(e) => {
+              e.target.play()
+            }}
+          />
         </div>
 
         <div className="controls_wrapper">
@@ -43,6 +50,8 @@ class VideoCameraComponent extends React.Component {
       </div>
     );
   }
+
+  getMediaStream = (stream) => (stream) ? window.URL.createObjectURL(stream) : '';
 }
 
 const mapDispatchVideoCameraProps = (dispatch) => {
@@ -56,6 +65,8 @@ const mapDispatchVideoCameraProps = (dispatch) => {
 
 const mapStateVideoCameraProps = (state, ownProps) => {
   return {
+    stream: state.videoCameraComponent
+      .get(Stream.localStream),
     isWorking: state.videoCameraComponent
       .get(Parameters.isWorking),
     isLoading: state.videoCameraComponent
