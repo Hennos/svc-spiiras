@@ -12,3 +12,10 @@ export const loadVideoCamera = () => {
     type: Events.videoCameraLoading
   }
 };
+
+export const toggleCameraVideoComponentState = (element) => {
+  return {
+    type: Events.toggleCameraVideoElementState,
+    element
+  }
+};

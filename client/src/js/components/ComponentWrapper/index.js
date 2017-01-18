@@ -12,12 +12,14 @@ import ChatComponent from '../Chat/index';
 import UserPreferences from '../UserPreferences/index';
 import AdminAccount from '../adminAccount/index';
 
+
 const visibleComponentMap = new Map([
   [togglesComponent.chatArea, <ChatComponent/>],
   [togglesComponent.peopleArea, <PeoplesComponent/>],
   [togglesComponent.userPreferences, <UserPreferences/>],
   [togglesComponent.videoCamera, <VideoCameraComponent/>],
   [togglesComponent.administrationAccount, <AdminAccount/>]
+  
 ]);
 
 class ComponentWrapper extends React.Component {

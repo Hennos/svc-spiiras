@@ -1,5 +1,5 @@
 import {Events} from  '../constants/videoCamera';
-import {Stream, Parameters} from  '../constants/videoCamera';
+import {Stream, Parameters, DOMElements} from  '../constants/videoCamera';
 import {state as initialState} from '../states/videoCamera'
 
 const videoCameraComponent = (state = initialState, action) => {
@@ -8,6 +8,8 @@ const videoCameraComponent = (state = initialState, action) => {
       return handleVideoCameraLoading(state, action);
     case Events.toggleCameraState:
       return handleTogglingCameraState(state, action);
+    case Events.toggleCameraVideoElementState:
+          return handleTogglingCameraVideoElementState(state, action);
     default:
       return state;
   }
@@ -15,6 +17,10 @@ const videoCameraComponent = (state = initialState, action) => {
 
 function handleVideoCameraLoading(state, action) {
   return state.set(Parameters.isLoading, !state.get(Parameters.isLoading));
+}
+
+function handleTogglingCameraVideoElementState(state, action) {
+  return state.set(DOMElements.videoElement, action.element);
 }
 
 function handleTogglingCameraState(state, action) {

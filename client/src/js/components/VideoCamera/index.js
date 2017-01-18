@@ -2,8 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Stream} from '../../constants/videoCamera';
 import {Parameters} from  '../../constants/videoCamera';
-import {loadVideoCamera, toggleVideoCameraState} from '../../actions/videoCamera';
+import {loadVideoCamera, toggleVideoCameraState, toggleCameraVideoComponentState} from '../../actions/videoCamera';
 import Camera from '../../controls/Camera'
+import VideoCanvasComponent from '../CanvasVideo/index';
 
 import ButtonOnOff from './ButtonOnOff'
 import LoadingArea from './LoadingArea'
@@ -24,6 +25,14 @@ let camera = new Camera(cameraParameters);
 class VideoCameraComponent extends React.Component {
   constructor(props) {
     super(props);
+  }
+
+  componentDidMount(){
+    this.props.newVideoComponentState(document.getElementById(cameraParameters.videoID));
+  }
+
+  componentWillUnmount(){
+    this.props.newVideoComponentState(null);
   }
 
   render() {
@@ -47,7 +56,9 @@ class VideoCameraComponent extends React.Component {
             <ButtonOnOff isWorking={isWorking} onClick={() => (onButtonCameraClick())}/>
           }
         </div>
+        <VideoCanvasComponent/>
       </div>
+
     );
   }
 
@@ -56,6 +67,9 @@ class VideoCameraComponent extends React.Component {
 
 const mapDispatchVideoCameraProps = (dispatch) => {
   return {
+    newVideoComponentState: (element) =>{
+      dispatch(toggleCameraVideoComponentState(element))
+    },
     onButtonCameraClick: ()=> {
       dispatch(loadVideoCamera());
       dispatch(camera.createToggleDispatcher());
