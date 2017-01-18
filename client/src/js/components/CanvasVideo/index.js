@@ -15,43 +15,47 @@ class VideoCanvasComponent extends React.Component {
     this.fps = 15;
     this.canvasFPSTimerID = undefined;
 
-  }
+  };
 
   componentDidMount(){
+    console.log('Mount');
     this.canvasElementContext = document.getElementById(canvasParameters.canvasID).getContext("2d");
-  }
+  };
 
   componentWillUnmount(){
-
     console.log('Unmount');
-    if(this.canvasElement)
-      this.canvasElement.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-    this.canvasElement = null;
+    this.clearCanvas(this.canvasElementContext);
     clearTimeout(this.canvasFPSTimerID);
-  }
+  };
 
   componentDidUpdate(nextProps){
+    console.log('Update');
     this.cameraVideoDOMElement = this.props.cameraVideoDOMElement;
     if(this.cameraVideoDOMElement && this.props.stream && this.canvasElementContext){
-      this.getFrame(this.props.cameraVideoDOMElement);
+      this.drawFrame(this.props.cameraVideoDOMElement);
     }else {
-      console.log('Update', this.canvasElement);
-      if(this.canvasElement)
-        this.canvasElement.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
-      this.canvasElement = null;
+      this.clearCanvas(this.canvasElementContext);
       clearTimeout(this.canvasFPSTimerID);
     }
   };
 
-
-  getFrame (){
-    let that = this;
-    this.canvasFPSTimerID = setTimeout(() => {
-      requestAnimationFrame(that.getFrame);
-      that.canvasElementContext.
-        drawImage(that.cameraVideoDOMElement, 0, 0, that.canvasWidth, that.canvasHeight);
-    }, 1000 / that.fps);
+  clearCanvas(context){
+    if(context){
+      console.log('Delete Canvas');
+      //purification of the work area Canvas
+      context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+    }
   };
+
+  drawFrame (){
+    this.canvasFPSTimerID = setTimeout(this.animationCycle.bind(this), 1000 / this.fps);
+  };
+
+  animationCycle(){
+    requestAnimationFrame(this.drawFrame.bind(this));
+    this.canvasElementContext.drawImage(this.cameraVideoDOMElement, 0, 0, this.canvasWidth, this.canvasHeight);
+  };
+
 
   render() {
     return (
