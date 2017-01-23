@@ -2,9 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {DOMElements, Stream} from  '../../constants/videoCamera';
 
-let canvasParameters = {
-  canvasID: 'canvas-video'
-};
 
 
 class VideoCanvasComponent extends React.Component {
@@ -14,25 +11,28 @@ class VideoCanvasComponent extends React.Component {
     this.canvasHeight =  240;
     this.fps = 15;
     this.canvasFPSTimerID = undefined;
+    this.canvasID = 'canvas-video';
 
   };
 
   componentDidMount(){
-    console.log('Mount');
-    this.canvasElementContext = document.getElementById(canvasParameters.canvasID).getContext("2d");
+    this.canvasElement = document.getElementById(this.canvasID);
+    this.canvasElementContext = this.canvasElement.getContext("2d");
   };
 
   componentWillUnmount(){
-    console.log('Unmount');
     this.clearCanvas(this.canvasElementContext);
     clearTimeout(this.canvasFPSTimerID);
   };
 
   componentDidUpdate(nextProps){
-    console.log('Update');
     this.cameraVideoDOMElement = this.props.cameraVideoDOMElement;
+
     if(this.cameraVideoDOMElement && this.props.stream && this.canvasElementContext){
-      this.drawFrame(this.props.cameraVideoDOMElement);
+        let canvasStream = this.canvasElement.captureStream(this.fps);
+  
+        this.drawFrame(this.props.cameraVideoDOMElement);
+
     }else {
       this.clearCanvas(this.canvasElementContext);
       clearTimeout(this.canvasFPSTimerID);
@@ -41,9 +41,9 @@ class VideoCanvasComponent extends React.Component {
 
   clearCanvas(context){
     if(context){
-      console.log('Delete Canvas');
       //purification of the work area Canvas
       context.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+      context = null;
     }
   };
 
