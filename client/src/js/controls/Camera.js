@@ -1,19 +1,43 @@
-import {toggleVideoCameraState} from '../actions/videoCamera'
+import React from 'react';
+import {connect} from 'react-redux';
+import {toggleVideoCameraState, toggleCameraVideoComponentState} from '../actions/videoCamera'
+import {Parameters} from  '../constants/videoCamera';
 
-'use strict';
 
-class Camera {
-  constructor({constraints}) {
+class Camera extends React.Component {
+  constructor(props) {
+
+    super(props);
     // for old browsers
     if (navigator.mediaDevices === undefined) {
       navigator.mediaDevices = {};
     }
+
     if (navigator.mediaDevices.getUserMedia === undefined) {
       navigator.mediaDevices.getUserMedia = this.promisifiedOldGUM;
     }
 
-    //constraints of camera
-    this.constraints = constraints;
+    this.stream = null;
+    this._cameraElement = document.createElement('video');
+    const parametrs = {id:null, constraints: null};
+    this.setParametrs(parametrs);
+  }
+
+  componentDidMount(){
+    this.props.newVideoComponentState(this._cameraElement);
+  }
+
+  componentDidUpdate(prevProps, prevState){
+    if(this.props.isLoading){
+      this.toggleCamera();
+    }
+  }
+
+  setParametrs({id, constraints}) {
+    this._cameraElement.id = id ? id : 'camera-video';
+    this.constraints = constraints ?
+      constraints :
+    {audio: false, video: {width: 320, height: 240}, frameRate: {ideal: 10, max: 15}};
   }
 
   promisifiedOldGUM(constraints, successCallback, errorCallback) {
@@ -35,13 +59,6 @@ class Camera {
     });
   }
 
-  createToggleDispatcher() {
-    let that = this;
-    return function (dispatch) {
-      return that.toggleCamera(dispatch)
-    };
-  }
-
   toggleCamera(dispatch) {
     if (!this.stream) {
       return navigator.mediaDevices.getUserMedia(this.constraints)
@@ -52,14 +69,11 @@ class Camera {
             stream.onended = ()=> console.log('Stream ended');
 
             this.stream = stream;
-            //this.videoArea.src = window.URL.createObjectURL(stream);
-            //this.videoArea.onloadedmetadata = (e)=> {
-            //  this.videoArea.play();
-            //};
-
-            if (dispatch) {
-              dispatch(toggleVideoCameraState(stream));
-            }
+            this._cameraElement.src = window.URL.createObjectURL(stream);
+            this._cameraElement.onloadedmetadata = (event)=> {
+              this._cameraElement.play();
+            };
+            this.props.newVideoStreamState(stream);
           },
           err => {
             throw err;
@@ -70,10 +84,35 @@ class Camera {
         });
     } else {
       this.stream.getVideoTracks()[0].stop();
+      this._cameraElement.pause();
+      this._cameraElement.src = '';
       this.stream = null;
-      if (dispatch) dispatch(toggleVideoCameraState());
+      this.props.newVideoStreamState(this.stream);
+
     }
   }
+
+  render(){return null;}
 }
 
-export default Camera;
+
+const mapDispatchVideoCameraProps = (dispatch) => {
+  return {
+    newVideoComponentState: (element) =>{
+      dispatch(toggleCameraVideoComponentState(element))
+    },
+    newVideoStreamState:(stream) =>{
+      dispatch(toggleVideoCameraState(stream));
+    }
+  };
+};
+
+const mapStateVideoCameraProps = (state, ownProps) => {
+  return {
+    isLoading: state.videoCameraComponent
+      .get(Parameters.isLoading)
+  };
+};
+
+export default connect(mapStateVideoCameraProps, mapDispatchVideoCameraProps)(Camera);
+

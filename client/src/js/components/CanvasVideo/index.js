@@ -4,38 +4,50 @@ import {DOMElements, Stream} from  '../../constants/videoCamera';
 
 
 
+
 class VideoCanvasComponent extends React.Component {
   constructor(props) {
     super(props);
+    
     this.canvasWidth = 320;
     this.canvasHeight =  240;
     this.fps = 15;
-    this.canvasFPSTimerID = undefined;
+    this._canvasFPSTimerID = undefined;
     this.canvasID = 'canvas-video';
 
   };
 
   componentDidMount(){
-    this.canvasElement = document.getElementById(this.canvasID);
-    this.canvasElementContext = this.canvasElement.getContext("2d");
+    this._canvasElement = document.getElementById(this.canvasID);
+    this._canvasElementContext = this._canvasElement.getContext("2d");
+
+    this.cameraVideoDOMElement = this.props.cameraVideoDOMElement;
+
+    if(this.props.cameraVideoDOMElement && this.props.stream && this._canvasElementContext){
+      let canvasStream = this._canvasElement.captureStream(this.fps);
+      this.drawFrame(this.props.cameraVideoDOMElement);
+
+    }else {
+      this.clearCanvas(this._canvasElementContext);
+      clearTimeout(this._canvasFPSTimerID);
+    }
   };
 
   componentWillUnmount(){
-    this.clearCanvas(this.canvasElementContext);
-    clearTimeout(this.canvasFPSTimerID);
+    this.clearCanvas(this._canvasElementContext);
+    clearTimeout(this._canvasFPSTimerID);
   };
 
   componentDidUpdate(nextProps){
     this.cameraVideoDOMElement = this.props.cameraVideoDOMElement;
-
-    if(this.cameraVideoDOMElement && this.props.stream && this.canvasElementContext){
-        let canvasStream = this.canvasElement.captureStream(this.fps);
-  
-        this.drawFrame(this.props.cameraVideoDOMElement);
+    console.log(this.cameraVideoDOMElement);
+    if(this.props.cameraVideoDOMElement && this.props.stream && this._canvasElementContext){
+        let canvasStream = this._canvasElement.captureStream(this.fps);
+          this.drawFrame(this.props.cameraVideoDOMElement);
 
     }else {
-      this.clearCanvas(this.canvasElementContext);
-      clearTimeout(this.canvasFPSTimerID);
+      this.clearCanvas(this._canvasElementContext);
+      clearTimeout(this._canvasFPSTimerID);
     }
   };
 
@@ -48,12 +60,12 @@ class VideoCanvasComponent extends React.Component {
   };
 
   drawFrame (){
-    this.canvasFPSTimerID = setTimeout(this.animationCycle.bind(this), 1000 / this.fps);
+    this._canvasFPSTimerID = setTimeout(this.animationCycle.bind(this), 1000 / this.fps);
   };
 
   animationCycle(){
     requestAnimationFrame(this.drawFrame.bind(this));
-    this.canvasElementContext.drawImage(this.cameraVideoDOMElement, 0, 0, this.canvasWidth, this.canvasHeight);
+    this._canvasElementContext.drawImage(this.cameraVideoDOMElement, 0, 0, this.canvasWidth, this.canvasHeight);
   };
 
 

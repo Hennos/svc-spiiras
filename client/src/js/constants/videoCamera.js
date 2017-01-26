@@ -1,7 +1,8 @@
 export const Events = {
   toggleCameraState: 'TOGGLE_VIDEO_CAMERA_STATE',
   videoCameraLoading: 'VIDEO_CAMERA_LOADING',
-  toggleCameraVideoElementState: 'TOGGLE_VIDEO_CAMERA_ELEMENT_STATE'
+  toggleCameraVideoElementState: 'TOGGLE_VIDEO_CAMERA_ELEMENT_STATE',
+  toggleCameraCanvasElementState: 'TOGGLE_VIDEO_CANVAS_ELEMENT_STATE'
 };
 
 export const Stream = {
@@ -15,5 +16,6 @@ export const Parameters = {
 };
 
 export const DOMElements = {
-  videoElement: 'cameraDOMVideoElement'
+  videoElement: 'cameraDOMVideoElement',
+  canvasElement: 'canvasDOMVideoElement'
 };

@@ -1,4 +1,4 @@
-//creating 'requestAnimationFrame' variable for all browser for red
+//creating 'requestAnimationFrame' variable for all browser for control rendering cycle
 let polyfillRequestAnimationFrame = function () {
 
   let lastTime = 0;

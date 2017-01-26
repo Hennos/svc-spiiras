@@ -1,26 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Stream} from '../../constants/videoCamera';
-import {Parameters} from  '../../constants/videoCamera';
-import {loadVideoCamera, toggleVideoCameraState, toggleCameraVideoComponentState} from '../../actions/videoCamera';
-import Camera from '../../controls/Camera'
-import VideoCanvasComponent from '../CanvasVideo/index';
-
+import {Stream, Parameters, DOMElements} from  '../../constants/videoCamera';
+import {loadVideoCamera, toggleCameraVideoComponentState} from '../../actions/videoCamera';
 import ButtonOnOff from './ButtonOnOff'
 import LoadingArea from './LoadingArea'
 
-let cameraParameters = {
-  videoID: 'camera-video',
-  constraints: {
-    audio: false,
-    video: {
-      width: 320,
-      height: 240,
-      frameRate: {ideal: 10, max: 15}
-    }
-  }
-};
-let camera = new Camera(cameraParameters);
 
 class VideoCameraComponent extends React.Component {
   constructor(props) {
@@ -28,25 +12,29 @@ class VideoCameraComponent extends React.Component {
   }
 
   componentDidMount(){
-    this.props.newVideoComponentState(document.getElementById(cameraParameters.videoID));
+    if(this.props.videoElement.src){
+      this.props.videoElement.play();
+    }
+    this.refs['video_wrapper'].append(this.props.videoElement);
+    /*this.refs['video_wrapper'].append(this.props.canvasElement);*/
+
+  }
+
+  componentDidUpdate(){
+    this.refs['video_wrapper'].append(this.props.videoElement);
+    /*this.refs['video_wrapper'].append(this.props.canvasElement);*/
+
   }
 
   componentWillUnmount(){
-    this.props.newVideoComponentState(null);
+    this.refs['video_wrapper'].append('');
   }
 
   render() {
     const {isWorking, onButtonCameraClick, isLoading, stream} = this.props;
     return (
       <div className="video-camera-component_wrapper display_block">
-        <div className="video_wrapper">
-          <video
-            id="camera-video"
-            src={this.getMediaStream(stream)}
-            onLoadedMetadata={(e) => {
-              e.target.play()
-            }}
-          />
+        <div className="video_wrapper" ref ='video_wrapper'>
         </div>
 
         <div className="controls_wrapper">
@@ -56,13 +44,11 @@ class VideoCameraComponent extends React.Component {
             <ButtonOnOff isWorking={isWorking} onClick={() => (onButtonCameraClick())}/>
           }
         </div>
-        <VideoCanvasComponent/>
+
       </div>
 
     );
   }
-
-  getMediaStream = (stream) => (stream) ? window.URL.createObjectURL(stream) : '';
 }
 
 const mapDispatchVideoCameraProps = (dispatch) => {
@@ -72,7 +58,6 @@ const mapDispatchVideoCameraProps = (dispatch) => {
     },
     onButtonCameraClick: ()=> {
       dispatch(loadVideoCamera());
-      dispatch(camera.createToggleDispatcher());
     }
   };
 };
@@ -84,7 +69,11 @@ const mapStateVideoCameraProps = (state, ownProps) => {
     isWorking: state.videoCameraComponent
       .get(Parameters.isWorking),
     isLoading: state.videoCameraComponent
-      .get(Parameters.isLoading)
+      .get(Parameters.isLoading),
+    videoElement: state.videoCameraComponent
+      .get(DOMElements.videoElement),
+    canvasElement: state.videoCameraComponent
+      .get(DOMElements.canvasElement)
   };
 };
 

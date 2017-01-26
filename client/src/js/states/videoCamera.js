@@ -6,5 +6,6 @@ export const state = Immutable.Map([
   [Parameters.isWorking, false],
   [Parameters.visible, true],
   [Parameters.isLoading, false],
-  [DOMElements.videoElement, null]
+  [DOMElements.videoElement, null],
+  [DOMElements.canvasElement, null]
 ]);

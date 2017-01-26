@@ -10,6 +10,8 @@ const videoCameraComponent = (state = initialState, action) => {
       return handleTogglingCameraState(state, action);
     case Events.toggleCameraVideoElementState:
           return handleTogglingCameraVideoElementState(state, action);
+    case Events.toggleCameraCanvasElementState:
+          return handleTogglingCameraCanvasElementState(state, action);
     default:
       return state;
   }
@@ -21,6 +23,10 @@ function handleVideoCameraLoading(state, action) {
 
 function handleTogglingCameraVideoElementState(state, action) {
   return state.set(DOMElements.videoElement, action.element);
+}
+
+function handleTogglingCameraCanvasElementState(state, action) {
+  return state.set(DOMElements.canvasElement, action.element);
 }
 
 function handleTogglingCameraState(state, action) {

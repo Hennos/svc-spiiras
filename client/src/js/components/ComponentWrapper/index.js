@@ -12,6 +12,10 @@ import ChatComponent from '../Chat/index';
 import UserPreferences from '../UserPreferences/index';
 import AdminAccount from '../adminAccount/index';
 
+//invisible control components
+import Camera from '../../controls/Camera'
+import Canvas from '../../controls/Canvas'
+
 
 const visibleComponentMap = new Map([
   [togglesComponent.chatArea, <ChatComponent/>],
@@ -19,7 +23,6 @@ const visibleComponentMap = new Map([
   [togglesComponent.userPreferences, <UserPreferences/>],
   [togglesComponent.videoCamera, <VideoCameraComponent/>],
   [togglesComponent.administrationAccount, <AdminAccount/>]
-  
 ]);
 
 class ComponentWrapper extends React.Component {
@@ -31,6 +34,8 @@ class ComponentWrapper extends React.Component {
     const {active} = this.props;
     return (
       <div className="wrapper_components">
+        <Camera/>
+        <Canvas/>
         {visibleComponentMap.get(active)}
       </div>
     )
