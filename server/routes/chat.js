@@ -1,10 +1,10 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET chat page. */
+/* GET Chat page. */
 router.get('/', function (req, res, next) {
   if (req.isAuthenticated()) {
-    res.render('chat', {title: 'chat'});
+    res.render('Chat', {title: 'Chat'});
   }
   else {
     res.render('login', {title: 'login'});

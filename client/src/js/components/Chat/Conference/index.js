@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {chat} from '../../../constants/chat'
+import {Chat} from '../../../constants/chat'
 import {emitCloseConference} from '../../../actions/chat'
 
 import Side from './Side'
@@ -49,7 +49,7 @@ const mapDispatchConferenceProps = (dispatch) => {
 const mapStateConferenceProps = (state, ownProps) => {
   return {
     sides: state.chat
-      .get(chat.sides)
+      .get(Chat.sides)
       .toArray()
   };
 };

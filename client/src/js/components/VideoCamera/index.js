@@ -12,7 +12,7 @@ class VideoCameraComponent extends React.Component {
   }
 
   componentDidMount(){
-    if(this.props.videoElement.src){
+    if(this.props.videoElement.src && this.props.stream){
       this.props.videoElement.play();
     }
     this.refs['video_wrapper'].append(this.props.videoElement);

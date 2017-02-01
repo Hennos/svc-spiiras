@@ -1,14 +1,6 @@
 import {Events as EventsChat} from '../constants/chat'
-import React from 'react';
-import {connect} from 'react-redux';
 
-import {openedConference} from '../actions/chat'
-
-import {Parameters as CameraParametrs, DOMElements, Stream as CameraStream} from  '../constants/videoCamera';
-import {RootIOConnection} from  '../constants/rootIO';
-import {Chat} from  '../constants/chat';
-
-class RTCInterfaces  {
+class RTCInterfaces {
   constructor() {
     this.getUserMedia =
       navigator.mediaDevices.getUserMedia ||
@@ -28,39 +20,19 @@ class RTCInterfaces  {
   }
 }
 
-
-
-
-
-class P2PController extends React.Component{
-  constructor(props) {
-    super(props);
-    this.connection = props.ioConnection;
+class P2PController {
+  constructor(connection) {
+    this.connection = connection;
 
     this.isInitiator = false;
 
     this.peers = {};
-    //this.localStream = null;
+    this.localStream = null;
 
     this.RTC = new RTCInterfaces();
 
-    //this.connection.on(EventsChat.getNewPeers, this.handleNewPeers);
-
-  }
-
-  componentDidMount(prevProps, prevState){
-    if(this.props.ioConnection){
-      this.connection = this.props.ioConnection;
-      this.connection.on(EventsChat.getNewPeers, this.handleNewPeers);
-      this.connection.on(EventsChat.webRTCMessage, this.handleWebRTCMessage);
-    }
-  }
-
-  componentDidUpdate(prevProps, prevState){
-    if(!this.props.ioIsConnected
-      || ((prevProps.isConferenceOpen != this.props.isConferenceOpen) && !this.props.isConferenceOpen)){
-      this.closeClientConnections();
-    }
+    this.connection.on(EventsChat.getNewPeers, this.handleNewPeers);
+    this.connection.on(EventsChat.webRTCMessage, this.handleWebRTCMessage);
   }
 
   /*
@@ -128,8 +100,8 @@ class P2PController extends React.Component{
       this.peers[side].connection
         .onaddstream = this._handleStream.bind(this, side);
 
-      if (this.props.ioIsConnected && this.props.localStream && this.props.localStream.getVideoTracks().length > 0)
-        this.peers[side].connection.addStream(this.props.localStream);
+      if (this.localStream.getVideoTracks().length > 0)
+        this.peers[side].connection.addStream(this.localStream);
 
       console.log('Created local RTCPeerConnection for ' + side);
     } catch (err) {
@@ -137,12 +109,11 @@ class P2PController extends React.Component{
     }
   };
 
-/*  setLocalStream(stream) {
+  setLocalStream(stream) {
     this.localStream = (stream) ? stream : null;
-  }*/
+  }
 
   closeClientConnections = () => {
-    console.log('Close videoconferencing');
     for (let side in this.peers) {
       let curSideDoc = this.peers[side];
       if (curSideDoc.remoteStream) {
@@ -259,12 +230,7 @@ class P2PController extends React.Component{
     this.peers[side].remoteStream = evt.stream;
     let videoArea = document.getElementById(side.toLowerCase() + '-signal');
     videoArea.srcObject = this.peers[side].remoteStream;
-    //let that = this;
     videoArea.onloadedmetadata = () => {
-      if(!this.props.isConferenceOpen){
-        console.log("Conference start");
-        this.props.conferenceOpened();
-      }
       videoArea.play();
     };
   };
@@ -273,32 +239,6 @@ class P2PController extends React.Component{
     console.log(error.name + ": " + error.message);
     throw error;
   };
-
-  render(){return null;}
 }
 
-
-const mapDispatchP2PControllerProps = (dispatch) => {
-  return {
-    conferenceOpened: () =>{
-      dispatch(openedConference())
-    }
-  };
-};
-
-const mapStateP2PControllerProps = (state, ownProps) => {
-  return {
-    cameraIsLoading: state.videoCameraComponent
-      .get(CameraParametrs.isLoading),
-    localStream: state.videoCameraComponent
-      .get(CameraStream.localStream),
-    ioConnection:state.rootIO
-      .get(RootIOConnection.connection),
-    ioIsConnected:state.rootIO
-      .get(RootIOConnection.isConnected),
-    isConferenceOpen:state.chat
-      .get(Chat.isConferenceOpen)
-  };
-};
-
-export default connect(mapStateP2PControllerProps, mapDispatchP2PControllerProps)(P2PController);
+export default P2PController;

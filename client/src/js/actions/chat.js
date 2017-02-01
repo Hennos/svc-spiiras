@@ -20,6 +20,12 @@ export const closeConference = () => {
   }
 };
 
+export const openedConference = () => {
+  return {
+    type: Events.openedConference
+  }
+};
+
 export const getUserStreamURL = (url) => {
   return {
     type: Events.getUserStreamURL,

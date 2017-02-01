@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {user as userFields} from '../../../constants/user'
-import {chat} from '../../../constants/chat'
+import {Chat} from '../../../constants/chat'
 import {Stream} from '../../../constants/videoCamera'
 
 import FriendArea from './FriendArea'
@@ -40,7 +40,7 @@ const mapStateFriendListProps = (state, ownProps) => {
       .get(userFields.friends)
       .toArray(),
     sides: state.chat
-      .get(chat.sides)
+      .get(Chat.sides)
       .toJS(),
     stream: state.videoCameraComponent
       .get(Stream.localStream)

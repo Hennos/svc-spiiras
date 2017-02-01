@@ -1,5 +1,5 @@
 import React from 'react'
-import {chat} from '../../../constants/chat';
+import {Chat} from '../../../constants/chat';
 
 import Friend from './Friend/index'
 

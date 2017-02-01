@@ -5,7 +5,9 @@ import {Events as EventsPeople} from '../constants/people'
 import {Events as EventsChat} from '../constants/chat'
 import {Events as EventsVideoCamera} from '../constants/videoCamera'
 import {Events as EventsAdmin} from '../constants/adminAccount'
-import {Stream} from '../constants/videoCamera'
+import {Events as EventsRootIO} from '../constants/rootIO'
+
+
 
 import {
   setUserStatus,
@@ -24,6 +26,11 @@ import {
   addSidesToConference, removeSideFromConference,
   closeConference
 } from '../actions/chat'
+import {
+  newConnectionState,
+  newConnectionObject
+} from '../actions/rootIO'
+
 
 import PtPController from './P2PController'
 
@@ -50,7 +57,9 @@ class Root {
     this.connection.on(EventsChat.addSides, this.pushSidesToConference);
     this.connection.on(EventsChat.removeSide, this.eraseSideFromConference);
 
-    this.peerConnector = new PtPController(this.connection);
+    this.store.dispatch(newConnectionObject(this.connection));
+
+    //this.peerConnector = new PtPController(this.connection);
   };
 
   changeEmitterMiddleware = ({getStore, dispatch}) => next => action => {
@@ -80,6 +89,7 @@ class Root {
       case EventsChat.emitCloseConference:
         this.emitCloseConferenceEvent(action.type);
         break;
+
     }
     return next(action);
   };
@@ -87,7 +97,7 @@ class Root {
   getterMiddleware = ({getStore, dispatch}) => next => action => {
     switch (action.type) {
       case EventsVideoCamera.toggleCameraState:
-        this.peerConnector.setLocalStream(action.stream);
+        //this.peerConnector.setLocalStream(action.stream);
         break
     }
     return next(action);
@@ -95,12 +105,14 @@ class Root {
 
   afterConnection = () => {
     console.log('connected');
+    this.store.dispatch(newConnectionState(true));
     this.getUserData();
   };
 
   afterDisconnection = () => {
     this.store.dispatch(closeConference());
-    this.peerConnector.closeClientConnections();
+    this.store.dispatch(newConnectionState(false));
+    //this.peerConnector.closeClientConnections();
     console.log('disconnect')
   };
 
@@ -188,7 +200,7 @@ class Root {
   };
 
   eraseSideFromConference = (sideName) => {
-    this.peerConnector.closeClientConnections();
+    //this.peerConnector.closeClientConnections();
     this.store.dispatch(removeSideFromConference(sideName));
   };
 
@@ -223,7 +235,7 @@ class Root {
   };
 
   emitCloseConferenceEvent = (type) => {
-    this.peerConnector.closeClientConnections();
+    //this.peerConnector.closeClientConnections();
     this.store.dispatch(closeConference());
     this.connection.emit(type);
   };

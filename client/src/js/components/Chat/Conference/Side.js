@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {chat} from '../../../constants/chat'
+import {Chat} from '../../../constants/chat'
 
 class Side extends React.Component {
   constructor(props) {
@@ -33,7 +33,7 @@ class Side extends React.Component {
 const mapStateSideProps = (state, ownProps) => {
   return {
     url: state.chat
-      .get(chat.url)
+      .get(Chat.url)
   };
 };
 

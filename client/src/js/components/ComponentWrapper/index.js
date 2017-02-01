@@ -15,6 +15,7 @@ import AdminAccount from '../adminAccount/index';
 //invisible control components
 import Camera from '../../controls/Camera'
 import Canvas from '../../controls/Canvas'
+import P2PController from '../../controls/P2PController'
 
 
 const visibleComponentMap = new Map([
@@ -33,9 +34,10 @@ class ComponentWrapper extends React.Component {
   render() {
     const {active} = this.props;
     return (
-      <div className="wrapper_components">
+      <div className="wrapper_components">  
         <Camera/>
         <Canvas/>
+        <P2PController/>
         {visibleComponentMap.get(active)}
       </div>
     )

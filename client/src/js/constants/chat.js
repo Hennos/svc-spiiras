@@ -2,6 +2,7 @@ export const Events = {
   addSides: 'ADD:SIDES:TO:CONFERENCE',
   removeSide: 'REMOVE:SIDE:FROM:CONFERENCE',
   closeConference: 'CLOSE:CONFERENCE',
+  openedConference: 'OPENED:CONFERENCE',
   getUserStreamURL: 'USER:STREAM:URL',
   webRTCMessage: 'WEB:RTC:RESPONSE:MESSAGE',
   emitWebRTCMessage: 'WEB:RTC:MESSAGE',
@@ -10,7 +11,8 @@ export const Events = {
   emitCloseConference: 'EMIT:CLOSE:CONFERENCE'
 };
 
-export const chat = {
+export const Chat = {
   sides: 'sides',
-  url: 'url'
+  url: 'url',
+  isConferenceOpen: 'conference'
 };

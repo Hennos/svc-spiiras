@@ -59,7 +59,7 @@ class Camera extends React.Component {
     });
   }
 
-  toggleCamera(dispatch) {
+  toggleCamera() {
     if (!this.stream) {
       return navigator.mediaDevices.getUserMedia(this.constraints)
         .then(

@@ -1,5 +1,5 @@
 import Immutable from 'immutable'
-import {Events, chat} from '../constants/chat'
+import {Events, Chat} from '../constants/chat'
 import {state as initialState} from '../states/chat'
 
 const chatReducer = (state = initialState, action) => {
@@ -12,6 +12,8 @@ const chatReducer = (state = initialState, action) => {
       return handleUserStreamURL(state, action);
     case Events.closeConference:
       return handleCloseConference(state, action);
+    case Events.openedConference:
+      return handleOpenedConference(state, action);
     default:
       return state;
   }
@@ -22,32 +24,38 @@ function handleAddingSides(state, action) {
     action.sides.map(side => [side.username, side])
   );
   const updatedSides = state
-    .get(chat.sides)
+    .get(Chat.sides)
     .merge(addingSides);
   return state
-    .set(chat.sides, updatedSides);
+    .set(Chat.sides, updatedSides);
 }
 
 function handleUserStreamURL(state, action) {
   return state
-    .set(chat.url, action.url);
+    .set(Chat.url, action.url);
 }
 
 function handleRemovingSide(state, action) {
   const side = action.sideName;
   const updatedSides = state
-    .get(chat.sides)
+    .get(Chat.sides)
     .delete(side);
   return state
-    .set(chat.sides, updatedSides);
+    .set(Chat.sides, updatedSides);
+}
+
+function handleOpenedConference(state, action) {
+  return state.set(Chat.isConferenceOpen, true);
 }
 
 function handleCloseConference(state, action) {
   const updatedSides = state
-    .get(chat.sides)
+    .get(Chat.sides)
     .clear();
+
   return state
-    .set(chat.sides, updatedSides)
+    .set(Chat.sides, updatedSides)
+    .set(Chat.isConferenceOpen, false);
 }
 
 export default chatReducer;

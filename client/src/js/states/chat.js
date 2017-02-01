@@ -1,7 +1,8 @@
 import Immutable from 'immutable';
-import {chat} from '../constants/chat'
+import {Chat} from '../constants/chat'
 
 export const state = Immutable.Map([
-  [chat.sides, Immutable.Map()],
-  [chat.url, null]
+  [Chat.sides, Immutable.Map()],
+  [Chat.url, null],
+  [Chat.isConferenceOpen, false]
 ]);
