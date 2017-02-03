@@ -43,8 +43,10 @@ class ShowingCtrlAccArea extends React.Component {
 
 const mapDispatchShowingAreaProps = (dispatch) => {
   return {
-    deleteCtrlAccount: (userName) => dispatch(emitRemoveCtrlAccount(userName)),
-    updateCtrlAccount: (updating) => dispatch(emitUpdateCtrlAccount(updating))
+    deleteCtrlAccount: (userName) =>
+      dispatch(emitRemoveCtrlAccount(userName)),
+    updateCtrlAccount: (updating) =>
+      dispatch(emitUpdateCtrlAccount(updating))
   };
 };
 

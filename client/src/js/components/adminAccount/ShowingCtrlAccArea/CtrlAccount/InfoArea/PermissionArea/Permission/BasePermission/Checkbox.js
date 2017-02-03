@@ -5,7 +5,7 @@ export const Checkbox = ({name, value, onChange}) => (
     <input
       type="checkbox" value={name}
       checked={value}
-      onChange={(event) => onChange(name)}
+      onChange={(event) => onChange(name, event.target.checked)}
     />
   </div>
 );
