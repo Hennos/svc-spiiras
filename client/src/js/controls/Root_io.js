@@ -74,6 +74,9 @@ class Root {
       case EventsAdmin.emitRemoveCtrlAccount:
         this.emitRemoveAccount(action.type, action.removing);
         break;
+      case EventsAdmin.emitUpdateCtrlAccount:
+        this.emitUpdateAccount(action.type, action.updating);
+        break;
       case EventsChat.emitAddedSide:
         this.emitAddedSideEvent(action.type, action.side);
         break;
@@ -215,6 +218,11 @@ class Root {
 
   emitRemoveAccount = (type, nameAcc) => {
     const message = JSON.stringify(nameAcc);
+    this.connection.emit(type, message);
+  };
+
+  emitUpdateAccount = (type, updating) => {
+    const message = JSON.stringify(updating);
     this.connection.emit(type, message);
   };
 
