@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const NameArea = ({name}) => (
+export const HeaderArea = ({name}) => (
   <div className="username_place">
     <p>{name}</p>
   </div>

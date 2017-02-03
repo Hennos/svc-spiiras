@@ -2,10 +2,13 @@ export const Events = {
   getAdminStatus: "GET:ADMIN:STATUS",
 
   emitCreateCtrlAccount: "EMIT:ADMIN:ACCOUNT:CREATE:VALUE",
-  emitRemoveCtrlAccount: "EMIT:REMOVE:CONTROL:ACCOUNT",
-
   getCreateCtrlAcc: "GET:CREATE:CONTROL:ACCOUNT",
-  getRemoveCtrlAcc: "GET:REMOVE:CONTROL:ACCOUNT"
+
+  emitRemoveCtrlAccount: "EMIT:REMOVE:CONTROL:ACCOUNT",
+  getRemoveCtrlAcc: "GET:REMOVE:CONTROL:ACCOUNT",
+
+  emitUpdateCtrlAccount: "EMIT:UPDATE:CTRL:ACCOUNT",
+  getUpdatedCtrlAccount: "GET:UPDATED:CTRL:ACCOUNT"
 };
 
 export const adminAccount = {

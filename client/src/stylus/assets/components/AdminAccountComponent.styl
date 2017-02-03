@@ -1,3 +1,7 @@
+.bubbled
+  border-bottom 1px solid main_light_dark_grey_color
+  box-shadow 0 2px 2px main_light_dark_grey_color
+
 .admin-acc-component_wrapper
   opacity 0.8
 
@@ -17,7 +21,8 @@
 
       background main_light_grey_color
 
-      box-shadow 1px 1px 1px main_middle_dark_grey_color
+      border 1px solid main_light_dark_grey_color
+      box-shadow 0 1px 2px main_light_dark_grey_color
 
       .header_wrapper
         padding 0.25em
@@ -131,21 +136,24 @@
     .admined_user
       margin 0.5em
 
-      .control-accounts-wrapper
-        display flex
-        flex-direction column
+      display flex
+      flex-direction column
 
-        .control-account
-          width 280px
+      .control-account-area
+        width 280px
 
-          padding 0.5em
-          margin-bottom 0.5em
+        margin-bottom 0.5em
 
+        background-color main_light_grey_color
+
+        border 1px solid main_light_dark_grey_color
+        box-shadow 0 1px 2px main_light_dark_grey_color
+
+        .control-area
           display flex
           align-items center
 
-          background-color main_light_grey_color
-          box-shadow 1px 1px 1px main_middle_dark_grey_color
+          padding 0.3em
 
           .img-place
             flex-grow 1
@@ -174,6 +182,9 @@
             flex-grow 2
 
             padding 0.3em
+
+            p
+              font-size 0.8em
 
           .buttons-area
             flex-grow 1
@@ -208,3 +219,51 @@
                   cursor pointer
                   box-shadow inset 0 0 10px 0 main_middle_dark_grey_color
 
+        .information-area
+          margin-top 0.3em
+          padding 0.3em
+
+          .header-area
+            padding 0.2em
+
+            box-shadow inset 0 -1px 0 0 main_middle_dark_grey_color
+
+          .submit-button
+            padding-top 0.2em
+            padding-bottom 0.5em
+
+            text-align center
+
+            input[type="button"]
+              outline: none
+              border: 1px solid main_dark_grey_color
+              background: #ffffff
+              font-size: 0.8em
+
+              &:hover, &:active
+                cursor pointer
+
+          .info-elements-wrapper
+            padding 0.4em 0.8em
+
+            font-size 0.8em
+
+            .input_block input[type="text"]
+                padding 2px 5px
+
+            .elem-area
+              display flex
+
+              padding-top 0.2em
+              padding-bottom 0.2em
+
+              .name-block
+                padding-right 1em
+
+            .permission-block
+              input[type="checkbox"]
+                &:hover, &:active
+                  cursor pointer
+
+          .fat-elements .name-block
+            flex-grow 1

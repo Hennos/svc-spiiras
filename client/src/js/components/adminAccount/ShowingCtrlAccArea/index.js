@@ -3,10 +3,12 @@ import {connect} from 'react-redux';
 
 import {adminAccount as adminField} from '../../../constants/adminAccount';
 
-import {emitRemoveCtrlAccount} from '../../../actions/adminAccount';
+import {
+  emitRemoveCtrlAccount,
+  emitUpdateCtrlAccount
+} from '../../../actions/adminAccount';
 
-import {HeaderArea} from './HeaderArea';
-import {CtrlAccountsArea} from './CtrlAccountsArea/index';
+import CtrlAccount from './CtrlAccount/index';
 
 class ShowingCtrlAccArea extends React.Component {
   constructor(props) {
@@ -17,20 +19,32 @@ class ShowingCtrlAccArea extends React.Component {
     const {admined} = this.props;
     return (
       <div className="admined_user">
-        <CtrlAccountsArea accounts={admined} onDeleteAccount={this.deleteCtrlAccount}/>
+        {admined.length > 0 ?
+          admined.map(entry =>
+            <CtrlAccount
+              key={entry.username}
+              onDeleteAcc={this.deleteAccount}
+              onUpdateAcc={this.updateAccount}
+              {...entry}
+            />)
+          :
+          <p>Нет созданных аккаунтов</p>
+        }
       </div>
     )
   }
 
-  deleteCtrlAccount = (userName) =>
-    this.props.deleteCtrlAccount(userName);
+  deleteAccount = (name) =>
+    this.props.deleteAccount(name);
+
+  updateAccount = (name) => (value) =>
+    this.props.updateCtrlAccount({name, value});
 }
 
 const mapDispatchShowingAreaProps = (dispatch) => {
   return {
-    deleteCtrlAccount: (userName)=> {
-      dispatch(emitRemoveCtrlAccount(userName));
-    }
+    deleteCtrlAccount: (userName) => dispatch(emitRemoveCtrlAccount(userName)),
+    updateCtrlAccount: (updating) => dispatch(emitUpdateCtrlAccount(updating))
   };
 };
 

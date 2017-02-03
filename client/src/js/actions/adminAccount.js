@@ -32,3 +32,18 @@ export const deleteRemovedCtrlAcc = (removed) => {
     removed
   }
 };
+
+export const emitUpdateCtrlAccount = (updating) => {
+  return {
+    type: Events.emitUpdateCtrlAccount,
+    updating
+  }
+};
+
+export const getUpdatedCtrlAccount = (updated) => {
+  return {
+    type: Events.getUpdatedCtrlAccount,
+    name: updated.name,
+    updated
+  }
+};
