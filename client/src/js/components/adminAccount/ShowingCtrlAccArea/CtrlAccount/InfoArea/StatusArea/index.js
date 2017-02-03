@@ -44,7 +44,7 @@ class StatusArea extends React.Component {
 
   submitUpdating = () => {
     const value = _.get(this.state.status, 'main');
-    //this.props.onSubmitUpdate(value);
+    this.props.onSubmitUpdate(value);
   };
 }
 
