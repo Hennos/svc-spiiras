@@ -21,13 +21,18 @@ class StatePassPermission extends React.Component {
           title={title} name={name}
           onChange={this.onChangePermission}
         />
-        {permission && <Input name={name} onChange={onChange}/>}
+        {permission && <
+          Input name={name} onChange={onChange}
+        />}
       </div>
     )
   }
 
   onChangePermission = (name, value) => {
     this.setState({permission: value});
+    if (!value) {
+      this.props.onChange(name, value);
+    }
   }
 }
 

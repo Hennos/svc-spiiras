@@ -20,7 +20,6 @@ class CreationCtrlAccArea extends React.Component {
   }
 
   render() {
-
     return (
       <div className="account-creating_wrapper">
         <HeaderArea title="Создание нового аккаунта:"/>
