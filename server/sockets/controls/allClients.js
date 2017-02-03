@@ -39,7 +39,7 @@ function Root(io) {
         .findOne({username: socketUser.username})
         .populate('friends', 'username')
         .populate('requests', 'username')
-        .populate('admined', 'username')
+        .populate('admined')
         .exec()
         .then(function emitMessage(populated) {
           var user = Object.assign(
@@ -50,12 +50,24 @@ function Root(io) {
               'permission'
             ])
           );
-          const groups = ['friends', 'requests', 'admined'];
+          const groups = ['friends', 'requests'];
           groups.forEach(function (group) {
-            user[group] = populated[group].map(function (o) {
-              return [o.username, _.pick(o, ['username'])];
-            });
+            user[group] = _.reduce(populated[group], function (previous, user) {
+              var current = Object.assign({}, previous);
+              current[user.username] = user;
+              return current;
+            }, {});
           });
+          user.admined = _.reduce(populated.admined, function (previous, user) {
+            var current = Object.assign({}, previous);
+            current[user.username] = _.pick(user, [
+              'username',
+              'email',
+              'preferences',
+              'permission'
+            ]);
+            return current;
+          }, {});
           const message = JSON.stringify(user);
           socket.emit(events.userData.newUserData, message);
         })

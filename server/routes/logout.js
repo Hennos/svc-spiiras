@@ -3,7 +3,7 @@ var router = express.Router();
 var passport = require("passport");
 var _ = require('lodash');
 
-const permission = require('../constants/fields').user.permission;
+const permission = require('../constants/fields').user.permission.fields;
 
 /* GET logout page. */
 router.get('/', function (req, res, next) {

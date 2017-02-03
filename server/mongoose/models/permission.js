@@ -1,8 +1,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var crypto = require('crypto');
 
-const fields = require('../../constants/fields').user.permission;
+const fields = require('../../constants/fields').user.permission.fields;
 
 var Password = require('./password');
 
