@@ -9,7 +9,8 @@ var events = {
     newUserData: "NEW:USER:DATA",
 
     getChangeUserPreferences: "EMIT:USER:PROPS:CHANGE:VALUES",
-    sendSetUserPreferences: "GET:USER:PREFERENCE:VALUES"
+    sendSetUserPreferences: "GET:USER:PREFERENCE:VALUES",
+    sendSetUserPermission: "GET:USER:PERMISSION:VALUES"
   },
 
   adminAccount: {
@@ -18,9 +19,9 @@ var events = {
 
     getRemoveCtrlAccount: "EMIT:REMOVE:CONTROL:ACCOUNT",
     sendRemoveCtrlAcc: "GET:REMOVE:CONTROL:ACCOUNT",
+    sendUpdateCtrlAcc: "GET:UPDATE:CONTROL:ACCOUNT",
 
-    getChangeCtrlPermissions: "EMIT:NEW:CTRL:PERMISSIONS",
-    sendNewCtrlPermissions: "GET:NEW:USER:PERMISSIONS"
+    getUpdateCtrlPermissions: "EMIT:UPDATE:CTRL:ACCOUNT"
   },
 
   requests: {

@@ -293,25 +293,27 @@ function Root(io) {
         .catch(handleError);
     });
 
-    socket.on(events.adminAccount.getChangeCtrlPermissions, function (pack) {
+    socket.on(events.adminAccount.getUpdateCtrlPermissions, function (pack) {
       //Необходимо добавить проверку разрешения на изменение аккаунта
       const data = JSON.parse(pack);
-      if (_.has(data, ['name', 'value'])) {
+      if (_.has(data, 'name') && _.has(data, 'value')) {
         const ctrlAccName = data.name;
-        const newPermissions = data.value;
+        const newDataAccount = data.value;
         userModel.findOne({username: ctrlAccName}).exec()
           .then(function setPermissions(caughtCtrlAcc) {
-            caughtCtrlAcc.permission = newPermissions;
-            caughtCtrlAcc.markModified('permission');
+            _.entries(newDataAccount).forEach(function (fieldData) {
+              caughtCtrlAcc[fieldData[0]] = fieldData[1];
+              caughtCtrlAcc.markModified(fieldData[0]);
+            });
             return caughtCtrlAcc.save();
           })
-          .then(function emitMessage() {
-            if (clients[ctrlAccName]) {
-              clients[ctrlAccName].emit(
-                events.adminAccount.sendNewCtrlPermissions,
-                newPermissions
-              );
+          .then(function emitMessage(savedCtrlAcc) {
+            const updatedFields = _.pick(savedCtrlAcc, Object.keys(savedCtrlAcc));
+            if (clients[savedCtrlAcc.username]) {
+              clients[savedCtrlAcc.username]
+                .emit(events.userData.sendSetUserPermission, updatedFields);
             }
+            socket.emit(events.adminAccount.sendUpdateCtrlAcc, updatedFields);
           })
           .catch(handleError);
       }
