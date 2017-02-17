@@ -14,6 +14,13 @@ export const removeSideFromConference = (sideName) => {
   }
 };
 
+export const removedSideConference = (sideName) => {
+  return {
+    type: Events.removedSide,
+    sideName
+  }
+};
+
 export const closeConference = () => {
   return {
     type: Events.closeConference
@@ -32,6 +39,23 @@ export const getUserStreamURL = (url) => {
     url: url
   }
 };
+
+export const addStreamToSide = (username, stream) => {
+  return {
+    type: Events.addingStreamToSide,
+    username,
+    stream
+  }
+};
+
+export const addVideoElementToSide = (username, video) => {
+  return {
+    type: Events.addingVideoElementToSide,
+    username,
+    video
+  }
+};
+
 
 export const emitAddSideToChat = (side) => {
   return {

@@ -2,7 +2,9 @@ import {Events as EventsChat} from '../constants/chat'
 import React from 'react';
 import {connect} from 'react-redux';
 
-import {openedConference} from '../actions/chat'
+import {_} from  'lodash';
+
+import {openedConference, addStreamToSide, addVideoElementToSide, removedSideConference, closeConference} from '../actions/chat'
 
 import {Parameters as CameraParametrs, DOMElements, Stream as CameraStream} from  '../constants/videoCamera';
 import {RootIOConnection} from  '../constants/rootIO';
@@ -29,9 +31,6 @@ class RTCInterfaces  {
 }
 
 
-
-
-
 class P2PController extends React.Component{
   constructor(props) {
     super(props);
@@ -40,11 +39,8 @@ class P2PController extends React.Component{
     this.isInitiator = false;
 
     this.peers = {};
-    //this.localStream = null;
 
     this.RTC = new RTCInterfaces();
-
-    //this.connection.on(EventsChat.getNewPeers, this.handleNewPeers);
 
   }
 
@@ -57,9 +53,13 @@ class P2PController extends React.Component{
   }
 
   componentDidUpdate(prevProps, prevState){
+    
+    if(this.props.removingSide)
+      this._closeClientConnection(this.props.removingSide);
+
     if(!this.props.ioIsConnected
       || ((prevProps.isConferenceOpen != this.props.isConferenceOpen) && !this.props.isConferenceOpen)){
-      this.closeClientConnections();
+      this._closeClientsConnections();
     }
   }
 
@@ -127,8 +127,15 @@ class P2PController extends React.Component{
         .onnegotiationneeded = this._handleNegotiationNeeded.bind(this, side);
       this.peers[side].connection
         .onaddstream = this._handleStream.bind(this, side);
+      this.peers[side].connection.
+        ondatachannel= this._dataChannelOpened.bind(this, side);
 
-      if (this.props.ioIsConnected && this.props.localStream && this.props.localStream.getVideoTracks().length > 0)
+      /*this.peers[side].
+       dataChanel = this.peers[side].connection.createDataChannel(side);*/
+
+      if (this.props.ioIsConnected
+        && this.props.localStream
+        && this.props.localStream.getVideoTracks().length > 0)
         this.peers[side].connection.addStream(this.props.localStream);
 
       console.log('Created local RTCPeerConnection for ' + side);
@@ -137,12 +144,30 @@ class P2PController extends React.Component{
     }
   };
 
-/*  setLocalStream(stream) {
-    this.localStream = (stream) ? stream : null;
-  }*/
 
-  closeClientConnections = () => {
+  _dataChannelOpened = (side) => {
+    this.peers[side].dataChanel.onopen = () => {
+      console.log(side + " datachannel open");
+
+    };
+    this.peers[side].dataChanel.onclose = this._closeClientConnection.bind(this, side);
+  };
+
+
+
+  _closeClientConnection = (side) =>{
+      console.log(side + " connection closed");
+      if (this.peers[side].connection)
+        this.peers[side].connection.close();
+      delete  this.peers[side];
+
+      this.props.eraseSideFromConference(side);
+  };
+
+
+  _closeClientsConnections = () => {
     console.log('Close videoconferencing');
+
     for (let side in this.peers) {
       let curSideDoc = this.peers[side];
       if (curSideDoc.remoteStream) {
@@ -232,6 +257,7 @@ class P2PController extends React.Component{
       this._emitSignalingMessage(message);
     } else {
       console.log('End of candidates.');
+
     }
   };
 
@@ -257,12 +283,23 @@ class P2PController extends React.Component{
   _handleStream = (side, evt) => {
     console.log('Remote stream added:', evt);
     this.peers[side].remoteStream = evt.stream;
-    let videoArea = document.getElementById(side.toLowerCase() + '-signal');
-    videoArea.srcObject = this.peers[side].remoteStream;
+    let videoArea;
+    if(this.peers[side].videoElement){
+      videoArea = this.peers[side].videoElement;
+    } else {
+      videoArea = document.createElement('video');
+      videoArea.id = side.toLowerCase() + '-signal';
+      videoArea.srcObject = this.peers[side].remoteStream;
+      videoArea.autoPlay = true;
+      this.peers[side].videoElement = videoArea;
+      this.props.newVideoElementFromSide(side,  videoArea);
+
+    }
+
     //let that = this;
     videoArea.onloadedmetadata = () => {
+      this.props.newStreamFromSide(side, evt.stream);
       if(!this.props.isConferenceOpen){
-        console.log("Conference start");
         this.props.conferenceOpened();
       }
       videoArea.play();
@@ -280,9 +317,19 @@ class P2PController extends React.Component{
 
 const mapDispatchP2PControllerProps = (dispatch) => {
   return {
+    newVideoElementFromSide: (username, video) =>{
+      dispatch(addVideoElementToSide(username, video));
+    },
+    newStreamFromSide: (username, stream) =>{
+      dispatch(addStreamToSide(username, stream));
+    },
     conferenceOpened: () =>{
       dispatch(openedConference())
+    },
+    eraseSideFromConference: (sideName) => {
+      dispatch(removedSideConference(sideName))
     }
+
   };
 };
 
@@ -297,7 +344,9 @@ const mapStateP2PControllerProps = (state, ownProps) => {
     ioIsConnected:state.rootIO
       .get(RootIOConnection.isConnected),
     isConferenceOpen:state.chat
-      .get(Chat.isConferenceOpen)
+      .get(Chat.isConferenceOpen),
+    removingSide : state.chat
+      .get(Chat.removingSide)
   };
 };
 

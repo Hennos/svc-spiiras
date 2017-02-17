@@ -90,6 +90,8 @@ class Root {
         this.emitCloseConferenceEvent(action.type);
         break;
 
+
+
     }
     return next(action);
   };

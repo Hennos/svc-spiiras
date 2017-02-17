@@ -1,6 +1,10 @@
 export const Events = {
+
   addSides: 'ADD:SIDES:TO:CONFERENCE',
   removeSide: 'REMOVE:SIDE:FROM:CONFERENCE',
+  removedSide: 'REMOVED:SIDE:FROM:CONFERENCE',
+  addingStreamToSide: 'ADD:STREAM:TO:SIDE',
+  addingVideoElementToSide: 'ADD:VIDEO_ELEMENT:TO:SIDE',
   closeConference: 'CLOSE:CONFERENCE',
   openedConference: 'OPENED:CONFERENCE',
   getUserStreamURL: 'USER:STREAM:URL',
@@ -13,6 +17,7 @@ export const Events = {
 
 export const Chat = {
   sides: 'sides',
+  removingSide: null,
   url: 'url',
   isConferenceOpen: 'conference'
 };

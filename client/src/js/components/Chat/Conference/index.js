@@ -6,6 +6,7 @@ import {emitCloseConference} from '../../../actions/chat'
 import Side from './Side'
 import ConferenceCloseButton from './ConferenceCloseButton'
 
+
 class Conference extends React.Component {
   constructor(props) {
     super(props);
@@ -28,6 +29,7 @@ class Conference extends React.Component {
               <p>Для начала конференции выберите друга из списка</p>
             </div>
           }
+
         </div>
 
         <div className={"conference-disconnect-block-wrapper" + (sides.length ? " display_block" : " display_none")}>
