@@ -14,7 +14,7 @@ import AdminAccount from '../adminAccount/index';
 
 //invisible control components
 import Camera from '../../controls/Camera'
-import Canvas from '../../controls/Canvas'
+import CanvasCamera from '../../controls/Canvases/CanvasCamera'
 import P2PController from '../../controls/P2PController'
 
 
@@ -34,9 +34,9 @@ class ComponentWrapper extends React.Component {
   render() {
     const {active} = this.props;
     return (
-      <div className="wrapper_components">  
+      <div className="wrapper_components">
         <Camera/>
-        <Canvas/>
+        <CanvasCamera/>
         <P2PController/>
         {visibleComponentMap.get(active)}
       </div>

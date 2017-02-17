@@ -31,12 +31,22 @@ class RTCInterfaces  {
 }
 
 
+class VideStreamsMixer {
+  constructor(props) {
+    this._canvasElementContext = document.createElement('canvas');
+    this._canvasElementContext = this._canvasElement.getContext("2d");
+  }
+}
+
 class P2PController extends React.Component{
   constructor(props) {
     super(props);
     this.connection = props.ioConnection;
 
     this.isInitiator = false;
+
+
+
 
     this.peers = {};
 
@@ -53,7 +63,7 @@ class P2PController extends React.Component{
   }
 
   componentDidUpdate(prevProps, prevState){
-    
+
     if(this.props.removingSide)
       this._closeClientConnection(this.props.removingSide);
 

@@ -72,12 +72,6 @@ function handleUserStreamURL(state, action) {
 function handleRemovingSide(state, action) {
   return state
     .set(Chat.removingSide, action.sideName);
-/*  const side = action.sideName;
-  const updatedSides = state
-    .get(Chat.sides)
-    .delete(side);
-  return state
-    .set(Chat.sides, updatedSides);*/
 }
 
 function handleRemovedSide(state, action) {

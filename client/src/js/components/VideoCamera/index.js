@@ -12,18 +12,24 @@ class VideoCameraComponent extends React.Component {
   }
 
   componentDidMount(){
-    if(this.props.videoElement.src && this.props.stream){
-      this.props.videoElement.play();
-    }
+    this._reloadVideoElement(this.props.videoElement, this.props.stream);
     this.refs['video_wrapper'].append(this.props.videoElement);
-    /*this.refs['video_wrapper'].append(this.props.canvasElement);*/
+    this.refs['video_wrapper'].append(this.props.canvasElement);
 
   }
 
   componentDidUpdate(){
+    this._reloadVideoElement(this.props.videoElement, this.props.stream);
     this.refs['video_wrapper'].append(this.props.videoElement);
-    /*this.refs['video_wrapper'].append(this.props.canvasElement);*/
+    this.refs['video_wrapper'].append(this.props.canvasElement);
 
+  }
+
+  _reloadVideoElement(videoElement, stream){
+    if(videoElement.src && stream && videoElement.paused){
+      videoElement.autoplay = true;
+      videoElement.load();
+    }
   }
 
   componentWillUnmount(){
