@@ -43,7 +43,6 @@ export const emitUpdateCtrlAccount = (updating) => {
 export const getUpdatedCtrlAccount = (updated) => {
   return {
     type: Events.getUpdatedCtrlAccount,
-    name: updated.name,
     updated
   }
 };
