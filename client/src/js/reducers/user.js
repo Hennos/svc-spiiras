@@ -14,7 +14,7 @@ const userReducer = (state = initialState, action) => {
       return handleRemovingUserRequest(state, action);
     case Events.removeFriendFromUser:
       return handleRemovingFriend(state, action);
-    case Events.setChangePreferences:
+    case Events.getChangePreferences:
       return handleSettingPreferences(state, action);
     default:
       return state;

@@ -65,7 +65,7 @@ export const sendChangingPreferences = (changes) => {
 };
 export const setNewUserPreferences = (changes) => {
   return {
-    type: Events.setChangePreferences,
+    type: Events.getChangePreferences,
     changes
   }
 };
