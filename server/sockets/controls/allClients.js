@@ -86,7 +86,8 @@ function Root(io) {
           return user.save();
         })
         .then(function emitMessage() {
-          socket.emit(events.userData.sendSetUserPreferences, preferences);
+          const message = JSON.stringify(newPreferences);
+          socket.emit(events.userData.sendSetUserPreferences, message);
         })
         .catch(handleError);
     });
