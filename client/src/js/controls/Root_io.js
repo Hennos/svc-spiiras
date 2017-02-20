@@ -18,6 +18,7 @@ import {newSearchedPeople} from '../actions/people'
 import {
   addCreatedCtrlAcc,
   deleteRemovedCtrlAcc,
+  updateCtrlAccount,
   setAdminStatus
 } from '../actions/adminAccount'
 import {
@@ -36,17 +37,27 @@ class Root {
     this.store = store;
 
     this.connection = io(address, {reconnection: false});
+
     this.connection.on(EventsUser.connected, this.afterConnection);
     this.connection.on(EventsUser.disconnected, this.afterDisconnection);
+
     this.connection.on(EventsUser.newUserData, this.newUserData);
+    this.connection.on(EventsUser.getUserUpdate, this.refreshUserData);
+
     this.connection.on(EventsUser.addRequestToUser, this.updateAfterAddingRequest);
     this.connection.on(EventsUser.removeRequestFromUser, this.updateAfterRemovingRequest);
+
     this.connection.on(EventsUser.addFriendToUser, this.updateAfterAddingFriend);
     this.connection.on(EventsUser.removeFriendFromUser, this.updateAfterRemovingFriend);
+
     this.connection.on(EventsUser.getChangePreferences, this.sendChangeUserPreferences);
+
     this.connection.on(EventsAdmin.getCreateCtrlAcc, this.sendCreatedCtrlAcc);
     this.connection.on(EventsAdmin.getRemoveCtrlAcc, this.sendRemovedCtrlAcc);
+    this.connection.on(EventsAdmin.getUpdatedCtrlAccount, this.sendUpdatedCtrlAcc);
+
     this.connection.on(EventsPeople.changeSearchedPeople, this.updateSearchedPeople);
+
     this.connection.on(EventsChat.addSides, this.pushSidesToConference);
     this.connection.on(EventsChat.removeSide, this.eraseSideFromConference);
 
@@ -114,6 +125,11 @@ class Root {
     this.store.dispatch(setAdminStatus(adminStatus));
   };
 
+  refreshUserData = () => {
+    console.log('refresh data');
+    this.getUserData();
+  };
+
   getUserData = () => {
     this.connection.emit(EventsUser.getUserData);
   };
@@ -179,6 +195,11 @@ class Root {
   sendRemovedCtrlAcc = (data) => {
     const removed = JSON.parse(data);
     this.store.dispatch(deleteRemovedCtrlAcc(removed));
+  };
+
+  sendUpdatedCtrlAcc = (data) => {
+    const updated = JSON.parse(data);
+    this.store.dispatch(updateCtrlAccount(updated));
   };
 
   updateSearchedPeople = (data) => {

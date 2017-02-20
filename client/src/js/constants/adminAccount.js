@@ -8,7 +8,7 @@ export const Events = {
   getRemoveCtrlAcc: "GET:REMOVE:CONTROL:ACCOUNT",
 
   emitUpdateCtrlAccount: "EMIT:UPDATE:CTRL:ACCOUNT",
-  getUpdatedCtrlAccount: "GET:UPDATED:CTRL:ACCOUNT"
+  getUpdatedCtrlAccount: "GET:UPDATE:CONTROL:ACCOUNT"
 };
 
 export const adminAccount = {

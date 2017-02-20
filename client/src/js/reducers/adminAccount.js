@@ -13,6 +13,8 @@ const adminAccountReducer = (state = initialState, action) => {
       return handleCreatedCtrlAcc(state, action);
     case Events.getRemoveCtrlAcc:
       return handleRemovedCtrlAcc(state, action);
+    case Events.getUpdatedCtrlAccount:
+      return handleUpdateCtrlAcc(state,action);
     default:
       return state;
   }
@@ -38,6 +40,15 @@ function handleRemovedCtrlAcc(state, action) {
   const upAdmined = state
     .get(adminFields.admined)
     .delete(removedCtrlAcc);
+  return state
+    .set(adminFields.admined, upAdmined);
+}
+
+function handleUpdateCtrlAcc(state, action) {
+  const updatedCtrlAcc = action.updated;
+  const upAdmined = state
+    .get(adminFields.admined)
+    .set(updatedCtrlAcc.username, updatedCtrlAcc);
   return state
     .set(adminFields.admined, upAdmined);
 }

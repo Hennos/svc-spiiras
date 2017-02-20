@@ -17,6 +17,8 @@ export const Events = {
 
   emitChangePreferences: "EMIT:USER:PROPS:CHANGE:VALUES",
   getChangePreferences: "GET:USER:PREFERENCE:VALUES",
+
+  getUserUpdate: "GET:USER:UPDATE"
 };
 
 export const user = {
