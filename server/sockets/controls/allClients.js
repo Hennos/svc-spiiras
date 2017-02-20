@@ -294,30 +294,35 @@ function Root(io) {
         .catch(handleError);
     });
 
-    socket.on(events.adminAccount.getUpdateCtrlPermissions, function (pack) {
-      //Необходимо добавить проверку разрешения на изменение аккаунта
+    socket.on(events.adminAccount.getUpdateCtrlAccount, function (pack) {
       const data = JSON.parse(pack);
-      if (_.has(data, 'name') && _.has(data, 'value')) {
-        const ctrlAccName = data.name;
-        const newDataAccount = data.value;
-        userModel.findOne({username: ctrlAccName}).exec()
-          .then(function setPermissions(caughtCtrlAcc) {
-            _.entries(newDataAccount).forEach(function (fieldData) {
-              caughtCtrlAcc[fieldData[0]] = fieldData[1];
-              caughtCtrlAcc.markModified(fieldData[0]);
-            });
-            return caughtCtrlAcc.save();
-          })
-          .then(function emitMessage(savedCtrlAcc) {
-            const updatedFields = _.pick(savedCtrlAcc, Object.keys(savedCtrlAcc));
-            if (clients[savedCtrlAcc.username]) {
-              clients[savedCtrlAcc.username]
-                .emit(events.userData.sendSetUserPermission, updatedFields);
+      const ctrlAccName = data.name;
+      const newAccFields = data.value;
+      userModel.findOne({username: ctrlAccName}).exec()
+        .then(function setNewAccFields(caughtCtrlAcc) {
+          _.toPairs(newAccFields).forEach(function (field) {
+            if (field[0] == "password") {
+              // Логика обновления пароля для входа неясна. Нужен метод для обновления пароля в модели Mongoose
+            } else {
+              caughtCtrlAcc[field[0]] = field[1];
+              caughtCtrlAcc.markModified(field[0]);
             }
-            socket.emit(events.adminAccount.sendUpdateCtrlAcc, updatedFields);
-          })
-          .catch(handleError);
-      }
+          });
+          return caughtCtrlAcc.save();
+        })
+        .then(function emitMessage(savedCtrlAcc) {
+          const updatedCtrlAcc = JSON.stringify(_.pick(savedCtrlAcc, [
+            'username',
+            'email',
+            'preferences',
+            'permission'
+          ]));
+          socket.emit(events.adminAccount.sendUpdateCtrlAcc, updatedCtrlAcc);
+          if (clients[savedCtrlAcc.username]) {
+            clients[savedCtrlAcc.username].emit(events.userData.sendUserUpdate);
+          }
+        })
+        .catch(handleError);
     });
 
     socket.on(events.search.changePatternSearchPeople, function (value) {
