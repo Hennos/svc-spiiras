@@ -111,7 +111,7 @@ function Root(io) {
         .then(function emitMessage(requested) {
           socket.emit(events.requests.sendingRequestSuccessful);
           if (clients[requested.username]) {
-            var message = JSON.stringify(user, ['username']);
+            const message = JSON.stringify(user, ['username']);
             clients[requested.username].emit(
               events.requests.addRequestToUserSuccessful,
               message
@@ -138,7 +138,7 @@ function Root(io) {
           return user.save();
         })
         .then(function emitMessage() {
-          var message = JSON.stringify(user, ['username']);
+          const message = JSON.stringify(user, ['username']);
           socket.emit(events.requests.removeRequestFromUserSuccessful, message);
         })
         .catch(handleError);
@@ -180,8 +180,8 @@ function Root(io) {
           return addingFriend.save();
         })
         .then(function emitMessage() {
-          var msgUser = JSON.stringify(addingFriend, ['username']);
-          var msgAdding = JSON.stringify(user, ['username']);
+          const msgUser = JSON.stringify(addingFriend, ['username']);
+          const msgAdding = JSON.stringify(user, ['username']);
           socket.emit(
             events.friends.addFriendToUserSuccessful,
             msgUser
@@ -224,8 +224,8 @@ function Root(io) {
           return removingFriend.save();
         })
         .then(function emitMessage() {
-          var msgUser = JSON.stringify(removingFriend, ['username']);
-          var msgRemoving = JSON.stringify(user, ['username']);
+          const msgUser = JSON.stringify(removingFriend, ['username']);
+          const msgRemoving = JSON.stringify(user, ['username']);
           socket.emit(
             events.friends.removeFriendFromUserSuccessful,
             msgUser
