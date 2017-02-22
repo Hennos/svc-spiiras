@@ -11,7 +11,17 @@ var Preferences = require('./preferences');
 
 var User = new Schema({
   username: {type: String, required: true, unique: true},
-  email: {type: String, required: true, unique: true},
+  email: {
+    type: String,
+    set: function (email) {
+      if (email !== null) {
+        return email;
+      }
+      return this.email;
+    },
+    required: true,
+    unique: true
+  },
 
   password: {type: String},
   hash: {type: String, required: true},
