@@ -299,15 +299,30 @@ function Root(io) {
       const ctrlAccName = data.name;
       const newAccFields = data.value;
       userModel.findOne({username: ctrlAccName}).exec()
-        .then(function setNewAccFields(caughtCtrlAcc) {
-          _.toPairs(newAccFields).forEach(function (field) {
-            if (field[0] == "password") {
-              // Логика обновления пароля для входа неясна. Нужен метод для обновления пароля в модели Mongoose
+        .then(function setNewAccPassword(caughtCtrlAcc) {
+          return new Promise(function (resolve, reject) {
+            if (_.has(newAccFields, 'password')) {
+              caughtCtrlAcc.setPassword(newAccFields.password, function (err) {
+                if (err) {
+                  reject(err);
+                }
+                console.log("Change password on user " + caughtCtrlAcc.username);
+                resolve(caughtCtrlAcc);
+              });
             } else {
-              caughtCtrlAcc[field[0]] = field[1];
-              caughtCtrlAcc.markModified(field[0]);
+              resolve(caughtCtrlAcc);
             }
           });
+        })
+        .then(function setOtherAccFields(caughtCtrlAcc) {
+          _.entries(newAccFields)
+            .filter(function (entry) {
+              return entry[0] != "password";
+            })
+            .forEach(function (entry) {
+              caughtCtrlAcc[entry[0]] = entry[1];
+              caughtCtrlAcc.markModified(entry[0]);
+            });
           return caughtCtrlAcc.save();
         })
         .then(function emitMessage(savedCtrlAcc) {
