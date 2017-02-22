@@ -1,5 +1,4 @@
 var nconf = require('nconf');
-//var uuid = require('node-uuid');
 
 var expressSession = require('express-session');
 var passportSocketIo = require("passport.socketio");
