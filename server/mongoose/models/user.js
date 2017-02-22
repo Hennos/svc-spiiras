@@ -23,10 +23,6 @@ var User = new Schema({
     unique: true
   },
 
-  password: {type: String},
-  hash: {type: String, required: true},
-  salt: {type: String, required: true},
-
   created: {type: Date, default: Date.now},
 
   friends: {
