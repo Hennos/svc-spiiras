@@ -93,13 +93,7 @@ class CanvasMixer extends Canvas {
     }
   }
 
-  _deleteVideoFromContainers(video) {
-    /*    this.containers.forEach((container)=> {
-     container.deleteElement(video);
-     });*/
-  }
-
-  _recalculateCanvasSize() {
+ _recalculateCanvasSize() {
     let width = 0;
     let height = 0;
     let containerWidth = 0;
