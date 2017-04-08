@@ -12,25 +12,25 @@ class VideoCameraComponent extends React.Component {
   }
 
   componentDidMount(){
-    this._reloadVideoElement(this.props.videoElement, this.props.stream);
-    this.refs['video_wrapper'].append(this.props.videoElement);
+    //this._reloadVideoElement(this.props.videoElement, this.props.stream);
+    //this.refs['video_wrapper'].append(this.props.videoElement);
     this.refs['video_wrapper'].append(this.props.canvasElement);
 
   }
 
   componentDidUpdate(){
-    this._reloadVideoElement(this.props.videoElement, this.props.stream);
-    this.refs['video_wrapper'].append(this.props.videoElement);
+    //this._reloadVideoElement(this.props.videoElement, this.props.stream);
+    //this.refs['video_wrapper'].append(this.props.videoElement);
     this.refs['video_wrapper'].append(this.props.canvasElement);
 
   }
 
-  _reloadVideoElement(videoElement, stream){
+/*  _reloadVideoElement(videoElement, stream){
     if(videoElement.src && stream && videoElement.paused){
       videoElement.autoplay = true;
       videoElement.load();
     }
-  }
+  }*/
 
   componentWillUnmount(){
     this.refs['video_wrapper'].append('');
@@ -76,8 +76,8 @@ const mapStateVideoCameraProps = (state, ownProps) => {
       .get(Parameters.isWorking),
     isLoading: state.videoCameraComponent
       .get(Parameters.isLoading),
-    videoElement: state.videoCameraComponent
-      .get(DOMElements.videoElement),
+/*    videoElement: state.videoCameraComponent
+      .get(DOMElements.videoElement),*/
     canvasElement: state.videoCameraComponent
       .get(DOMElements.canvasElement)
   };

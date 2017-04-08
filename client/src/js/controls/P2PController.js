@@ -6,7 +6,7 @@ import {_} from  'lodash';
 
 import {openedConference, addStreamToSide, addVideoElementToSide, removedSideConference, closeConference} from '../actions/chat'
 
-import {Parameters as CameraParametrs, DOMElements, Stream as CameraStream} from  '../constants/videoCamera';
+import {Parameters as CameraParametrs, Stream as CameraStream} from  '../constants/videoCamera';
 import {RootIOConnection} from  '../constants/rootIO';
 import {Chat} from  '../constants/chat';
 

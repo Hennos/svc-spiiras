@@ -6,6 +6,7 @@ import people from './people'
 import chat from './chat'
 import adminAccount from './adminAccount'
 import rootIO from './rootIO'
+import videoMixer from './videoMixer'
 
 const Reducers = combineReducers({
   componentsVisibilityFilter,
@@ -14,7 +15,8 @@ const Reducers = combineReducers({
   people,
   chat,
   adminAccount,
-  rootIO
+  rootIO,
+  videoMixer
 });
 
 export default Reducers;

@@ -8,6 +8,7 @@ import Canvas  from './Canvas';
 class CanvasCamera extends Canvas{
   constructor(props) {
     super(props);
+    this.setParametrs({id:'canvas-video', frameRate:null, width:null, height:null});
   }
 
   componentDidMount(){
@@ -25,7 +26,7 @@ class CanvasCamera extends Canvas{
 
   animationCycle(){
     requestAnimationFrame(this.startCapturingFromVideo.bind(this));
-    this._canvasElementContext.drawImage(this.props.videoElement, 0, 0, this._canvasWidth, this._canvasHeight);
+    this._canvasElementContext.drawImage(this.props.videoElement, 0, 0, this._canvasElement.width, this._canvasElement.height);
   }
 
   render(){return null;}

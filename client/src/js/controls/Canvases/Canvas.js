@@ -12,16 +12,17 @@ class Canvas extends React.Component{
 
     //creation the id of animation cycle
     this._canvasFPSTimerID = undefined;
-    this.setParametrs({id:null, frameRate:null, width:null, height:null});
+
   }
 
   setParametrs({id, frameRate, width, height}) {
-    this._canvasElement.id = id ? id : 'canvas-video';
+    this._canvasElement.id = id ? id : '';
     this._canvasElementContext.width = width ? width : 320;
     this._canvasElementContext.height = height ? height : 240;
+    this._canvasElement.width = width ? width : 320;
+    this._canvasElement.height = height ? height : 240;
     this.frameRate = frameRate ? frameRate : 25;
-    this._canvasWidth = this._canvasElement.width;
-    this._canvasHeight= this._canvasElement.height;
+
   }
 
   stopCapturing(){
@@ -32,7 +33,7 @@ class Canvas extends React.Component{
   clearCanvas(){
     if(this._canvasElementContext){
       //purification of the work area Canvas
-      this._canvasElementContext.clearRect(0, 0, this._canvasWidth, this._canvasHeight);
+      this._canvasElementContext.clearRect(0, 0, this._canvasElement.width, this._canvasElement.height);
     }
   };
 

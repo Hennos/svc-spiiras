@@ -13,6 +13,7 @@ export const Events = {
   getNewPeers: "SEND:NEW:PEERS",
   emitAddedSide: 'EMIT:ADDED:SIDE',
   emitCloseConference: 'EMIT:CLOSE:CONFERENCE'
+  
 };
 
 export const Chat = {
@@ -21,3 +22,5 @@ export const Chat = {
   url: 'url',
   isConferenceOpen: 'conference'
 };
+
+

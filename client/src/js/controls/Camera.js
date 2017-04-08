@@ -24,7 +24,7 @@ class Camera extends React.Component {
   }
 
   componentDidMount(){
-    this.props.newVideoComponentState(this._cameraElement);
+    /*this.props.newVideoComponentState(this._cameraElement);*/
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -72,8 +72,10 @@ class Camera extends React.Component {
             this._cameraElement.src = window.URL.createObjectURL(stream);
             this._cameraElement.onloadedmetadata = (event)=> {
               this._cameraElement.play();
+              this.props.newVideoComponentState(this._cameraElement);
+              this.props.newVideoStreamState(stream);
             };
-            this.props.newVideoStreamState(stream);
+
           },
           err => {
             throw err;
@@ -87,7 +89,9 @@ class Camera extends React.Component {
       this._cameraElement.pause();
       this._cameraElement.src = '';
       this.stream = null;
+      this.props.newVideoComponentState(null);
       this.props.newVideoStreamState(this.stream);
+
 
     }
   }

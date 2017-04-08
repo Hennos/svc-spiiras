@@ -20,10 +20,14 @@ const chatReducer = (state = initialState, action) => {
       return handleSideStream(state, action);
     case Events.addingVideoElementToSide:
       return handleSideVideoElement(state, action);
+    case Events.newCanvasMixer:
+      return handleNewCanvasMixer(state, action);
     default:
       return state;
   }
 };
+
+
 
 function handleAddingSides(state, action) {
 
