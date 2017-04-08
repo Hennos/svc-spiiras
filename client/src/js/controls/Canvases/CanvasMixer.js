@@ -51,8 +51,6 @@ class CanvasMixer extends Canvas {
           i++;
         }
 
-
-
         i = 0;
         while (i < 10) {
           if(i%2 == 0){
@@ -75,16 +73,15 @@ class CanvasMixer extends Canvas {
             this.containers[0].deleteObject(key + i);
             this.containers[1].deleteObject(key + i);
             this._recalculateCanvasSize();
-
+            i++;
           }
-        i++;
+
       });
     }
 
     if((_.keys(this.props.videoElements).length > 0) && !this._isCapturing){
       this.startCapturingFromVideo();
       this._isCapturing = true;
-
     }
     else if ((_.keys(this.props.videoElements).length === 0) && this._canvasFPSTimerID && this._isCapturing){
       console.log('Stop!');
@@ -121,7 +118,6 @@ class CanvasMixer extends Canvas {
     });
 
     if (allContainersEmpty){
-      console.log(allContainersEmpty);
       this._canvasElement.width = 1;
       this._canvasElementContext.width = 1;
       this._canvasElement.height = 1;

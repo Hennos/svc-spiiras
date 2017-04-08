@@ -17,7 +17,6 @@ class Container {
 
     this._currentX = this.positionX;
     this._currentY = this.positionY;
-    this._currentLinesNumber = 0;
 
   }
 
@@ -52,7 +51,7 @@ class Container {
 
 
 
-    if (this._isHorizontal) {
+/*    if (this._isHorizontal) {
       if (this.width < this._maxObjectsInLine * this._objectWidth)
         this.width = this._currentLine.length * this._objectWidth;
 
@@ -62,7 +61,9 @@ class Container {
       if (this.height < this._maxObjectsInLine * this._objectHeight)
         this.height = this._currentLine.length * this._objectHeight;
       this.width = this._allLines * this._objectWidth;
-    }
+    }*/
+
+    this._recalculateSize();
 
   }
 
@@ -72,7 +73,6 @@ class Container {
       if (element.name === name) {
 
         let firstElementIndexInLine = index-element.positionInLine;
-        //console.log(firstElementIndexInLine);
         this._currentX = this.objects[firstElementIndexInLine].coordinates.x;
         this._currentY = this.objects[firstElementIndexInLine].coordinates.y;
 
@@ -89,6 +89,7 @@ class Container {
         });
       }
     });
+    this._recalculateSize();
 
   };
 
@@ -96,18 +97,25 @@ class Container {
     return (this.objects.length === 0);
   }
 
-  _reloadContainerFromLine(lineIndex) {
+  _recalculateSize(){
+    if(this._currentLine.length !== 0){
+      if (this._isHorizontal) {
+
+        if (this.width < this._maxObjectsInLine * this._objectWidth)
+          this.width = this._currentLine.length * this._objectWidth;
+        this.height = this._allLines * this._objectHeight;
+
+      } else {
+        if (this.height < this._maxObjectsInLine * this._objectHeight)
+          this.height = this._currentLine.length * this._objectHeight;
+        this.width = this._allLines * this._objectWidth;
+      }
+    }else{
+      this.width = 0;
+      this.height = 0;
+    }
 
   }
-
-  searchElement(object) {
-
-  }
-
-  _recalculateContainerSize() {
-
-  }
-
 
 }
 
