@@ -7,6 +7,13 @@ import {Chat} from  '../../constants/chat';
 import Container from './Container'
 import _ from 'lodash'
 
+const CONTAINERPOSITIONS = {
+  left:"left",
+  right:"right",
+  top: "top",
+  bottom: "bottom"
+};
+
 
 class CanvasMixer extends Canvas {
   constructor(props) {
@@ -21,7 +28,11 @@ class CanvasMixer extends Canvas {
       maxObjectsInLine: 2,
       objectSize: {width: 320, height: 240},
       basePosition: {x: 0, y: 0},
-      isHorizontal: true
+      isHorizontal: true,
+      paddingTop:10,
+      paddingBottom:20,
+      paddingLeft:10,
+      paddingRight:10
     }));
 
     this.containers.push(new Container({
@@ -46,7 +57,7 @@ class CanvasMixer extends Canvas {
         let i = 0;
         while (i < 10) {
           this.containers[0].addNewObject(key + i);
-          this.containers[1].addNewObject(key + i);
+          //this.containers[1].addNewObject(key + i);
           this._recalculateCanvasSize();
           i++;
         }
@@ -55,12 +66,12 @@ class CanvasMixer extends Canvas {
         while (i < 10) {
           if(i%2 == 0){
             this.containers[0].deleteObject(key + i);
-            this.containers[1].deleteObject(key + i);
+            //this.containers[1].deleteObject(key + i);
             this._recalculateCanvasSize();
           }
           i++;
         }
-
+        console.log(this.containers[0].width, this.containers[0].height);
       });
 
 
@@ -71,7 +82,7 @@ class CanvasMixer extends Canvas {
         let i = 0;
           while (i < 10) {
             this.containers[0].deleteObject(key + i);
-            this.containers[1].deleteObject(key + i);
+            //this.containers[1].deleteObject(key + i);
             this._recalculateCanvasSize();
             i++;
           }
@@ -88,6 +99,21 @@ class CanvasMixer extends Canvas {
       this._isCapturing = false;
       this.stopCapturing();
     }
+  }
+
+  createContainer(options, position){
+    switch(position){
+      case CONTAINERPOSITIONS.top:
+        break;
+      case CONTAINERPOSITIONS.bottom:
+        break;
+      case CONTAINERPOSITIONS.left:
+        break;
+      case CONTAINERPOSITIONS.right:
+        break;
+    }
+
+
   }
 
  _recalculateCanvasSize() {
